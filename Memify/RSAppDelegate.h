@@ -10,8 +10,9 @@
 #import "LoginViewController.h"
 
 @interface RSAppDelegate : UIResponder <UIApplicationDelegate>
-
+{
+    UINavigationController *navController;
+    LoginViewController *loginViewController;
+}
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) LoginViewController *loginViewController;
-@property (strong, nonatomic) UINavigationController *navController;
 @end

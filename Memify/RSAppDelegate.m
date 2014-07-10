@@ -7,6 +7,7 @@
 //
 
 #import <Parse/Parse.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "RSAppDelegate.h"
 
 @implementation RSAppDelegate
@@ -19,13 +20,26 @@
                   clientKey:@"02wLqKIDArw4J1G1F555FfA35QSCk9IYzJCaquOu"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     self.window.backgroundColor = [UIColor whiteColor];
-    
-    self.loginViewController = [[LoginViewController alloc]initWithNibName:nil bundle:nil];
-    self.loginViewController.title = @"Login";
-    self.navController = [[UINavigationController alloc]initWithRootViewController:self.loginViewController];
-    [self.window setRootViewController:self.navController];
+    //set loginViewController as the root view controller
+    loginViewController = [[LoginViewController alloc]initWithNibName:nil bundle:nil];
+    loginViewController.title = @"Memify";
+    navController = [[UINavigationController alloc]initWithRootViewController:loginViewController];
+    [self.window setRootViewController:navController];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
+    BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication withSession:[PFFacebookUtils session]];
+    
+    // You can add your app-specific url handling code here if needed
+    return wasHandled;
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -48,6 +62,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

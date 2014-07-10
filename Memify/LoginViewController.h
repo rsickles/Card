@@ -8,15 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
-#import "RegisterViewController.h"
+@class HomeViewController;
 
 @interface LoginViewController : UIViewController
 {
-    HomeViewController *homeViewController;
-    RegisterViewController *registerViewController;
+    HomeViewController *home;
 }
-@property (strong, nonatomic) IBOutlet UITextField *passwordField;
-@property (strong, nonatomic) IBOutlet UITextField *usernameField;
 - (IBAction)login:(id)sender;
-- (IBAction)signup:(id)sender;
+
 @end

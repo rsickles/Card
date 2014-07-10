@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55BA037E196ED00800ED5E6E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55BA037D196ED00800ED5E6E /* FacebookSDK.framework */; };
 		927A4E0719665F8100444506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0619665F8100444506 /* Foundation.framework */; };
 		927A4E0919665F8100444506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0819665F8100444506 /* CoreGraphics.framework */; };
 		927A4E0B19665F8100444506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0A19665F8100444506 /* UIKit.framework */; };
@@ -23,8 +24,6 @@
 		927A4E391966600500444506 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E371966600500444506 /* HomeViewController.xib */; };
 		927A4E3D1966603E00444506 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E3B1966603E00444506 /* LoginViewController.m */; };
 		927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E3C1966603E00444506 /* LoginViewController.xib */; };
-		927A4E421966605200444506 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E401966605100444506 /* RegisterViewController.m */; };
-		927A4E431966605200444506 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E411966605100444506 /* RegisterViewController.xib */; };
 		927A4E451966607400444506 /* green_dark_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E441966607400444506 /* green_dark_bg.png */; };
 		927A4E491966663700444506 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E481966663700444506 /* AudioToolbox.framework */; };
 		927A4E4B1966664000444506 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E4A1966664000444506 /* CFNetwork.framework */; };
@@ -49,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		55BA037D196ED00800ED5E6E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		927A4E0319665F8100444506 /* Memify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		927A4E0619665F8100444506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		927A4E0819665F8100444506 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -71,9 +71,6 @@
 		927A4E3A1966603E00444506 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		927A4E3B1966603E00444506 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		927A4E3C1966603E00444506 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		927A4E3F1966605100444506 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterViewController.h; path = ../RegisterViewController.h; sourceTree = "<group>"; };
-		927A4E401966605100444506 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterViewController.m; path = ../RegisterViewController.m; sourceTree = "<group>"; };
-		927A4E411966605100444506 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RegisterViewController.xib; path = ../RegisterViewController.xib; sourceTree = "<group>"; };
 		927A4E441966607400444506 /* green_dark_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_dark_bg.png; sourceTree = "<group>"; };
 		927A4E481966663700444506 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		927A4E4A1966664000444506 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -105,6 +102,7 @@
 				927A4E491966663700444506 /* AudioToolbox.framework in Frameworks */,
 				927A4E0B19665F8100444506 /* UIKit.framework in Frameworks */,
 				927A4E0719665F8100444506 /* Foundation.framework in Frameworks */,
+				55BA037E196ED00800ED5E6E /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +141,7 @@
 		927A4E0519665F8100444506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55BA037D196ED00800ED5E6E /* FacebookSDK.framework */,
 				927A4E5A1966673600444506 /* Parse.framework */,
 				927A4E581966668400444506 /* SystemConfiguration.framework */,
 				927A4E561966667D00444506 /* StoreKit.framework */,
@@ -165,14 +164,11 @@
 			isa = PBXGroup;
 			children = (
 				927A4E1619665F8100444506 /* RSAppDelegate.m */,
-				927A4E401966605100444506 /* RegisterViewController.m */,
 				927A4E361966600500444506 /* HomeViewController.m */,
 				927A4E3B1966603E00444506 /* LoginViewController.m */,
 				927A4E1519665F8100444506 /* RSAppDelegate.h */,
-				927A4E3F1966605100444506 /* RegisterViewController.h */,
 				927A4E351966600500444506 /* HomeViewController.h */,
 				927A4E3A1966603E00444506 /* LoginViewController.h */,
-				927A4E411966605100444506 /* RegisterViewController.xib */,
 				927A4E3C1966603E00444506 /* LoginViewController.xib */,
 				927A4E371966600500444506 /* HomeViewController.xib */,
 				927A4E1819665F8100444506 /* Images.xcassets */,
@@ -289,7 +285,6 @@
 			files = (
 				927A4E451966607400444506 /* green_dark_bg.png in Resources */,
 				927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */,
-				927A4E431966605200444506 /* RegisterViewController.xib in Resources */,
 				927A4E1119665F8100444506 /* InfoPlist.strings in Resources */,
 				927A4E1919665F8100444506 /* Images.xcassets in Resources */,
 				927A4E391966600500444506 /* HomeViewController.xib in Resources */,
@@ -311,7 +306,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927A4E421966605200444506 /* RegisterViewController.m in Sources */,
 				927A4E3D1966603E00444506 /* LoginViewController.m in Sources */,
 				927A4E1319665F8100444506 /* main.m in Sources */,
 				927A4E1719665F8100444506 /* RSAppDelegate.m in Sources */,
@@ -520,6 +514,7 @@
 				927A4E3119665F8100444506 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		927A4E3219665F8100444506 /* Build configuration list for PBXNativeTarget "MemifyTests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +523,7 @@
 				927A4E3419665F8100444506 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
