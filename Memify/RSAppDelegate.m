@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 sickles.ryan. All rights reserved.
 //
 
+#import <Parse/Parse.h>
 #import "RSAppDelegate.h"
 
 @implementation RSAppDelegate
@@ -14,7 +15,15 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    [Parse setApplicationId:@"vKfmLUoNUcwcrkUMU2rFIvZTg0ujLH0LuzxpeHdW"
+                  clientKey:@"02wLqKIDArw4J1G1F555FfA35QSCk9IYzJCaquOu"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    self.loginViewController = [[LoginViewController alloc]initWithNibName:nil bundle:nil];
+    self.loginViewController.title = @"Login";
+    self.navController = [[UINavigationController alloc]initWithRootViewController:self.loginViewController];
+    [self.window setRootViewController:self.navController];
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -19,6 +19,23 @@
 		927A4E2219665F8100444506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0A19665F8100444506 /* UIKit.framework */; };
 		927A4E2A19665F8100444506 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E2819665F8100444506 /* InfoPlist.strings */; };
 		927A4E2C19665F8100444506 /* MemifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E2B19665F8100444506 /* MemifyTests.m */; };
+		927A4E381966600500444506 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E361966600500444506 /* HomeViewController.m */; };
+		927A4E391966600500444506 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E371966600500444506 /* HomeViewController.xib */; };
+		927A4E3D1966603E00444506 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E3B1966603E00444506 /* LoginViewController.m */; };
+		927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E3C1966603E00444506 /* LoginViewController.xib */; };
+		927A4E421966605200444506 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E401966605100444506 /* RegisterViewController.m */; };
+		927A4E431966605200444506 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E411966605100444506 /* RegisterViewController.xib */; };
+		927A4E451966607400444506 /* green_dark_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E441966607400444506 /* green_dark_bg.png */; };
+		927A4E491966663700444506 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E481966663700444506 /* AudioToolbox.framework */; };
+		927A4E4B1966664000444506 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E4A1966664000444506 /* CFNetwork.framework */; };
+		927A4E4D1966665100444506 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E4C1966665100444506 /* CoreLocation.framework */; };
+		927A4E4F1966665D00444506 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E4E1966665D00444506 /* libz.dylib */; };
+		927A4E511966666400444506 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E501966666400444506 /* MobileCoreServices.framework */; };
+		927A4E531966666C00444506 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E521966666C00444506 /* QuartzCore.framework */; };
+		927A4E551966667400444506 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E541966667400444506 /* Security.framework */; };
+		927A4E571966667D00444506 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E561966667D00444506 /* StoreKit.framework */; };
+		927A4E591966668400444506 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E581966668400444506 /* SystemConfiguration.framework */; };
+		927A4E5B1966673600444506 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E5A1966673600444506 /* Parse.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +65,26 @@
 		927A4E2719665F8100444506 /* MemifyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MemifyTests-Info.plist"; sourceTree = "<group>"; };
 		927A4E2919665F8100444506 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		927A4E2B19665F8100444506 /* MemifyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemifyTests.m; sourceTree = "<group>"; };
+		927A4E351966600500444506 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		927A4E361966600500444506 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		927A4E371966600500444506 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		927A4E3A1966603E00444506 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		927A4E3B1966603E00444506 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		927A4E3C1966603E00444506 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		927A4E3F1966605100444506 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterViewController.h; path = ../RegisterViewController.h; sourceTree = "<group>"; };
+		927A4E401966605100444506 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterViewController.m; path = ../RegisterViewController.m; sourceTree = "<group>"; };
+		927A4E411966605100444506 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RegisterViewController.xib; path = ../RegisterViewController.xib; sourceTree = "<group>"; };
+		927A4E441966607400444506 /* green_dark_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_dark_bg.png; sourceTree = "<group>"; };
+		927A4E481966663700444506 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		927A4E4A1966664000444506 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		927A4E4C1966665100444506 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		927A4E4E1966665D00444506 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		927A4E501966666400444506 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		927A4E521966666C00444506 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		927A4E541966667400444506 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		927A4E561966667D00444506 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		927A4E581966668400444506 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		927A4E5A1966673600444506 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +92,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				927A4E591966668400444506 /* SystemConfiguration.framework in Frameworks */,
+				927A4E571966667D00444506 /* StoreKit.framework in Frameworks */,
+				927A4E551966667400444506 /* Security.framework in Frameworks */,
+				927A4E531966666C00444506 /* QuartzCore.framework in Frameworks */,
+				927A4E511966666400444506 /* MobileCoreServices.framework in Frameworks */,
+				927A4E4F1966665D00444506 /* libz.dylib in Frameworks */,
+				927A4E5B1966673600444506 /* Parse.framework in Frameworks */,
+				927A4E4D1966665100444506 /* CoreLocation.framework in Frameworks */,
 				927A4E0919665F8100444506 /* CoreGraphics.framework in Frameworks */,
+				927A4E4B1966664000444506 /* CFNetwork.framework in Frameworks */,
+				927A4E491966663700444506 /* AudioToolbox.framework in Frameworks */,
 				927A4E0B19665F8100444506 /* UIKit.framework in Frameworks */,
 				927A4E0719665F8100444506 /* Foundation.framework in Frameworks */,
 			);
@@ -96,6 +143,16 @@
 		927A4E0519665F8100444506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				927A4E5A1966673600444506 /* Parse.framework */,
+				927A4E581966668400444506 /* SystemConfiguration.framework */,
+				927A4E561966667D00444506 /* StoreKit.framework */,
+				927A4E541966667400444506 /* Security.framework */,
+				927A4E521966666C00444506 /* QuartzCore.framework */,
+				927A4E501966666400444506 /* MobileCoreServices.framework */,
+				927A4E4E1966665D00444506 /* libz.dylib */,
+				927A4E4C1966665100444506 /* CoreLocation.framework */,
+				927A4E4A1966664000444506 /* CFNetwork.framework */,
+				927A4E481966663700444506 /* AudioToolbox.framework */,
 				927A4E0619665F8100444506 /* Foundation.framework */,
 				927A4E0819665F8100444506 /* CoreGraphics.framework */,
 				927A4E0A19665F8100444506 /* UIKit.framework */,
@@ -107,8 +164,17 @@
 		927A4E0C19665F8100444506 /* Memify */ = {
 			isa = PBXGroup;
 			children = (
-				927A4E1519665F8100444506 /* RSAppDelegate.h */,
 				927A4E1619665F8100444506 /* RSAppDelegate.m */,
+				927A4E401966605100444506 /* RegisterViewController.m */,
+				927A4E361966600500444506 /* HomeViewController.m */,
+				927A4E3B1966603E00444506 /* LoginViewController.m */,
+				927A4E1519665F8100444506 /* RSAppDelegate.h */,
+				927A4E3F1966605100444506 /* RegisterViewController.h */,
+				927A4E351966600500444506 /* HomeViewController.h */,
+				927A4E3A1966603E00444506 /* LoginViewController.h */,
+				927A4E411966605100444506 /* RegisterViewController.xib */,
+				927A4E3C1966603E00444506 /* LoginViewController.xib */,
+				927A4E371966600500444506 /* HomeViewController.xib */,
 				927A4E1819665F8100444506 /* Images.xcassets */,
 				927A4E0D19665F8100444506 /* Supporting Files */,
 			);
@@ -118,6 +184,7 @@
 		927A4E0D19665F8100444506 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				927A4E441966607400444506 /* green_dark_bg.png */,
 				927A4E0E19665F8100444506 /* Memify-Info.plist */,
 				927A4E0F19665F8100444506 /* InfoPlist.strings */,
 				927A4E1219665F8100444506 /* main.m */,
@@ -220,8 +287,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				927A4E451966607400444506 /* green_dark_bg.png in Resources */,
+				927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */,
+				927A4E431966605200444506 /* RegisterViewController.xib in Resources */,
 				927A4E1119665F8100444506 /* InfoPlist.strings in Resources */,
 				927A4E1919665F8100444506 /* Images.xcassets in Resources */,
+				927A4E391966600500444506 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +311,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				927A4E421966605200444506 /* RegisterViewController.m in Sources */,
+				927A4E3D1966603E00444506 /* LoginViewController.m in Sources */,
 				927A4E1319665F8100444506 /* main.m in Sources */,
 				927A4E1719665F8100444506 /* RSAppDelegate.m in Sources */,
+				927A4E381966600500444506 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +432,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Memify/Memify-Prefix.pch";
 				INFOPLIST_FILE = "Memify/Memify-Info.plist";
@@ -371,6 +449,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Memify/Memify-Prefix.pch";
 				INFOPLIST_FILE = "Memify/Memify-Info.plist";
