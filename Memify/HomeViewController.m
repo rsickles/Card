@@ -100,6 +100,8 @@
 
 - (IBAction)friendList:(id)sender {
     NSLog(@"To Friends List!");
+    friendsPage = [[FriendsViewController alloc]initWithNibName:@"FriendsViewController" bundle:[NSBundle mainBundle]];
+    [self.view addSubview:friendsPage.view];
 }
 
 - (IBAction) memeSend:(id)sender{
