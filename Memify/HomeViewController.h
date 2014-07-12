@@ -8,13 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
+#import "FormViewController.h"
+#import "DropAnimationController.h"
 @class LoginViewController;
 
-@interface HomeViewController : UIViewController <NSURLConnectionDelegate>
+@interface HomeViewController : UIViewController <NSURLConnectionDelegate,UIViewControllerTransitioningDelegate>
 {
     NSMutableData *_imageData;
     LoginViewController *login;
 }
 - (IBAction)friendList:(id)sender;
 - (IBAction) memeSend:(id)sender;
+@property CGFloat boundsx;
+@property CGFloat boundsy;
+@property (nonatomic,strong) UIColor *mainColor;
+@property (nonatomic,strong) NSString *boldFontName;
 @end

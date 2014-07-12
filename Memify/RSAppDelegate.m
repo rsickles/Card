@@ -22,7 +22,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     //set loginViewController as the root view controller
     loginViewController = [[LoginViewController alloc]initWithNibName:nil bundle:nil];
-    loginViewController.title = @"Memify";
+    loginViewController.title = @"MemeCard";
     navController = [[UINavigationController alloc]initWithRootViewController:loginViewController];
     [self.window setRootViewController:navController];
     [self.window makeKeyAndVisible];
