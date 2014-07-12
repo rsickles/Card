@@ -84,7 +84,7 @@
     logout.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
     [logout setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [logout setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
-    logout.frame = CGRectMake(0, 65, 70.0, 35.0);
+    logout.frame = CGRectMake(10, 75, 75.0, 35.0);
     [self.view addSubview:logout];
 }
 
