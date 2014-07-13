@@ -46,11 +46,16 @@
     self.cancelButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
     [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.cancelButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+    //add recipients button
+    self.addFriendButton.backgroundColor = self.mainColor;
+    self.addFriendButton.layer.cornerRadius = 3.0f;
+    self.addFriendButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
+    [self.addFriendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.addFriendButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     //end of styling buttons
     [self.scrollView addSubview:self.searchMemes];
     [self.scrollView addSubview:self.memeImage];
     [self.scrollView addSubview:self.addFriend];
-    [self.scrollView addSubview:self.friendName];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
 }
@@ -143,16 +148,13 @@
     // we pick up the users from the selection, and create a string that we use to update the text view
     // at the bottom of the display; note that self.selection is a property inherited from our base class
     for (id<FBGraphUser> user in self.friendPickerController.selection) {
-        if ([text length]) {
-            [text appendString:@", "];
-        }
-        [text appendString:user.name];
+        [self.friendsList addObject:user.name];
     }
     
-    [self fillTextBoxAndDismiss:text.length > 0 ? text : @"<None>"];
+    //[self fillTextBoxAndDismiss:text.length > 0 ? text : @"<None>"]; send to Parse as users to send to
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)facebookViewControllerCancelWasPressed:(id)sender {
-    [self fillTextBoxAndDismiss:@"<Cancelled>"];
     //requests to invite users to use application
     [FBWebDialogs presentRequestsDialogModallyWithSession:nil
                                                       message:@"Invite Friends to Use Card"
@@ -166,6 +168,7 @@
                                                               if (result == FBWebDialogResultDialogNotCompleted) {
                                                                   // Case B: User clicked the "x" icon
                                                                   NSLog(@"User canceled request.");
+                                                                  [self dismissViewControllerAnimated:YES completion:NULL];
                                                               } else {
                                                                   NSLog(@"Request Sent.");
                                                               }
@@ -174,11 +177,6 @@
 
 }
 
-- (void)fillTextBoxAndDismiss:(NSString *)text {
-    self.friendName.text = text;
-    
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 {

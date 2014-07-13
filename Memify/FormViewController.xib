@@ -6,9 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FormViewController">
             <connections>
-                <outlet property="addFriend" destination="5XB-fS-aOE" id="NPr-6r-yQa"/>
+                <outlet property="addFriendButton" destination="5XB-fS-aOE" id="ciJ-9W-gqi"/>
                 <outlet property="cancelButton" destination="69S-sY-VoG" id="rPx-jw-5r9"/>
-                <outlet property="friendName" destination="b7l-xj-9av" id="p0l-WT-gTU"/>
                 <outlet property="loading" destination="pFf-NJ-VBk" id="aOo-jK-MAl"/>
                 <outlet property="memeImage" destination="btm-Po-vfy" id="oqP-ET-0oL"/>
                 <outlet property="scrollView" destination="rQW-of-mVu" id="dLU-QQ-qq3"/>
@@ -47,18 +46,6 @@
                                 <action selector="sendMeme:" destination="-1" eventType="touchUpInside" id="aC6-5X-TAX"/>
                             </connections>
                         </button>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="t6D-2T-r9v">
-                            <rect key="frame" x="5" y="474" width="23" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Friend Name>" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b7l-xj-9av">
-                            <rect key="frame" x="59" y="474" width="241" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="btm-Po-vfy">
                             <rect key="frame" x="0.0" y="192" width="320" height="219"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -77,9 +64,9 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5XB-fS-aOE">
-                            <rect key="frame" x="113" y="419" width="76" height="30"/>
+                            <rect key="frame" x="20" y="419" width="280" height="43"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Add Friend">
+                            <state key="normal" title="Add Recepients">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
