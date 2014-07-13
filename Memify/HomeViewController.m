@@ -8,9 +8,13 @@
 
 #import "HomeViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "ADVAnimationController.h"
 #import <Parse/Parse.h>
 
+
 @interface HomeViewController ()
+
+@property (nonatomic, strong) id<ADVAnimationController> animationController;
 
 @end
 
@@ -21,6 +25,10 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.boundsx = [UIScreen mainScreen].bounds.size.width;
+        self.boundsy = [UIScreen mainScreen].bounds.size.height;
+        self.mainColor = [UIColor colorWithRed:222.0/255 green:59.0/255 blue:47.0/255 alpha:1.0f];
+        self.boldFontName = @"Avenir-Black";
     }
     return self;
 }
@@ -28,13 +36,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //add log out button
-    UIButton *logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logout setTitle:@"Logout" forState:UIControlStateNormal];
-    [logout setFrame:CGRectMake(0,25,100,100)];
-    [logout addTarget:self action:@selector(logoutButtonTouchHandler:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:logout];
-    // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
+    [self createLogOutButton];
+    [self createSendButton];
     //make a request for data
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
@@ -49,7 +53,7 @@
             float originy = ([UIScreen mainScreen].bounds.size.height/2) - 100;
             UILabel *userName = [[UILabel alloc]initWithFrame:CGRectMake(originx, originy, 100.0 , 50.0)];
             userName.text = name;
-            [self.view addSubview:userName];
+//            [self.view addSubview:userName];
             
             // Now add the data to the UI elements
             // ...
@@ -66,6 +70,45 @@
             NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
         }
     }];
+}
+
+
+-(void)createLogOutButton
+{
+    //add log out button
+    UIButton *logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [logout addTarget:self action:@selector(logoutButtonTouchHandler:)forControlEvents:UIControlEventTouchUpInside];
+    [logout setTitle:@"Logout" forState:UIControlStateNormal];
+    logout.backgroundColor = self.mainColor;
+    logout.layer.cornerRadius = 3.0f;
+    logout.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
+    [logout setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [logout setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+    logout.frame = CGRectMake(10, 75, 75.0, 35.0);
+    [self.view addSubview:logout];
+}
+
+-(void)createSendButton
+{
+    //create initial button
+    UIButton *memeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [memeButton addTarget:self action:@selector(memeSend:) forControlEvents:UIControlEventTouchUpInside];
+    [memeButton setTitle:@"Send Card" forState:UIControlStateNormal];
+    memeButton.backgroundColor = self.mainColor;
+    memeButton.layer.cornerRadius = 3.0f;
+    memeButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
+    [memeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [memeButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+    if(NO)//has any meme cards in inbox
+    {
+        //display send button below cards
+        memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy-(self.boundsy/4)+50, 150.0, 50.0);
+    }
+    else{
+        //display send button in middle of screen
+        memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy/2-25, 150.0, 50.0);
+    }
+    [self.view addSubview:memeButton];
 }
 
 // Called every time a chunk of the data is received
@@ -89,27 +132,67 @@
     profileButton.layer.cornerRadius = profileButton.frame.size.height /2;
     profileButton.layer.masksToBounds = YES;
     profileButton.layer.borderWidth = 0;
-    [self.view addSubview:profileButton];
-    //make button to send Meme
-    UIButton *memeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [memeButton addTarget:self action:@selector(memeSend:) forControlEvents:UIControlEventTouchUpInside];
-    [memeButton setTitle:@"Send Meme" forState:UIControlStateNormal];
-    memeButton.frame = CGRectMake(originx, originy+100.0, 100.0, 100.0);
-    [self.view addSubview:memeButton];
+//    [self.view addSubview:profileButton];
 }
 
 - (IBAction)friendList:(id)sender {
     NSLog(@"To Friends List!");
 }
 
+
+//transitioning stuff
 - (IBAction) memeSend:(id)sender{
-    NSLog(@"Send Meme!");
+        NSLog(@"Send Meme!");
+    self.animationController = [[DropAnimationController alloc] init];
+    UIViewController *form = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:[NSBundle mainBundle]];
+    form.transitioningDelegate  = self;
+    [self presentViewController:form animated:YES completion:nil];
 }
 
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                  presentingController:(UIViewController *)presenting
+                                                                      sourceController:(UIViewController *)source
+{
+    self.animationController.isPresenting = YES;
+    
+    return self.animationController;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    self.animationController.isPresenting = NO;
+    
+    return self.animationController;
+}
+//end of transitioning stuff
+
 - (void)logoutButtonTouchHandler:(id)sender  {
+    if (!FBSession.activeSession.isOpen) {
+        // if the session is closed, then we open it here, and establish a handler for state changes
+        [FBSession openActiveSessionWithReadPermissions:nil
+                                           allowLoginUI:YES
+                                      completionHandler:^(FBSession *session,
+                                                          FBSessionState state,
+                                                          NSError *error) {
+                                          if (error) {
+                                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                  message:error.localizedDescription
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:@"OK"
+                                                                                        otherButtonTitles:nil];
+                                              [alertView show];
+                                          } else if (session.isOpen) {
+                                              //run your user info request here
+                                              [PFUser logOut]; // Log out
+                                              // Return to login page
+                                              NSLog((@"Logout"));
+                                              login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
+                                              [self.view addSubview:login.view];
+                                          }
+                                      }];
+}
     [PFUser logOut]; // Log out
     // Return to login page
-    NSLog((@"LOGOUT"));
+    NSLog((@"Logout"));
     login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
     [self.view addSubview:login.view];
 }
