@@ -37,26 +37,11 @@
         home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
         [self.view addSubview:home.view];
     }
-    //check if user is loggedin already with session
-    
-    FBRequest *request = [FBRequest requestForMe];
-    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (!error) {
-            // handle successful response
-        } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) { // Since the request failed, we can check if it was due to an invalid session
-            NSLog(@"%@", error);
-            NSLog(@"The facebook session was invalidated");
-            [PFUser logOut]; // Log out
-        } else {
-            NSLog(@"Some other error: %@", error);
-        }
-    }];
-    //end of check
     
 }
 
 - (IBAction)login:(id)sender{
-    NSArray *permissionsArray = @[ @"user_about_me"];
+    NSArray *permissionsArray = @[ @"user_about_me",@"public_profile", @"user_friends" ];
     
     // Login PFUser using Facebook
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {

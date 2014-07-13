@@ -7,9 +7,10 @@
 //
 
 #import "FormViewController.h"
+#import <Parse/Parse.h>
 
-@interface FormViewController ()
-
+@interface FormViewController () <FBFriendPickerDelegate>
+@property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
 @end
 
 @implementation FormViewController
@@ -26,6 +27,8 @@
     }
     return self;
 }
+
+
 
 - (void)viewDidLoad
 {
@@ -44,7 +47,6 @@
     [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.cancelButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     //end of styling buttons
-    self.addFriend.delegate =self;
     [self.scrollView addSubview:self.searchMemes];
     [self.scrollView addSubview:self.memeImage];
     [self.scrollView addSubview:self.addFriend];
@@ -53,26 +55,22 @@
     [self.view addGestureRecognizer:tap];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    if(searchBar==self.addFriend)
-    {
-        NSLog(@"Adding Friends");
-        [self.addFriend resignFirstResponder];
-    }
-    else if(searchBar==self.searchMemes)
-    {
-        NSLog(@"SearchingMemes");
-        [self.searchMemes resignFirstResponder];
-    }
-    [self.view endEditing:TRUE]; //This will dismiss the keyboard
+- (void)viewDidUnload {
+    self.friendPickerController = nil;
+    
+    [super viewDidUnload];
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+
+    [self.searchMemes resignFirstResponder];
+    [self.view endEditing:TRUE]; //This will dismiss the keyboard
+}
 - (void) dismissKeyboard
 {
     // add self
     [self.searchMemes resignFirstResponder];
-    [self.addFriend resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,30 +81,12 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    if(searchBar==self.addFriend)
-    {
-        NSLog(@"Adding Friends");
-        CGPoint scrollPoint = CGPointMake(0, 150);
-        [self.scrollView setContentOffset:scrollPoint animated: YES];
-    }
-    else if(searchBar==self.searchMemes)
-    {
         NSLog(@"SearchingMemes");
-    }
-    
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    if(searchBar==self.addFriend)
-    {
-        NSLog(@"Adding Friends");
-        [self.scrollView setContentOffset:CGPointZero animated: YES];
-    }
-    else if(searchBar==self.searchMemes)
-    {
         NSLog(@"SearchingMemes");
-    }
 }
 
 
@@ -116,5 +96,92 @@
 
 - (IBAction)cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)addFriend:(id)sender {
+    // FBSample logic
+    // if the session is open, then load the data for our view controller
+    if (!FBSession.activeSession.isOpen) {
+        // if the session is closed, then we open it here, and establish a handler for state changes
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"user_friends"]
+                                           allowLoginUI:YES
+                                      completionHandler:^(FBSession *session,
+                                                          FBSessionState state,
+                                                          NSError *error) {
+                                          if (error) {
+                                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                  message:error.localizedDescription
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:@"OK"
+                                                                                        otherButtonTitles:nil];
+                                              [alertView show];
+                                          } else if (session.isOpen) {
+                                              [self addFriend:sender];
+                                          }
+                                      }];
+        return;
+    }
+    
+    
+    if (self.friendPickerController == nil) {
+        // Create friend picker, and get data loaded into it.
+        self.friendPickerController = [[FBFriendPickerViewController alloc] init];
+        self.friendPickerController.title = @"Pick Friends";
+        self.friendPickerController.delegate = self;
+    }
+    
+    [self.friendPickerController loadData];
+    [self.friendPickerController clearSelection];
+    //wrapped in a navigation controller so modal view is not blocked by status bar
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.friendPickerController];
+    [self presentViewController:nav animated:YES completion:nil];
+
+}
+- (void)facebookViewControllerDoneWasPressed:(id)sender {
+    NSMutableString *text = [[NSMutableString alloc] init];
+    
+    // we pick up the users from the selection, and create a string that we use to update the text view
+    // at the bottom of the display; note that self.selection is a property inherited from our base class
+    for (id<FBGraphUser> user in self.friendPickerController.selection) {
+        if ([text length]) {
+            [text appendString:@", "];
+        }
+        [text appendString:user.name];
+    }
+    
+    [self fillTextBoxAndDismiss:text.length > 0 ? text : @"<None>"];
+}
+- (void)facebookViewControllerCancelWasPressed:(id)sender {
+    [self fillTextBoxAndDismiss:@"<Cancelled>"];
+    //requests to invite users to use application
+    [FBWebDialogs presentRequestsDialogModallyWithSession:nil
+                                                      message:@"Invite Friends to Use Card"
+                                                        title:@"Invite Friends to Use Card"
+                                                   parameters:nil
+                                                      handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                          if (error) {
+                                                              // Case A: Error launching the dialog or sending request.
+                                                              NSLog(@"Error sending request.");
+                                                          } else {
+                                                              if (result == FBWebDialogResultDialogNotCompleted) {
+                                                                  // Case B: User clicked the "x" icon
+                                                                  NSLog(@"User canceled request.");
+                                                              } else {
+                                                                  NSLog(@"Request Sent.");
+                                                              }
+                                                          }}
+         ];
+
+}
+
+- (void)fillTextBoxAndDismiss:(NSString *)text {
+    self.friendName.text = text;
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    return YES;
 }
 @end

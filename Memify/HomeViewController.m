@@ -166,6 +166,30 @@
 //end of transitioning stuff
 
 - (void)logoutButtonTouchHandler:(id)sender  {
+    if (!FBSession.activeSession.isOpen) {
+        // if the session is closed, then we open it here, and establish a handler for state changes
+        [FBSession openActiveSessionWithReadPermissions:nil
+                                           allowLoginUI:YES
+                                      completionHandler:^(FBSession *session,
+                                                          FBSessionState state,
+                                                          NSError *error) {
+                                          if (error) {
+                                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                                  message:error.localizedDescription
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:@"OK"
+                                                                                        otherButtonTitles:nil];
+                                              [alertView show];
+                                          } else if (session.isOpen) {
+                                              //run your user info request here
+                                              [PFUser logOut]; // Log out
+                                              // Return to login page
+                                              NSLog((@"Logout"));
+                                              login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
+                                              [self.view addSubview:login.view];
+                                          }
+                                      }];
+}
     [PFUser logOut]; // Log out
     // Return to login page
     NSLog((@"Logout"));

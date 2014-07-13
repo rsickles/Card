@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate>
+
+@interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate,FBFriendPickerDelegate>
 
 @property CGFloat boundsx;
 @property CGFloat boundsy;
@@ -21,7 +23,8 @@
 - (IBAction)cancel:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIButton *sendButton;
-@property (strong, nonatomic) IBOutlet UISearchBar *addFriend;
 @property (strong, nonatomic) IBOutlet UILabel *friendName;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+- (IBAction)addFriend:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *addFriend;
 @end
