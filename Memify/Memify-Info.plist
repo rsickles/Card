@@ -8,6 +8,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb745223995534051</string>
+				<string>cardApp</string>
 			</array>
 		</dict>
 	</array>

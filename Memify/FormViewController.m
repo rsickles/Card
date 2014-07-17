@@ -29,7 +29,6 @@
 }
 
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -62,15 +61,42 @@
 
 - (void)viewDidUnload {
     self.friendPickerController = nil;
-    
+
     [super viewDidUnload];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-
     [self.searchMemes resignFirstResponder];
     [self.view endEditing:TRUE]; //This will dismiss the keyboard
+    //start spinning wheel and searching for meme
+    UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+
+    activityView.center=self.view.center;
+
+    [activityView startAnimating];
+
+    [self.view addSubview:activityView];
+    //search imgur
+    [IMGGalleryRequest hotGalleryPage:0 withViralSort:YES success:^(NSArray *objects) {
+
+        //random object from gallery
+        id<IMGGalleryObjectProtocol> object = [objects objectAtIndex:arc4random_uniform((u_int32_t)objects.count)];
+        NSLog(@"retrieved gallery");
+
+        //get cover image
+        IMGImage * cover = [object coverImage];
+        //get link to 640x640 cover image
+        NSURL * coverURL = [cover URLWithSize:IMGLargeThumbnailSize];
+
+        //set the image view
+        [self.memeImage setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:coverURL]]];
+
+    } failure:^(NSError *error) {
+
+        NSLog(@"gallery request failed - %@" ,error.localizedDescription);
+    }];
+
 }
 - (void) dismissKeyboard
 {
@@ -126,15 +152,15 @@
                                       }];
         return;
     }
-    
-    
+
+
     if (self.friendPickerController == nil) {
         // Create friend picker, and get data loaded into it.
         self.friendPickerController = [[FBFriendPickerViewController alloc] init];
         self.friendPickerController.title = @"Pick Friends";
         self.friendPickerController.delegate = self;
     }
-    
+
     [self.friendPickerController loadData];
     [self.friendPickerController clearSelection];
     //wrapped in a navigation controller so modal view is not blocked by status bar
@@ -144,13 +170,13 @@
 }
 - (void)facebookViewControllerDoneWasPressed:(id)sender {
     NSMutableString *text = [[NSMutableString alloc] init];
-    
+
     // we pick up the users from the selection, and create a string that we use to update the text view
     // at the bottom of the display; note that self.selection is a property inherited from our base class
     for (id<FBGraphUser> user in self.friendPickerController.selection) {
         [self.friendsList addObject:user.name];
     }
-    
+
     //[self fillTextBoxAndDismiss:text.length > 0 ? text : @"<None>"]; send to Parse as users to send to
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
