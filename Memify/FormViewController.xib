@@ -9,7 +9,7 @@
                 <outlet property="addFriendButton" destination="5XB-fS-aOE" id="ciJ-9W-gqi"/>
                 <outlet property="cancelButton" destination="69S-sY-VoG" id="rPx-jw-5r9"/>
                 <outlet property="loading" destination="pFf-NJ-VBk" id="aOo-jK-MAl"/>
-                <outlet property="memeImage" destination="btm-Po-vfy" id="oqP-ET-0oL"/>
+                <outlet property="memeImageView" destination="btm-Po-vfy" id="MAW-Uk-VK7"/>
                 <outlet property="scrollView" destination="rQW-of-mVu" id="dLU-QQ-qq3"/>
                 <outlet property="searchMemes" destination="KEf-SC-Yqd" id="qGT-Pp-yrd"/>
                 <outlet property="sendButton" destination="xAw-IU-ztV" id="5sz-2U-cSJ"/>

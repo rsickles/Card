@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import "ImgurSession.h"
-
+#import <AFNetworking.h>
 
 @interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate,FBFriendPickerDelegate>
 
@@ -18,7 +17,7 @@
 @property (nonatomic,strong) UIColor *mainColor;
 @property (nonatomic,strong) NSString *boldFontName;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchMemes;
-@property (strong, nonatomic) IBOutlet UIImageView *memeImage;
+@property (strong, nonatomic) IBOutlet UIImageView *memeImageView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *loading;
 - (IBAction)sendMeme:(id)sender;
 - (IBAction)cancel:(id)sender;
@@ -29,4 +28,5 @@
 @property (strong, nonatomic) IBOutlet UIButton *addFriend;
 @property (strong, nonatomic) IBOutlet UIButton *addFriendButton;
 @property (strong, nonatomic) NSMutableArray *friendsList;
+@property (strong, nonatomic) UIImage *memeImage;
 @end

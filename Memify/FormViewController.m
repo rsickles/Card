@@ -68,33 +68,54 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self.searchMemes resignFirstResponder];
+    self.memeImageView.image = nil;
     [self.view endEditing:TRUE]; //This will dismiss the keyboard
     //start spinning wheel and searching for meme
     UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-
+    
     activityView.center=self.view.center;
 
     [activityView startAnimating];
-
+    //get image query
+    NSMutableString *imageQuery = [[[searchBar.text mutableCopy] stringByReplacingOccurrencesOfString:@" " withString:@""]mutableCopy];
+    NSMutableString *query = [@"https://api.imgur.com/3/gallery/search/?q=" mutableCopy];
+    //construct query string
+    [query appendString:imageQuery];
+    //end of query string
     [self.view addSubview:activityView];
-    //search imgur
-    [IMGGalleryRequest hotGalleryPage:0 withViralSort:YES success:^(NSArray *objects) {
-
-        //random object from gallery
-        id<IMGGalleryObjectProtocol> object = [objects objectAtIndex:arc4random_uniform((u_int32_t)objects.count)];
-        NSLog(@"retrieved gallery");
-
-        //get cover image
-        IMGImage * cover = [object coverImage];
-        //get link to 640x640 cover image
-        NSURL * coverURL = [cover URLWithSize:IMGLargeThumbnailSize];
-
-        //set the image view
-        [self.memeImage setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:coverURL]]];
-
-    } failure:^(NSError *error) {
-
-        NSLog(@"gallery request failed - %@" ,error.localizedDescription);
+    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
+    [operationManager.requestSerializer setValue:@"Client-ID 5df88b59be0ed8d" forHTTPHeaderField:@"Authorization"];
+    NSLog(@"This is the text you're searching for %@",query);
+    [operationManager GET:query parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        [activityView stopAnimating];
+        //parse returned array object
+        NSDictionary *images = responseObject;
+        NSArray *values = [images allValues];
+        NSInteger number_of_images = [[values objectAtIndex:0] count ];
+        if(number_of_images>0)
+        {
+            //get random image
+            int r = arc4random() % number_of_images;
+            //
+            id val = [values objectAtIndex:0];
+            id nextval = [val objectAtIndex:r];
+            NSString *link = [nextval objectForKey:@"link"];
+            //set url with string
+            NSURL *url = [NSURL URLWithString:link];
+            self.memeImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+            self.memeImageView.image = self.memeImage;
+        }
+        else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Such Picture Exists On IMGUR :(" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"failure");
+        self.memeImageView.image = nil;
+        [activityView stopAnimating];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Retrieving Media Failed" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
     }];
 
 }
@@ -113,6 +134,8 @@
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
         NSLog(@"SearchingMemes");
+    //clear view
+    self.memeImageView.image = nil;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
