@@ -74,7 +74,7 @@
     UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
     activityView.center=self.view.center;
-
+    activityView.color = [UIColor redColor];
     [activityView startAnimating];
     //get image query
     NSMutableString *imageQuery = [[[searchBar.text mutableCopy] stringByReplacingOccurrencesOfString:@" " withString:@""]mutableCopy];
@@ -87,8 +87,6 @@
     [operationManager.requestSerializer setValue:@"Client-ID 5df88b59be0ed8d" forHTTPHeaderField:@"Authorization"];
     NSLog(@"This is the text you're searching for %@",query);
     [operationManager GET:query parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        [activityView stopAnimating];
         //parse returned array object
         NSDictionary *images = responseObject;
         NSArray *values = [images allValues];
@@ -105,6 +103,7 @@
             NSURL *url = [NSURL URLWithString:link];
             self.memeImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
             self.memeImageView.image = self.memeImage;
+            [activityView stopAnimating];
         }
         else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Such Picture Exists On IMGUR :(" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
@@ -112,8 +111,8 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"failure");
-        self.memeImageView.image = nil;
         [activityView stopAnimating];
+        self.memeImageView.image = nil;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Retrieving Media Failed" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
         [alert show];
     }];
