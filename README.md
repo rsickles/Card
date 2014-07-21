@@ -1,4 +1,4 @@
-Memify
+Card (formely known as Memify)
 ======
 Version/Goal Plan:
 ---------------------
