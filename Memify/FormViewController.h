@@ -29,4 +29,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *addFriendButton;
 @property (strong, nonatomic) NSMutableArray *friendsList;
 @property (strong, nonatomic) UIImage *memeImage;
+-(void)saveImageSelectedtoUser:(UIImage*)image friends:(NSMutableArray *)friends;
+- (IBAction)taskBarAction:(id)sender;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *taskBar;
+- (IBAction)message:(id)sender;
 @end

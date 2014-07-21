@@ -144,7 +144,7 @@
 
 
 - (IBAction)sendMeme:(id)sender {
-    NSLog(@"HFHDH");
+    [self saveImageSelectedtoUser:self.memeImage friends:self.friendsList];
 }
 
 - (IBAction)cancel:(id)sender {
@@ -191,14 +191,14 @@
 
 }
 - (void)facebookViewControllerDoneWasPressed:(id)sender {
-    NSMutableString *text = [[NSMutableString alloc] init];
 
     // we pick up the users from the selection, and create a string that we use to update the text view
     // at the bottom of the display; note that self.selection is a property inherited from our base class
     for (id<FBGraphUser> user in self.friendPickerController.selection) {
+        NSLog(@"Users names %@",user);
         [self.friendsList addObject:user.name];
     }
-
+    NSLog(@"Users names %@",self.friendsList);
     //[self fillTextBoxAndDismiss:text.length > 0 ? text : @"<None>"]; send to Parse as users to send to
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -226,8 +226,56 @@
 }
 
 
+-(void)saveImageSelectedtoUser:(UIImage*)image friends:(NSMutableArray *)friends
+{
+//    //grab data
+//    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:image];
+//    NSString *user_id = [friends objectAtIndex:0];
+//    //need to iterate through all friends and do this
+//    PFObject *user = [PFObject objectWithoutDataWithClassName:@"Class: objectId:@"objectId""];
+//    [obj setObject:name forKey:@"name"];
+//    [userdata setObject:surname forKey:@"surname"];
+//    //end of iteration through friends
+//    
+//    // Save PFFile
+//    [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//        if (!error) {
+//            // Hide old HUD, show completed HUD (see example for code)
+//            PFObject *obj = [PFObject objectWithoutDataWithClassName:@"Class: objectId:@"objectId"];
+//            // Create a PFObject around a PFFile and associate it with the current user
+//            PFObject *userPhoto = [PFObject objectWithClassName:@"UserPhoto"];
+//            [userPhoto setObject:imageFile forKey:@"imageFile"];
+//            
+//            
+//            PFUser *user = [PFUser currentUser];
+//            [userPhoto setObject:user forKey:@"user"];
+//            
+//            [userPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                if (!error) {
+//                    [self refresh:nil];
+//                }
+//                else{
+//                    // Log details of the failure
+//                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+//                }
+//            }];
+//        }
+//        else{
+//            // Log details of the failure
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//        }
+//    } progressBlock:^(int percentDone) {
+//        // Update your progress spinner here. percentDone will be between 0 and 100.
+//    }];
+}
+
+- (IBAction)taskBarAction:(id)sender {
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     return YES;
+}
+- (IBAction)message:(id)sender {
 }
 @end
