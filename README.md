@@ -26,3 +26,6 @@ v 1.0
 ### Audience
 * App description and purpose statment (what problem we are solving)
 * Published in Apple App Store
+
+### Additional Features for feature branch
+* Send tracks to friends using soundcloud cards (SoundCloud API)
