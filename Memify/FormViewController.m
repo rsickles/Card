@@ -7,7 +7,6 @@
 //
 
 #import "FormViewController.h"
-#import <Parse/Parse.h>
 
 @interface FormViewController () <FBFriendPickerDelegate>
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
@@ -33,6 +32,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    FBRequest *request = [FBRequest requestForMe];
+    // Send request to Facebook
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            self.userId = userData[@"id"];
+        }
+    }];
     self.searchMemes.delegate = self;
     //set custom buttons
     self.sendButton.backgroundColor = self.mainColor;
@@ -238,6 +246,9 @@
 
 -(void)saveImageSelectedtoUser:(UIImage*)image friends:(NSMutableArray *)friends
 {
+    
+    //get your own facebook id
+    
     NSData *fileData;
     NSString *fileName;
     NSString *fileType;
@@ -262,7 +273,7 @@
             [card setObject:file forKey:@"file"];
             [card setObject:fileType forKey:@"fileType"];
             [card setObject:friends forKey:@"recipientIds"];
-            [card setObject:[[PFUser currentUser] objectId] forKey:@"senderId"];
+            [card setObject:self.userId forKey:@"senderId"];
             [card setObject:[[PFUser currentUser] username] forKey:@"senderName"];
             [card saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if(error){

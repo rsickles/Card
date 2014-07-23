@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <AFNetworking.h>
 #import "HomeViewController.h"
+#import <Parse/Parse.h>
 
 @interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate,FBFriendPickerDelegate>
 
@@ -33,4 +34,5 @@
 - (IBAction)taskBarAction:(id)sender;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *taskBar;
 - (IBAction)message:(id)sender;
+@property (strong,nonatomic) NSString *userId;
 @end

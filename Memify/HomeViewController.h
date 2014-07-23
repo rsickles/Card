@@ -26,4 +26,5 @@
 @property (nonatomic,strong) NSString *boldFontName;
 @property (strong, nonatomic) IBOutlet UIImageView *cardImage;
 @property (strong, nonatomic) PFObject *firstImage;
+@property (strong,nonatomic) NSString *userId;
 @end

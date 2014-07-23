@@ -37,10 +37,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    FBRequest *request = [FBRequest requestForMe];
     [self createLogOutButton];
     self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     //make a request for data
-    FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
@@ -75,32 +75,45 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
-    [query whereKey:@"recipientIds" equalTo:[[PFUser currentUser]objectId]]; //change whereKey to senderID to see pics sent to self
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if(error){
-            self.firstImage = nil;
-            [self createSendButton];
-        }
-        else{
-            //need to view first card then delete it after swiped so always grabbing first card to view
-            if([objects count]>0)
-            {
-                self.firstImage = [objects objectAtIndex:0];
-                PFFile *image = [self.firstImage objectForKey:@"file"];
-                NSURL *imageFileUrl = [[NSURL alloc]initWithString:image.url];
-                NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
-                self.cardImage.image = [UIImage imageWithData:imageData];
-                //        self.messages = objects;
-                //        [self.tableView reloadData];
-                [self createSendButton];
-            }
-            else{
-                [self createSendButton];
-            }
+    FBRequest *request = [FBRequest requestForMe];
+    // Send request to Facebook
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            NSLog(@"%@",userData);
+            self.userId = userData[@"id"];
+            PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
+            [query whereKey:@"recipientIds" equalTo:self.userId]; //change whereKey to senderID to see pics sent to self
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if(error){
+                    self.firstImage = nil;
+                    [self createSendButton];
+                }
+                else{
+                    //need to view first card then delete it after swiped so always grabbing first card to view
+                    if([objects count]>0)
+                    {
+                        self.firstImage = [objects objectAtIndex:0];
+                        PFFile *image = [self.firstImage objectForKey:@"file"];
+                        NSURL *imageFileUrl = [[NSURL alloc]initWithString:image.url];
+                        NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+                        self.cardImage.image = [UIImage imageWithData:imageData];
+                        //        self.messages = objects;
+                        //        [self.tableView reloadData];
+                        [self createSendButton];
+                    }
+                    else{
+                        [self createSendButton];
+                    }
+                }
+            }];
+
         }
     }];
-}
+    
+   
+    }
 
 
 
