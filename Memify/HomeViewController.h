@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "FormViewController.h"
 #import "DropAnimationController.h"
+#import <Parse/Parse.h>
 @class LoginViewController;
 
 @interface HomeViewController : UIViewController <NSURLConnectionDelegate,UIViewControllerTransitioningDelegate>
@@ -23,4 +24,6 @@
 @property CGFloat boundsy;
 @property (nonatomic,strong) UIColor *mainColor;
 @property (nonatomic,strong) NSString *boldFontName;
+@property (strong, nonatomic) IBOutlet UIImageView *cardImage;
+@property (strong, nonatomic) PFObject *firstImage;
 @end

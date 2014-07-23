@@ -29,6 +29,7 @@
         self.boundsy = [UIScreen mainScreen].bounds.size.height;
         self.mainColor = [UIColor colorWithRed:222.0/255 green:59.0/255 blue:47.0/255 alpha:1.0f];
         self.boldFontName = @"Avenir-Black";
+        self.firstImage = nil;
     }
     return self;
 }
@@ -36,9 +37,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     [self createLogOutButton];
-    [self createSendButton];
+    self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     //make a request for data
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
@@ -46,7 +46,7 @@
         if (!error) {
             // result is a dictionary with the user's Facebook data
             NSDictionary *userData = (NSDictionary *)result;
-            NSString *facebookID = userData[@"id"];
+//            NSString *facebookID = userData[@"id"];
             //add name if neccessary in cool font above image
             NSString *name = userData[@"name"];
             float originx = ([UIScreen mainScreen].bounds.size.width/2) - 50;
@@ -61,16 +61,47 @@
             _imageData = [[NSMutableData alloc] init]; // the data will be loaded in here
             
             // URL should point to https://graph.facebook.com/{facebookId}/picture?type=large&return_ssl_resources=1
-            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
-            
-            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:pictureURL
-                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                  timeoutInterval:2.0f];
+//            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
+//            
+//            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:pictureURL
+//                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+//                                                                  timeoutInterval:2.0f];
             // Run network request asynchronously
-            NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+//            [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
         }
     }];
 }
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
+    [query whereKey:@"recipientsIds" equalTo:[[PFUser currentUser]objectId]]; //change whereKey to senderID to see pics sent to self
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if(error){
+            self.firstImage = nil;
+            [self createSendButton];
+        }
+        else{
+            //need to view first card then delete it after swiped so always grabbing first card to view
+            if([objects count]>0)
+            {
+                self.firstImage = [objects objectAtIndex:0];
+                PFFile *image = [self.firstImage objectForKey:@"file"];
+                NSURL *imageFileUrl = [[NSURL alloc]initWithString:image.url];
+                NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+                self.cardImage.image = [UIImage imageWithData:imageData];
+                //        self.messages = objects;
+                //        [self.tableView reloadData];
+                [self createSendButton];
+            }
+            else{
+                [self createSendButton];
+            }
+        }
+    }];
+}
+
 
 
 -(void)createLogOutButton
@@ -99,7 +130,8 @@
     memeButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
     [memeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [memeButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
-    if(NO)//has any meme cards in inbox
+    NSLog(@"%@",self.firstImage);
+    if(self.firstImage != nil)//has any meme cards in inbox
     {
         //display send button below cards
         memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy-(self.boundsy/4)+50, 150.0, 50.0);

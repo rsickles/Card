@@ -24,6 +24,7 @@
         self.boundsy = [UIScreen mainScreen].bounds.size.height;
         self.mainColor = [UIColor colorWithRed:222.0/255 green:59.0/255 blue:47.0/255 alpha:1.0f];
         self.boldFontName = @"Avenir-Black";
+
     }
     return self;
 }
@@ -52,9 +53,6 @@
     [self.addFriendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.addFriendButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     //end of styling buttons
-    [self.scrollView addSubview:self.searchMemes];
-    [self.scrollView addSubview:self.memeImage];
-    [self.scrollView addSubview:self.addFriend];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
 }
@@ -144,7 +142,19 @@
 
 
 - (IBAction)sendMeme:(id)sender {
-    [self saveImageSelectedtoUser:self.memeImage friends:self.friendsList];
+    if(self.memeImage == nil)
+    {
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No Picture Being Sent" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//        
+//        [alertView show];
+    }
+    else
+    {
+        [self saveImageSelectedtoUser:self.memeImage friends:self.friendsList];
+        UIViewController *home = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
+        [self presentViewController:home animated:YES completion:nil];
+
+    }
 }
 
 - (IBAction)cancel:(id)sender {
@@ -191,14 +201,14 @@
 
 }
 - (void)facebookViewControllerDoneWasPressed:(id)sender {
-
+    self.friendsList = [[NSMutableArray alloc] init];
     // we pick up the users from the selection, and create a string that we use to update the text view
     // at the bottom of the display; note that self.selection is a property inherited from our base class
-    for (id<FBGraphUser> user in self.friendPickerController.selection) {
-        NSLog(@"Users names %@",user);
-        [self.friendsList addObject:user.name];
+    for (PFUser<FBGraphUser> *user in self.friendPickerController.selection) {
+        NSLog(@"Users names added is %@",user.objectID);
+        [self.friendsList addObject:user.objectID];
     }
-    NSLog(@"Users names %@",self.friendsList);
+    NSLog(@"Users names full list %@",self.friendsList);
     //[self fillTextBoxAndDismiss:text.length > 0 ? text : @"<None>"]; send to Parse as users to send to
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -228,45 +238,58 @@
 
 -(void)saveImageSelectedtoUser:(UIImage*)image friends:(NSMutableArray *)friends
 {
-//    //grab data
-//    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:image];
-//    NSString *user_id = [friends objectAtIndex:0];
-//    //need to iterate through all friends and do this
-//    PFObject *user = [PFObject objectWithoutDataWithClassName:@"Class: objectId:@"objectId""];
-//    [obj setObject:name forKey:@"name"];
-//    [userdata setObject:surname forKey:@"surname"];
-//    //end of iteration through friends
-//    
-//    // Save PFFile
-//    [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        if (!error) {
-//            // Hide old HUD, show completed HUD (see example for code)
-//            PFObject *obj = [PFObject objectWithoutDataWithClassName:@"Class: objectId:@"objectId"];
-//            // Create a PFObject around a PFFile and associate it with the current user
-//            PFObject *userPhoto = [PFObject objectWithClassName:@"UserPhoto"];
-//            [userPhoto setObject:imageFile forKey:@"imageFile"];
-//            
-//            
-//            PFUser *user = [PFUser currentUser];
-//            [userPhoto setObject:user forKey:@"user"];
-//            
-//            [userPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//                if (!error) {
-//                    [self refresh:nil];
-//                }
-//                else{
-//                    // Log details of the failure
-//                    NSLog(@"Error: %@ %@", error, [error userInfo]);
-//                }
-//            }];
-//        }
-//        else{
-//            // Log details of the failure
-//            NSLog(@"Error: %@ %@", error, [error userInfo]);
-//        }
-//    } progressBlock:^(int percentDone) {
-//        // Update your progress spinner here. percentDone will be between 0 and 100.
-//    }];
+    NSData *fileData;
+    NSString *fileName;
+    NSString *fileType;
+    if(self.memeImage != nil)
+    {
+        UIImage *newImage = [self resizeImage:image toWidth:320.0f andHeight:480.0f];
+        fileData = UIImagePNGRepresentation(newImage);
+        fileName = @"image.png";
+        fileType = @"image";
+    }
+    PFFile *file = [PFFile fileWithName:fileName data:fileData];
+    
+    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if(error){
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please Try Sending Picture Again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            
+            [alertView show];
+        }
+        else{
+            //Picture is sent so remove all recipients!
+            PFObject *card = [PFObject objectWithClassName:@"Cards"];
+            [card setObject:file forKey:@"file"];
+            [card setObject:fileType forKey:@"fileType"];
+            [card setObject:friends forKey:@"recipientIds"];
+            [card setObject:[[PFUser currentUser] objectId] forKey:@"senderId"];
+            [card setObject:[[PFUser currentUser] username] forKey:@"senderName"];
+            [card saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if(error){
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please Try Sending Picture Again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    
+                    [alertView show];
+                }
+                else{
+                    self.memeImage = nil;
+                    //save to parse is successful!
+                    //go to back to homepage
+                    
+                }
+            }];
+        }
+    }];
+}
+
+//resize image to needed size
+-(UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height{
+    CGSize newSize = CGSizeMake(width, height);
+    CGRect newRectangle = CGRectMake(0, 0, width, height);
+    UIGraphicsBeginImageContext(newSize);
+    [self.memeImage drawInRect:newRectangle];
+    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return resizedImage;
 }
 
 - (IBAction)taskBarAction:(id)sender {
