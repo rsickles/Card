@@ -20,15 +20,11 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - ImgurSession (1.2):
-    - AFNetworking
 
 DEPENDENCIES:
   - AFNetworking
-  - ImgurSession (~> 1.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  ImgurSession: eac3b565e790259b6642240c95180a7c9d28cd8d
 
 COCOAPODS: 0.33.1

@@ -48,9 +48,3 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
-// ImgurSession
-#define COCOAPODS_POD_AVAILABLE_ImgurSession
-#define COCOAPODS_VERSION_MAJOR_ImgurSession 1
-#define COCOAPODS_VERSION_MINOR_ImgurSession 2
-#define COCOAPODS_VERSION_PATCH_ImgurSession 0
-

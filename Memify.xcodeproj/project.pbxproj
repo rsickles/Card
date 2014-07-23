@@ -39,6 +39,7 @@
 		92B9EBAA1971AC680037E036 /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9EBA81971AC680037E036 /* FormViewController.m */; };
 		92B9EBAB1971AC680037E036 /* FormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92B9EBA91971AC680037E036 /* FormViewController.xib */; };
 		92B9EBB01971B81F0037E036 /* DropAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9EBAF1971B81F0037E036 /* DropAnimationController.m */; };
+		92BD4D19197F3F3F0047010E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BD4D18197F3F3F0047010E /* Social.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		92B9EBAD1971B66E0037E036 /* ADVAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADVAnimationController.h; path = ../ADVAnimationController.h; sourceTree = "<group>"; };
 		92B9EBAE1971B81F0037E036 /* DropAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropAnimationController.h; sourceTree = "<group>"; };
 		92B9EBAF1971B81F0037E036 /* DropAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropAnimationController.m; sourceTree = "<group>"; };
+		92BD4D18197F3F3F0047010E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92BD4D19197F3F3F0047010E /* Social.framework in Frameworks */,
 				927A4E591966668400444506 /* SystemConfiguration.framework in Frameworks */,
 				927A4E571966667D00444506 /* StoreKit.framework in Frameworks */,
 				927A4E551966667400444506 /* Security.framework in Frameworks */,
@@ -155,6 +158,7 @@
 		927A4E0519665F8100444506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				92BD4D18197F3F3F0047010E /* Social.framework */,
 				55BA037D196ED00800ED5E6E /* FacebookSDK.framework */,
 				927A4E5A1966673600444506 /* Parse.framework */,
 				927A4E581966668400444506 /* SystemConfiguration.framework */,
