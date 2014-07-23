@@ -76,7 +76,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
-    [query whereKey:@"recipientsIds" equalTo:[[PFUser currentUser]objectId]]; //change whereKey to senderID to see pics sent to self
+    [query whereKey:@"recipientIds" equalTo:[[PFUser currentUser]objectId]]; //change whereKey to senderID to see pics sent to self
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if(error){
             self.firstImage = nil;
