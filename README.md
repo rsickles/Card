@@ -29,3 +29,4 @@ v 1.0
 
 ### Additional Features for feature branch
 * Send tracks to friends using soundcloud cards (SoundCloud API)
+* Random XKCD comics sent

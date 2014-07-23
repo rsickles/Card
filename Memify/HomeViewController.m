@@ -101,11 +101,12 @@
                         self.cardImage.image = [UIImage imageWithData:imageData];
                         //        self.messages = objects;
                         //        [self.tableView reloadData];
-                        [self createSendButton];
                     }
                     else{
-                        [self createSendButton];
+                        
+                        //there are no images
                     }
+                    [self createSendButton];
                 }
             }];
 

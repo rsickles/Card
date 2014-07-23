@@ -32,6 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.taskBar addTarget:self action:@selector(taskBarAction:) forControlEvents:UIControlEventValueChanged];
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -304,6 +305,23 @@
 }
 
 - (IBAction)taskBarAction:(id)sender {
+    
+    UISegmentedControl *segmentedControl = sender;
+    NSString *controlText = [segmentedControl titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
+    if([controlText isEqualToString:@"Internet"])
+    {
+        [self.view addSubview:self.searchMemes];
+    }
+    if([controlText isEqualToString:@"Photo Library"])
+    {
+        [self.searchMemes removeFromSuperview];
+    }
+    if([controlText isEqualToString:@"Facebook"])
+    {
+        [self.searchMemes removeFromSuperview];
+    }
+    
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
