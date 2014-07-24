@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <AFNetworking.h>
 #import "HomeViewController.h"
+#import "UploadViewController.h"
 #import <Parse/Parse.h>
 
 @interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate,FBFriendPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
