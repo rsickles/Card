@@ -41,6 +41,7 @@
     [self createLogOutButton];
     [self createRefreshButton];
 
+    //[self createRefreshButton];
     self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     //make a request for data
     // Send request to Facebook
@@ -73,31 +74,18 @@
         }
     }];
     
-    //refreshes every 30 seconds (this adds a lot of memory though)
-<<<<<<< HEAD
-    //self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshCards) userInfo:nil repeats:YES];
-    
-=======
+
     self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshCards) userInfo:nil repeats:YES];
+
     
 }
 
-//refreshes the cards on the homepage
 -(void)refreshCards{
     NSLog(@"REFRESHING CARDS");
     
     [self viewDidLoad];
     [self viewWillAppear:YES];
->>>>>>> Refresh and Upload Image from local files.
 }
-
-//refreshes the cards on the homepage
-/*-(void)refreshCards{
-    NSLog(@"REFRESHING CARDS");
-    
-    [self viewDidLoad];
-    [self viewWillAppear:YES];
-}*/
 
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -160,11 +148,9 @@
     [self.view addSubview:logout];
 }
 
-<<<<<<< HEAD
-/*-(void)createRefreshButton{
-=======
+
 -(void)createRefreshButton{
->>>>>>> Refresh and Upload Image from local files.
+
     
     //create the refresh button which refreshes the cards when pressed
     UIButton *refresh = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -177,11 +163,8 @@
     [refresh setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     refresh.frame = CGRectMake(225, 75, 75.0, 35.0);
     [self.view addSubview:refresh];
-<<<<<<< HEAD
-}*/
-=======
+
 }
->>>>>>> Refresh and Upload Image from local files.
 
 -(void)createSendButton
 {

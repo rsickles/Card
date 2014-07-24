@@ -342,23 +342,13 @@
         UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
         imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
         //adds it to the form screen
-        
-        
-        if([self.navigationController isKindOfClass:[UIImagePickerController class]]){
-            UINavigationBar *bar = self.navigationController.navigationBar;
-            UINavigationItem *top = bar.topItem;
-            
-            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
-            [top setLeftBarButtonItem:cancel];
-            
-        }
         imagePickerController.delegate = self;
-        /*UINavigationBar *bar = navigationController.navigationBar;
-        UINavigationItem *top = bar.topItem;
         
+        UINavigationBar *bar = imagePickerController.navigationBar
+        UINavigationItem *top = bar.topItem;
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
-        [top setLeftBarButtonItem:cancel];*/
-
+        [top setLeftBarButtonItem:cancel];
+        
         [self presentViewController:imagePickerController animated:NO completion:nil];
     }
     if([controlText isEqualToString:@"Facebook"])
