@@ -16,9 +16,36 @@ v 1.0
 * Cards have picture sent with personal message
 * Card swiping functionality to save or delete card
 
+### Media Types 
+* Static Images (Imgur, Facebook, Camera Roll, Google, XKCD, Instagram)
+* GIFs (IMGUR, Google, Camera Roll)
+* Video (Youtube, VIMEO, Vine)
+* Articles from the web and Tweets (Twitter)
+* Events (to add to calendar on local phones, google calendar)
+* Flashes
+
+###Card Front
+* Sender Name
+* Profile Picture
+* Message
+* Timestamp (When card was sent)
+* Color of card w/ icon (depends on source type)
+
+###Card Back
+* Full screen of the image
+* Webview for online content (articles)
+
+###Card Interaction
+
+* Swipe Left is to trash the card
+* Recently deleted table with cells with images
+* Swipe Right (functionality based on media type)
+* Swipe Up/down for forwarding (brings up friendimagepicker)
+
 ### Database
-* Parse database setup for signing up users
-* Storing and displaying pictures sent between users
+* User Table (socialmedia-user-id, first-name, last-name)
+* Card Table (card-id, media reference, media_type, source-type, active-state, time-stamp-created, flipped)
+* Link Table (sender-id, receiver-id, card-id)
 
 ### Features
 * Ability to send Facebook, Camera Roll, IMGUR, Google, Personal Link images
