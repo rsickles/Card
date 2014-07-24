@@ -39,6 +39,7 @@
     [super viewDidLoad];
     FBRequest *request = [FBRequest requestForMe];
     [self createLogOutButton];
+    [self createRefreshButton];
     self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     //make a request for data
     // Send request to Facebook
@@ -70,6 +71,18 @@
 //            [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
         }
     }];
+    
+    //refreshes every 30 seconds (this adds a lot of memory though)
+    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshCards) userInfo:nil repeats:YES];
+    
+}
+
+//refreshes the cards on the homepage
+-(void)refreshCards{
+    NSLog(@"REFRESHING CARDS");
+    
+    [self viewDidLoad];
+    [self viewWillAppear:YES];
 }
 
 
@@ -113,8 +126,8 @@
         }
     }];
     
-   
-    }
+    
+}
 
 
 
@@ -131,6 +144,21 @@
     [logout setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     logout.frame = CGRectMake(10, 75, 75.0, 35.0);
     [self.view addSubview:logout];
+}
+
+-(void)createRefreshButton{
+    
+    //create the refresh button which refreshes the cards when pressed
+    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [refresh addTarget:self action:@selector(refreshCards)forControlEvents:UIControlEventTouchUpInside];
+    [refresh setTitle:@"Shuffle" forState:UIControlStateNormal];
+    refresh.backgroundColor = self.mainColor;
+    refresh.layer.cornerRadius = 3.0f;
+    refresh.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
+    [refresh setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [refresh setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+    refresh.frame = CGRectMake(225, 75, 75.0, 35.0);
+    [self.view addSubview:refresh];
 }
 
 -(void)createSendButton

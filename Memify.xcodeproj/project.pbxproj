@@ -53,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18FC78871980545200EBD506 /* UploadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UploadViewController.h; path = ../../../../.Trash/UploadViewController.h; sourceTree = "<group>"; };
 		556548139E5B461C89026F99 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55BA037D196ED00800ED5E6E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		8899F26A01154FD79A0780E3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -182,6 +183,7 @@
 		927A4E0C19665F8100444506 /* Memify */ = {
 			isa = PBXGroup;
 			children = (
+				18FC78871980545200EBD506 /* UploadViewController.h */,
 				927A4E361966600500444506 /* HomeViewController.m */,
 				92B9EBA81971AC680037E036 /* FormViewController.m */,
 				927A4E3B1966603E00444506 /* LoginViewController.m */,
