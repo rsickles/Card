@@ -29,4 +29,5 @@
 @property (strong,nonatomic) NSString *userId;
 @property (nonatomic, retain) NSTimer *refreshTimer;
 
+@property NSInteger *active_state;
 @end

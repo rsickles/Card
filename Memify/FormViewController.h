@@ -35,4 +35,7 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *taskBar;
 - (IBAction)message:(id)sender;
 @property (strong,nonatomic) NSString *userId;
+@property (strong,nonatomic) NSString *media_reference;
+@property (strong,nonatomic) NSString *source_type;
+@property (strong, nonatomic) IBOutlet NSString *message_text;
 @end
