@@ -27,4 +27,5 @@
 @property (strong, nonatomic) IBOutlet UIImageView *cardImage;
 @property (strong, nonatomic) PFObject *firstImage;
 @property (strong,nonatomic) NSString *userId;
+@property NSInteger *active_state;
 @end

@@ -106,6 +106,7 @@
             id val = [values objectAtIndex:0];
             id nextval = [val objectAtIndex:r];
             NSString *link = [nextval objectForKey:@"link"];
+            self.media_reference = link;
             //set url with string
             NSURL *url = [NSURL URLWithString:link];
             self.memeImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
@@ -252,13 +253,13 @@
     
     NSData *fileData;
     NSString *fileName;
-    NSString *fileType;
+    NSString *mediaType;
     if(self.memeImage != nil)
     {
         UIImage *newImage = [self resizeImage:image toWidth:320.0f andHeight:480.0f];
         fileData = UIImagePNGRepresentation(newImage);
         fileName = @"image.png";
-        fileType = @"image";
+        mediaType = @"image";
     }
     PFFile *file = [PFFile fileWithName:fileName data:fileData];
     
@@ -271,11 +272,14 @@
         else{
             //Picture is sent so remove all recipients!
             PFObject *card = [PFObject objectWithClassName:@"Cards"];
-            [card setObject:file forKey:@"file"];
-            [card setObject:fileType forKey:@"fileType"];
-            [card setObject:friends forKey:@"recipientIds"];
-            [card setObject:self.userId forKey:@"senderId"];
-            [card setObject:[[PFUser currentUser] username] forKey:@"senderName"];
+            [card setObject:self.media_reference forKey:@"media_reference"];
+            [card setObject:mediaType forKey:@"media_type"];
+            [card setObject:self.source_type forKey:@"source_type"];
+            [card setObject:self.message_text forKey:@"message"];
+            //[card setObject:self.active_state forKey:@"active_state"]; add to homeview based on swipe
+            ////[card setObject:self.flipped forKey:@"flipped"]; add to homeview based on swipe
+            //[card setObject:[[PFUser currentUser] username] forKey:@"senderName"];
+            
             [card saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if(error){
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please Try Sending Picture Again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -311,14 +315,17 @@
     if([controlText isEqualToString:@"Internet"])
     {
         [self.view addSubview:self.searchMemes];
+        self.source_type = @"Internet";
     }
     if([controlText isEqualToString:@"Photo Library"])
     {
         [self.searchMemes removeFromSuperview];
+        self.source_type = @"Photo_Library";
     }
     if([controlText isEqualToString:@"Facebook"])
     {
         [self.searchMemes removeFromSuperview];
+        self.source_type = @"Facebook";
     }
     
     
@@ -328,6 +335,7 @@
 {
     return YES;
 }
-- (IBAction)message:(id)sender {
+- (IBAction)message:(UITextField *)sender {
+    self.message_text = sender.text;
 }
 @end

@@ -10,6 +10,7 @@
                 <outlet property="cancelButton" destination="69S-sY-VoG" id="rPx-jw-5r9"/>
                 <outlet property="loading" destination="pFf-NJ-VBk" id="aOo-jK-MAl"/>
                 <outlet property="memeImageView" destination="btm-Po-vfy" id="MAW-Uk-VK7"/>
+                <outlet property="message_text" destination="Gsf-zH-gnn" id="yJW-1T-lde"/>
                 <outlet property="searchMemes" destination="KEf-SC-Yqd" id="qGT-Pp-yrd"/>
                 <outlet property="sendButton" destination="xAw-IU-ztV" id="5sz-2U-cSJ"/>
                 <outlet property="taskBar" destination="YbH-iM-zEJ" id="cBn-yZ-AOb"/>

@@ -57,7 +57,26 @@
             }
         } else if (user.isNew) {
             NSLog(@"User with facebook signed up and logged in!");
+            // After logging in with Facebook
+            FBRequest *request = [FBRequest requestForMe];
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    // result is a dictionary with the user's Facebook data
+                    NSDictionary *userData = (NSDictionary *)result;
+                    NSString *first_name = userData[@"first_name"];
+                    NSString *last_name = userData[@"last_name"];
+                    NSString *gender = userData[@"gender"];
+                    [user setObject:[NSString stringWithString:first_name]forKey:@"first_name"];
+                    [user setObject:[NSString stringWithString:last_name] forKey:@"last_name"];
+                    [user setObject:[NSString stringWithString:gender] forKey:@"gender"];
+                    [user saveInBackground];
+                    [user saveInBackground];
+                    
+                }
+            }];
+            
             [self.view addSubview:home.view];
+            
             
         } else {
             NSLog(@"User with facebook logged in!");
