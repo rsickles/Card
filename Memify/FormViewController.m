@@ -331,23 +331,13 @@
         UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
         imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
         //adds it to the form screen
-        
-        
-        if([self.navigationController isKindOfClass:[UIImagePickerController class]]){
-            UINavigationBar *bar = self.navigationController.navigationBar;
-            UINavigationItem *top = bar.topItem;
-            
-            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
-            [top setLeftBarButtonItem:cancel];
-            
-        }
         imagePickerController.delegate = self;
-        /*UINavigationBar *bar = navigationController.navigationBar;
-        UINavigationItem *top = bar.topItem;
         
+        UINavigationBar *bar = imagePickerController.navigationBar
+        UINavigationItem *top = bar.topItem;
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
-        [top setLeftBarButtonItem:cancel];*/
-
+        [top setLeftBarButtonItem:cancel];
+        
         [self presentViewController:imagePickerController animated:NO completion:nil];
     }
     if([controlText isEqualToString:@"Facebook"])
@@ -379,3 +369,28 @@
 - (IBAction)message:(id)sender {
 }
 @end
+
+
+//UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:@selector(imagePickerControllerDidCancel:)];
+
+
+//UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.navigationController];
+//[self presentViewController:nav animated:YES completion:nil];
+
+//[bar leftBarButtonItem:cancelNavButton animated:YES];
+
+
+/*if([self.navigationController isKindOfClass:[UIImagePickerController class]]){
+ UINavigationBar *bar = self.navigationController.navigationBar;
+ UINavigationItem *top = bar.topItem;
+ 
+ UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+ [top setLeftBarButtonItem:cancel];
+ 
+ }
+ 
+ UINavigationBar *bar = navigationController.navigationBar;
+ UINavigationItem *top = bar.topItem;
+ 
+ UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+ [top setLeftBarButtonItem:cancel];*/
