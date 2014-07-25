@@ -37,5 +37,6 @@
 @property (strong,nonatomic) NSString *userId;
 @property (strong,nonatomic) NSString *media_reference;
 @property (strong,nonatomic) NSString *source_type;
-@property (strong, nonatomic) IBOutlet NSString *message_text;
+@property (strong, nonatomic) NSString *message_text;
+@property (strong, nonatomic) NSDictionary *userData;
 @end

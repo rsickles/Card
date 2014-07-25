@@ -31,6 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.message_text = @"Nothing was entered";
+    self.source_type = @"Internet";
     [self.taskBar addTarget:self action:@selector(taskBarAction:) forControlEvents:UIControlEventValueChanged];
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
@@ -284,13 +286,13 @@
             //Picture is sent so remove all recipients!
             PFObject *card = [PFObject objectWithClassName:@"Cards"];
             [card setObject:self.media_reference forKey:@"media_reference"];
+            NSLog(@"he");
             [card setObject:mediaType forKey:@"media_type"];
+            NSLog(@"hi");
             [card setObject:self.source_type forKey:@"source_type"];
+            NSLog(@"ha");
             [card setObject:self.message_text forKey:@"message"];
-            //[card setObject:self.active_state forKey:@"active_state"]; add to homeview based on swipe
-            ////[card setObject:self.flipped forKey:@"flipped"]; add to homeview based on swipe
-            //[card setObject:[[PFUser currentUser] username] forKey:@"senderName"];
-            
+            NSLog(@"hiii");
             [card saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if(error){
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please Try Sending Picture Again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -299,9 +301,19 @@
                 }
                 else{
                     self.memeImage = nil;
-                    //save to parse is successful!
-                    //go to back to homepage
-                    
+                    //save Card to parse is successful now add cards to recipients
+                    PFObject *junctionTable = [PFObject objectWithClassName:@"Junction"];
+                    FBRequest *request = [FBRequest requestForMe];
+                    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                        self.userData = (NSDictionary *)result;
+                        for (int arrayIndex=0; arrayIndex<[self.friendsList count]; arrayIndex++) {
+                            [junctionTable setObject:self.userData[@"id"] forKey:@"SenderId"];
+                            [junctionTable setObject:[self.friendsList objectAtIndex:arrayIndex ] forKey:@"RecipientId"];
+                            [junctionTable setObject:card.objectId forKey:@"CardId"];
+                            [junctionTable saveEventually];
+                        }
+
+                    }];
                 }
             }];
         }

@@ -10,10 +10,14 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "ADVAnimationController.h"
 #import <Parse/Parse.h>
+#import "Card.h"
+#import <MDCSwipeToChoose/MDCSwipeToChoose.h>
 
+static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
+static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
 @interface HomeViewController ()
-
+@property (nonatomic, strong) NSMutableArray *cards;
 @property (nonatomic, strong) id<ADVAnimationController> animationController;
 
 @end
@@ -37,41 +41,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    FBRequest *request = [FBRequest requestForMe];
+    self.active_state = 0;
+    self.flipped = 0;
+    [self createSendButton];
+    self.cards = [[NSMutableArray alloc] init];
+    [self getCardsFromServer];
+    //got cards
     [self createLogOutButton];
     [self createRefreshButton];
     
     self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     //make a request for data
     // Send request to Facebook
-    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (!error) {
-            // result is a dictionary with the user's Facebook data
-            NSDictionary *userData = (NSDictionary *)result;
-//            NSString *facebookID = userData[@"id"];
-            //add name if neccessary in cool font above image
-            NSString *name = userData[@"name"];
-            float originx = ([UIScreen mainScreen].bounds.size.width/2) - 50;
-            float originy = ([UIScreen mainScreen].bounds.size.height/2) - 100;
-            UILabel *userName = [[UILabel alloc]initWithFrame:CGRectMake(originx, originy, 100.0 , 50.0)];
-            userName.text = name;
-//            [self.view addSubview:userName];
-            
-            // Now add the data to the UI elements
-            // ...
-            // Download the user's facebook profile picture
-            _imageData = [[NSMutableData alloc] init]; // the data will be loaded in here
-            
-            // URL should point to https://graph.facebook.com/{facebookId}/picture?type=large&return_ssl_resources=1
-//            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
-//            
-//            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:pictureURL
-//                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-//                                                                  timeoutInterval:2.0f];
-            // Run network request asynchronously
-//            [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-        }
-    }];
     
 
     self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshCards) userInfo:nil repeats:YES];
@@ -86,16 +67,156 @@
     [self viewWillAppear:YES];
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+// This is called when a user didn't fully swipe left or right.
+- (void)viewDidCancelSwipe:(UIView *)view {
+    NSLog(@"You couldn't decide on %@.", self.currentCard.senderName);
+}
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
+// This is called then a user swipes the view fully left or right.
+- (void)view:(UIView *)view wasChosenWithDirection:(MDCSwipeDirection)direction {
+    // MDCSwipeToChooseView shows "NOPE" on swipes to the left,
+    // and "LIKED" on swipes to the right.
+    if (direction == MDCSwipeDirectionLeft) {
+        NSLog(@"You noped %@.", self.currentCard.senderName);
+    } else {
+        NSLog(@"You liked %@.", self.currentCard.senderName);
+    }
+    
+    // MDCSwipeToChooseView removes the view from the view hierarchy
+    // after it is swiped (this behavior can be customized via the
+    // MDCSwipeOptions class). Since the front card view is gone, we
+    // move the back card to the front, and create a new back card.
+    self.frontCardView = self.backCardView;
+    if ((self.backCardView = [self popPersonViewWithFrame:[self backCardViewFrame]])) {
+        // Fade the back card into view.
+        self.backCardView.alpha = 0.f;
+        [self.view insertSubview:self.backCardView belowSubview:self.frontCardView];
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             self.backCardView.alpha = 1.f;
+                         } completion:nil];
+    }
+}
+
+#pragma mark - Internal Methods
+
+- (void)setFrontCardView:(CardView *)frontCardView {
+    // Keep track of the person currently being chosen.
+    // Quick and dirty, just for the purposes of this sample app.
+    _frontCardView = frontCardView;
+    self.currentCard = frontCardView.card;
+}
+
+- (CardView *)popPersonViewWithFrame:(CGRect)frame {
+    if ([self.cards count] == 0) {
+        return nil;
+    }
+    // UIView+MDCSwipeToChoose and MDCSwipeToChooseView are heavily customizable.
+    // Each take an "options" argument. Here, we specify the view controller as
+    // a delegate, and provide a custom callback that moves the back card view
+    // based on how far the user has panned the front card view.
+    MDCSwipeToChooseViewOptions *options = [MDCSwipeToChooseViewOptions new];
+    options.delegate = self;
+    options.threshold = 160.f;
+    options.onPan = ^(MDCPanState *state){
+        CGRect frame = [self backCardViewFrame];
+        self.backCardView.frame = CGRectMake(frame.origin.x,
+                                             frame.origin.y - (state.thresholdRatio * 10.f),
+                                             CGRectGetWidth(frame),
+                                             CGRectGetHeight(frame));
+    };
+    
+    // Create a personView with the top person in the people array, then pop
+    // that person off the stack.
+    CardView *cardView = [[CardView alloc] initWithFrame:frame card:[self.cards objectAtIndex:0] options:options];
+    [self.cards removeObjectAtIndex:0];
+    return cardView;
+}
+
+#pragma mark View Contruction
+
+- (CGRect)frontCardViewFrame {
+    CGFloat horizontalPadding = 20.f;
+    CGFloat topPadding = 60.f;
+    CGFloat bottomPadding = 200.f;
+    return CGRectMake(horizontalPadding,
+                      topPadding,
+                      CGRectGetWidth(self.view.frame) - (horizontalPadding * 2),
+                      CGRectGetHeight(self.view.frame) - bottomPadding);
+}
+
+- (CGRect)backCardViewFrame {
+    CGRect frontFrame = [self frontCardViewFrame];
+    return CGRectMake(frontFrame.origin.x,
+                      frontFrame.origin.y + 10.f,
+                      CGRectGetWidth(frontFrame),
+                      CGRectGetHeight(frontFrame));
+}
+
+// Create and add the "nope" button.
+- (void)constructNopeButton {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIImage *image = [UIImage imageNamed:@"nope"];
+    button.frame = CGRectMake(ChoosePersonButtonHorizontalPadding,
+                              CGRectGetMaxY(self.backCardView.frame) + ChoosePersonButtonVerticalPadding,
+                              image.size.width,
+                              image.size.height);
+    [button setImage:image forState:UIControlStateNormal];
+    [button setTintColor:[UIColor colorWithRed:247.f/255.f
+                                         green:91.f/255.f
+                                          blue:37.f/255.f
+                                         alpha:1.f]];
+    [button addTarget:self
+               action:@selector(nopeFrontCardView)
+     forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+}
+
+// Create and add the "like" button.
+- (void)constructLikedButton {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIImage *image = [UIImage imageNamed:@"liked"];
+    button.frame = CGRectMake(CGRectGetMaxX(self.view.frame) - image.size.width - ChoosePersonButtonHorizontalPadding,
+                              CGRectGetMaxY(self.backCardView.frame) + ChoosePersonButtonVerticalPadding,
+                              image.size.width,
+                              image.size.height);
+    [button setImage:image forState:UIControlStateNormal];
+    [button setTintColor:[UIColor colorWithRed:29.f/255.f
+                                         green:245.f/255.f
+                                          blue:106.f/255.f
+                                         alpha:1.f]];
+    [button addTarget:self
+               action:@selector(likeFrontCardView)
+     forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+}
+
+#pragma mark Control Events
+
+// Programmatically "nopes" the front card view.
+- (void)nopeFrontCardView {
+    [self.frontCardView mdc_swipe:MDCSwipeDirectionLeft];
+}
+
+// Programmatically "likes" the front card view.
+- (void)likeFrontCardView {
+    [self.frontCardView mdc_swipe:MDCSwipeDirectionRight];
+}
+
+
+
+-(void)getCardsFromServer{
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             // result is a dictionary with the user's Facebook data
             NSDictionary *userData = (NSDictionary *)result;
-            NSLog(@"%@",userData);
             self.userId = userData[@"id"];
             PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
             [query whereKey:@"recipientIds" equalTo:self.userId]; //change whereKey to senderID to see pics sent to self
@@ -108,19 +229,14 @@
                     //need to view first card then delete it after swiped so always grabbing first card to view
                     if([objects count]>0)
                     {
-                        self.firstImage = [objects objectAtIndex:0];
-                        PFFile *image = [self.firstImage objectForKey:@"file"];
-                        NSURL *imageFileUrl = [[NSURL alloc]initWithString:image.url];
-                        NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
-                        self.cardImage.image = [UIImage imageWithData:imageData];
-                        //        self.messages = objects;
-                        //        [self.tableView reloadData];
+                        self.cards = (NSMutableArray *)objects;
+                        NSLog(@"THIS IS THE OBJECTS ARRAY %@",self.cards);
+                        [self initializeCards];
                     }
                     else{
                         
                         //there are no images
                     }
-                    [self createSendButton];
                 }
             }];
 
@@ -130,6 +246,49 @@
     
 }
 
+
+
+-(void)cardSwiped
+{
+    PFObject *card = [PFObject objectWithClassName:@"Cards"];
+    [card setObject:self.active_state forKey:@"active_state"];
+    [card setObject:self.flipped forKey:@"flipped"];
+    [card saveEventually];
+}
+
+
+- (void)initializeCards {
+    // It would be trivial to download these from a web service
+    // as needed, but for the purposes of this sample app we'll
+    // simply store them in memory.
+    NSMutableArray *cards = [[NSMutableArray alloc]init];
+    PFFile *image = [self.cards[0] objectForKey:@"file"];
+    NSString *senderName = [self.cards[0] objectForKey:@"senderId"];
+    NSURL *imageFileUrl = [[NSURL alloc]initWithString:image.url];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+    
+    Card *first_card = [[Card alloc] initWithName:senderName image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
+    [cards addObject:first_card];
+    self.cards = cards;
+    //set up cards
+    // Display the first ChoosePersonView in front. Users can swipe to indicate
+    // whether they like or dislike the person displayed.
+    self.frontCardView = [self popPersonViewWithFrame:[self frontCardViewFrame]];
+    NSLog(@"THIS IS THE FIRST PIC %@",self.frontCardView);
+    [self.view addSubview:self.frontCardView];
+    
+    // Display the second ChoosePersonView in back. This view controller uses
+    // the MDCSwipeToChooseDelegate protocol methods to update the front and
+    // back views after each user swipe.
+    self.backCardView = [self popPersonViewWithFrame:[self backCardViewFrame]];
+    [self.view insertSubview:self.backCardView belowSubview:self.frontCardView];
+    
+    // Add buttons to programmatically swipe the view left or right.
+    // See the `nopeFrontCardView` and `likeFrontCardView` methods.
+    [self constructNopeButton];
+    [self constructLikedButton];
+    [self createSendButton];
+}
 
 
 -(void)createLogOutButton
@@ -175,10 +334,10 @@
     memeButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
     [memeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [memeButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
-    NSLog(@"%@",self.firstImage);
-    if(self.firstImage != nil)//has any meme cards in inbox
+    if([self.cards count] > 0)//has any meme cards in inbox
     {
         //display send button below cards
+        NSLog(@"MORE");
         memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy-(self.boundsy/4)+50, 150.0, 50.0);
     }
     else{
@@ -186,30 +345,6 @@
         memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy/2-25, 150.0, 50.0);
     }
     [self.view addSubview:memeButton];
-}
-
-// Called every time a chunk of the data is received
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [_imageData appendData:data]; // Build the image
-}
-
-// Called when the entire profile image is finished downloading
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    // Set the image in the header imageView should be in top middle
-    float originx = ([UIScreen mainScreen].bounds.size.width/2) - 50;
-    float originy = ([UIScreen mainScreen].bounds.size.height/2) - 50;
-    //get image
-    UIImage *proPicImage = [UIImage imageWithData:_imageData];
-    //make button with image
-    UIButton *profileButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [profileButton setBackgroundImage:proPicImage forState:UIControlStateNormal];
-    profileButton.frame = CGRectMake(originx,originy,100,100);
-    [profileButton addTarget:self action:@selector(friendList:) forControlEvents:UIControlEventTouchUpInside];
-    //make image rounded
-    profileButton.layer.cornerRadius = profileButton.frame.size.height /2;
-    profileButton.layer.masksToBounds = YES;
-    profileButton.layer.borderWidth = 0;
-//    [self.view addSubview:profileButton];
 }
 
 - (IBAction)friendList:(id)sender {

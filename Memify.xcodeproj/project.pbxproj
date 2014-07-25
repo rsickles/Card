@@ -40,6 +40,9 @@
 		92B9EBAB1971AC680037E036 /* FormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92B9EBA91971AC680037E036 /* FormViewController.xib */; };
 		92B9EBB01971B81F0037E036 /* DropAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9EBAF1971B81F0037E036 /* DropAnimationController.m */; };
 		92BD4D19197F3F3F0047010E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BD4D18197F3F3F0047010E /* Social.framework */; };
+		92BD4D1C198010200047010E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D1B198010200047010E /* Card.m */; };
+		92BD4D29198011FD0047010E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D28198011FD0047010E /* ImageView.m */; };
+		92BD4D2F198012F50047010E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D2E198012F50047010E /* CardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +99,12 @@
 		92B9EBAE1971B81F0037E036 /* DropAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropAnimationController.h; sourceTree = "<group>"; };
 		92B9EBAF1971B81F0037E036 /* DropAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropAnimationController.m; sourceTree = "<group>"; };
 		92BD4D18197F3F3F0047010E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		92BD4D1A198010200047010E /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
+		92BD4D1B198010200047010E /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
+		92BD4D27198011FD0047010E /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
+		92BD4D28198011FD0047010E /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
+		92BD4D2D198012F50047010E /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
+		92BD4D2E198012F50047010E /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +200,8 @@
 				92B9EBA91971AC680037E036 /* FormViewController.xib */,
 				927A4E3C1966603E00444506 /* LoginViewController.xib */,
 				927A4E371966600500444506 /* HomeViewController.xib */,
+				92BD4D1F1980116A0047010E /* Card Views */,
+				92BD4D1D198010290047010E /* Card Models */,
 				92B9EBB21971C0AE0037E036 /* Delegates */,
 				92B9EBB11971C08F0037E036 /* Animation Controllers */,
 				927A4E1819665F8100444506 /* Images.xcassets */,
@@ -246,6 +257,26 @@
 				927A4E1519665F8100444506 /* RSAppDelegate.h */,
 			);
 			name = Delegates;
+			sourceTree = "<group>";
+		};
+		92BD4D1D198010290047010E /* Card Models */ = {
+			isa = PBXGroup;
+			children = (
+				92BD4D1B198010200047010E /* Card.m */,
+				92BD4D1A198010200047010E /* Card.h */,
+			);
+			name = "Card Models";
+			sourceTree = "<group>";
+		};
+		92BD4D1F1980116A0047010E /* Card Views */ = {
+			isa = PBXGroup;
+			children = (
+				92BD4D27198011FD0047010E /* ImageView.h */,
+				92BD4D28198011FD0047010E /* ImageView.m */,
+				92BD4D2D198012F50047010E /* CardView.h */,
+				92BD4D2E198012F50047010E /* CardView.m */,
+			);
+			name = "Card Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,6 +419,9 @@
 				927A4E1319665F8100444506 /* main.m in Sources */,
 				927A4E1719665F8100444506 /* RSAppDelegate.m in Sources */,
 				92B9EBAA1971AC680037E036 /* FormViewController.m in Sources */,
+				92BD4D1C198010200047010E /* Card.m in Sources */,
+				92BD4D2F198012F50047010E /* CardView.m in Sources */,
+				92BD4D29198011FD0047010E /* ImageView.m in Sources */,
 				927A4E381966600500444506 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
