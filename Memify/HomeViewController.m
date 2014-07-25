@@ -218,8 +218,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             // result is a dictionary with the user's Facebook data
             NSDictionary *userData = (NSDictionary *)result;
             self.userId = userData[@"id"];
-            PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
-            [query whereKey:@"recipientIds" equalTo:self.userId]; //change whereKey to senderID to see pics sent to self
+            PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
+            [query whereKey:@"RecipientId" equalTo:self.userId]; //change whereKey to senderID to see pics sent to self
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                 if(error){
                     self.firstImage = nil;
@@ -247,7 +247,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 }
 
 
-
+//swiped actions
 -(void)cardSwiped
 {
     PFObject *card = [PFObject objectWithClassName:@"Cards"];
@@ -261,15 +261,17 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     // It would be trivial to download these from a web service
     // as needed, but for the purposes of this sample app we'll
     // simply store them in memory.
-    NSMutableArray *cards = [[NSMutableArray alloc]init];
-    PFFile *image = [self.cards[0] objectForKey:@"file"];
-    NSString *senderName = [self.cards[0] objectForKey:@"senderId"];
-    NSURL *imageFileUrl = [[NSURL alloc]initWithString:image.url];
-    NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+    NSMutableArray *usersCards = [[NSMutableArray alloc]init];
     
-    Card *first_card = [[Card alloc] initWithName:senderName image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
-    [cards addObject:first_card];
-    self.cards = cards;
+    //create array of users card stack
+    for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++) {
+        NSURL *imageFileUrl = [[NSURL alloc]initWithString:[usersCards objectAtIndex:arrayIndex]];
+        NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+        Card *card = [[Card alloc] initWithName:@"SENDER NAME" image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
+        [usersCards addObject:card];
+    }
+    self.cards = usersCards;
+
     //set up cards
     // Display the first ChoosePersonView in front. Users can swipe to indicate
     // whether they like or dislike the person displayed.
