@@ -11,9 +11,10 @@
 #import "FormViewController.h"
 #import "DropAnimationController.h"
 #import <Parse/Parse.h>
+#import "CardView.h"
 @class LoginViewController;
 
-@interface HomeViewController : UIViewController <NSURLConnectionDelegate,UIViewControllerTransitioningDelegate>
+@interface HomeViewController : UIViewController <NSURLConnectionDelegate,UIViewControllerTransitioningDelegate,MDCSwipeToChooseDelegate>
 {
     NSMutableData *_imageData;
     LoginViewController *login;
@@ -24,8 +25,12 @@
 @property CGFloat boundsy;
 @property (nonatomic,strong) UIColor *mainColor;
 @property (nonatomic,strong) NSString *boldFontName;
-@property (strong, nonatomic) IBOutlet UIImageView *cardImage;
 @property (strong, nonatomic) PFObject *firstImage;
 @property (strong,nonatomic) NSString *userId;
-@property NSInteger *active_state;
+@property (strong,nonatomic) NSNumber *active_state;
+@property (strong,nonatomic) NSNumber *flipped;
+//card properties
+@property (nonatomic, strong) Card *currentCard;
+@property (nonatomic, strong) CardView *frontCardView;
+@property (nonatomic, strong) CardView *backCardView;
 @end
