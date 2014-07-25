@@ -42,7 +42,7 @@
 		92BD4D1C198010200047010E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D1B198010200047010E /* Card.m */; };
 		92BD4D29198011FD0047010E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D28198011FD0047010E /* ImageView.m */; };
 		92BD4D2F198012F50047010E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D2E198012F50047010E /* CardView.m */; };
-		92BD4D31198209530047010E /* SIGN-IN.png in Resources */ = {isa = PBXBuildFile; fileRef = 92BD4D30198209530047010E /* SIGN-IN.png */; };
+		92BD4D331982949E0047010E /* SIGN-IN.png in Resources */ = {isa = PBXBuildFile; fileRef = 92BD4D321982949E0047010E /* SIGN-IN.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +104,7 @@
 		92BD4D28198011FD0047010E /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		92BD4D2D198012F50047010E /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
 		92BD4D2E198012F50047010E /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
-		92BD4D30198209530047010E /* SIGN-IN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIGN-IN.png"; path = "../../../Downloads/SIGN-IN.png"; sourceTree = "<group>"; };
+		92BD4D321982949E0047010E /* SIGN-IN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIGN-IN.png"; path = "../../../Downloads/SIGN-IN.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +213,7 @@
 		927A4E0D19665F8100444506 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				92BD4D30198209530047010E /* SIGN-IN.png */,
+				92BD4D321982949E0047010E /* SIGN-IN.png */,
 				927A4E0E19665F8100444506 /* Memify-Info.plist */,
 				927A4E0F19665F8100444506 /* InfoPlist.strings */,
 				927A4E1219665F8100444506 /* main.m */,
@@ -357,8 +357,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92BD4D31198209530047010E /* SIGN-IN.png in Resources */,
 				927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */,
+				92BD4D331982949E0047010E /* SIGN-IN.png in Resources */,
 				927A4E1119665F8100444506 /* InfoPlist.strings in Resources */,
 				927A4E1919665F8100444506 /* Images.xcassets in Resources */,
 				92B9EBAB1971AC680037E036 /* FormViewController.xib in Resources */,
