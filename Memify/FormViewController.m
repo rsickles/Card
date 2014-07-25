@@ -219,8 +219,9 @@
     [self.friendPickerController loadData];
     [self.friendPickerController clearSelection];
     //wrapped in a navigation controller so modal view is not blocked by status bar
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.friendPickerController];
-    [self presentViewController:nav animated:YES completion:nil];
+    //UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.friendPickerController];
+    //[nav setNavigationBarHidden:NO animated:YES];
+    [self presentViewController:self.friendPickerController animated:YES completion:nil];
 
 }
 - (void)facebookViewControllerDoneWasPressed:(id)sender {
