@@ -30,7 +30,5 @@
 @property NSInteger *active_state;
 @property (nonatomic, retain) NSTimer *refreshTimer;
 
-@property NSInteger *active_state;
-@property (nonatomic, retain) NSTimer *refreshTimer;
 
 @end
