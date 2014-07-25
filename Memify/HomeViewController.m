@@ -40,8 +40,7 @@
     FBRequest *request = [FBRequest requestForMe];
     [self createLogOutButton];
     [self createRefreshButton];
-
-    //[self createRefreshButton];
+    
     self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
     //make a request for data
     // Send request to Facebook
@@ -80,10 +79,10 @@
     
 }
 
+
+//refreshes the cards on the homepage
 -(void)refreshCards{
     NSLog(@"REFRESHING CARDS");
-    
-    [self viewDidLoad];
     [self viewWillAppear:YES];
 }
 
@@ -150,7 +149,6 @@
 
 
 -(void)createRefreshButton{
-
     
     //create the refresh button which refreshes the cards when pressed
     UIButton *refresh = [UIButton buttonWithType:UIButtonTypeRoundedRect];

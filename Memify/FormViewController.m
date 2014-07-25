@@ -344,7 +344,7 @@
         //adds it to the form screen
         imagePickerController.delegate = self;
         
-        UINavigationBar *bar = imagePickerController.navigationBar
+        UINavigationBar *bar = imagePickerController.navigationBar;
         UINavigationItem *top = bar.topItem;
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
         [top setLeftBarButtonItem:cancel];
