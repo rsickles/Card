@@ -356,7 +356,7 @@
         UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
         [top setLeftBarButtonItem:cancel];
         
-        [self presentViewController:imagePickerController animated:NO completion:nil];
+        [self presentViewController:imagePickerController animated:YES completion:nil];
     }
     if([controlText isEqualToString:@"Facebook"])
     {
@@ -367,6 +367,11 @@
     
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 //goes back to FormViewController when cancel is hit
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -374,7 +379,10 @@
 
 //Finds the image and sets the image and imageView the returns to the FormViewController
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     self.memeImageView.image = image;
     self.memeImage = image;
@@ -389,28 +397,3 @@
     self.message_text = sender.text;
 }
 @end
-
-
-//UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:@selector(imagePickerControllerDidCancel:)];
-
-
-//UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.navigationController];
-//[self presentViewController:nav animated:YES completion:nil];
-
-//[bar leftBarButtonItem:cancelNavButton animated:YES];
-
-
-/*if([self.navigationController isKindOfClass:[UIImagePickerController class]]){
- UINavigationBar *bar = self.navigationController.navigationBar;
- UINavigationItem *top = bar.topItem;
- 
- UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
- [top setLeftBarButtonItem:cancel];
- 
- }
- 
- UINavigationBar *bar = navigationController.navigationBar;
- UINavigationItem *top = bar.topItem;
- 
- UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
- [top setLeftBarButtonItem:cancel];*/

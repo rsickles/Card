@@ -25,7 +25,6 @@
 		927A4E391966600500444506 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E371966600500444506 /* HomeViewController.xib */; };
 		927A4E3D1966603E00444506 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927A4E3B1966603E00444506 /* LoginViewController.m */; };
 		927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E3C1966603E00444506 /* LoginViewController.xib */; };
-		927A4E451966607400444506 /* green_dark_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 927A4E441966607400444506 /* green_dark_bg.png */; };
 		927A4E491966663700444506 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E481966663700444506 /* AudioToolbox.framework */; };
 		927A4E4B1966664000444506 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E4A1966664000444506 /* CFNetwork.framework */; };
 		927A4E4D1966665100444506 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E4C1966665100444506 /* CoreLocation.framework */; };
@@ -43,6 +42,7 @@
 		92BD4D1C198010200047010E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D1B198010200047010E /* Card.m */; };
 		92BD4D29198011FD0047010E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D28198011FD0047010E /* ImageView.m */; };
 		92BD4D2F198012F50047010E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D2E198012F50047010E /* CardView.m */; };
+		92BD4D31198209530047010E /* SIGN-IN.png in Resources */ = {isa = PBXBuildFile; fileRef = 92BD4D30198209530047010E /* SIGN-IN.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,7 +81,6 @@
 		927A4E3A1966603E00444506 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		927A4E3B1966603E00444506 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		927A4E3C1966603E00444506 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
-		927A4E441966607400444506 /* green_dark_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_dark_bg.png; sourceTree = "<group>"; };
 		927A4E481966663700444506 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		927A4E4A1966664000444506 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		927A4E4C1966665100444506 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -105,6 +104,7 @@
 		92BD4D28198011FD0047010E /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		92BD4D2D198012F50047010E /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
 		92BD4D2E198012F50047010E /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
+		92BD4D30198209530047010E /* SIGN-IN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIGN-IN.png"; path = "../../../Downloads/SIGN-IN.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +213,7 @@
 		927A4E0D19665F8100444506 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				927A4E441966607400444506 /* green_dark_bg.png */,
+				92BD4D30198209530047010E /* SIGN-IN.png */,
 				927A4E0E19665F8100444506 /* Memify-Info.plist */,
 				927A4E0F19665F8100444506 /* InfoPlist.strings */,
 				927A4E1219665F8100444506 /* main.m */,
@@ -357,7 +357,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927A4E451966607400444506 /* green_dark_bg.png in Resources */,
+				92BD4D31198209530047010E /* SIGN-IN.png in Resources */,
 				927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */,
 				927A4E1119665F8100444506 /* InfoPlist.strings in Resources */,
 				927A4E1919665F8100444506 /* Images.xcassets in Resources */,

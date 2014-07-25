@@ -265,7 +265,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     
     //create array of users card stack
     for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++) {
-        NSURL *imageFileUrl = [[NSURL alloc]initWithString:[usersCards objectAtIndex:arrayIndex]];
+        NSURL *imageFileUrl = [[NSURL alloc]initWithString:[self.cards objectAtIndex:arrayIndex]];
         NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
         Card *card = [[Card alloc] initWithName:@"SENDER NAME" image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
         [usersCards addObject:card];
