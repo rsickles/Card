@@ -61,6 +61,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 }
 
 
+
 //refreshes the cards on the homepage
 -(void)refreshCards{
     NSLog(@"REFRESHING CARDS");
@@ -262,16 +263,21 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     // as needed, but for the purposes of this sample app we'll
     // simply store them in memory.
     NSMutableArray *usersCards = [[NSMutableArray alloc]init];
-    
     //create array of users card stack
+    NSLog(@"%@",self.cards);
     for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++) {
-        NSURL *imageFileUrl = [[NSURL alloc]initWithString:[self.cards objectAtIndex:arrayIndex]];
-        NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
-        Card *card = [[Card alloc] initWithName:@"SENDER NAME" image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
-        [usersCards addObject:card];
+        NSString *cardId = [[self.cards objectAtIndex:arrayIndex ]objectForKey:@"CardId"];
+        NSLog(@"%@",cardId);
+        PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
+        [query whereKey:@"objectId" equalTo:cardId]; //change whereKey to senderID to see pics sent to self
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            NSURL *imageFileUrl = [[NSURL alloc]initWithString:[[objects objectAtIndex:0] objectForKey:@"media_reference"]];
+            NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+            Card *card = [[Card alloc] initWithName:@"SENDER NAME" image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
+            [usersCards addObject:card];
+        }];
     }
     self.cards = usersCards;
-
     //set up cards
     // Display the first ChoosePersonView in front. Users can swipe to indicate
     // whether they like or dislike the person displayed.

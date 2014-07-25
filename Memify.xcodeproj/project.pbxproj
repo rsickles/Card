@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18CBF71719829463009D74E1 /* SIGN-IN.png in Resources */ = {isa = PBXBuildFile; fileRef = 18CBF71619829463009D74E1 /* SIGN-IN.png */; };
 		3D4775BD64DF4FC0A0D4C472 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 556548139E5B461C89026F99 /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		55BA037E196ED00800ED5E6E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55BA037D196ED00800ED5E6E /* FacebookSDK.framework */; };
 		927A4E0719665F8100444506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0619665F8100444506 /* Foundation.framework */; };
@@ -42,7 +43,6 @@
 		92BD4D1C198010200047010E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D1B198010200047010E /* Card.m */; };
 		92BD4D29198011FD0047010E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D28198011FD0047010E /* ImageView.m */; };
 		92BD4D2F198012F50047010E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D2E198012F50047010E /* CardView.m */; };
-		92BD4D331982949E0047010E /* SIGN-IN.png in Resources */ = {isa = PBXBuildFile; fileRef = 92BD4D321982949E0047010E /* SIGN-IN.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18CBF71619829463009D74E1 /* SIGN-IN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIGN-IN.png"; path = "Images.xcassets/SIGN-IN.imageset/SIGN-IN.png"; sourceTree = "<group>"; };
 		556548139E5B461C89026F99 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55BA037D196ED00800ED5E6E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		8899F26A01154FD79A0780E3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -104,7 +105,6 @@
 		92BD4D28198011FD0047010E /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		92BD4D2D198012F50047010E /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
 		92BD4D2E198012F50047010E /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
-		92BD4D321982949E0047010E /* SIGN-IN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIGN-IN.png"; path = "../../../Downloads/SIGN-IN.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +213,7 @@
 		927A4E0D19665F8100444506 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				92BD4D321982949E0047010E /* SIGN-IN.png */,
+				18CBF71619829463009D74E1 /* SIGN-IN.png */,
 				927A4E0E19665F8100444506 /* Memify-Info.plist */,
 				927A4E0F19665F8100444506 /* InfoPlist.strings */,
 				927A4E1219665F8100444506 /* main.m */,
@@ -358,7 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */,
-				92BD4D331982949E0047010E /* SIGN-IN.png in Resources */,
+				18CBF71719829463009D74E1 /* SIGN-IN.png in Resources */,
 				927A4E1119665F8100444506 /* InfoPlist.strings in Resources */,
 				927A4E1919665F8100444506 /* Images.xcassets in Resources */,
 				92B9EBAB1971AC680037E036 /* FormViewController.xib in Resources */,
