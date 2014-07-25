@@ -1,15 +1,14 @@
 //
 //  FormViewController.m
 //  Memify
-//
 //  Created by Ryan Sickles on 7/12/14.
 //  Copyright (c) 2014 sickles.ryan. All rights reserved.
 //
-
 #import "FormViewController.h"
 
-@interface FormViewController () <FBFriendPickerDelegate>
+@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate>
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
+@property (retain,nonatomic) UINavigationController *navigationController;
 @end
 
 @implementation FormViewController
@@ -152,22 +151,34 @@
 
 
 - (IBAction)sendMeme:(id)sender {
+    //alert user they haven't selected an image to send
     if(self.memeImage == nil)
     {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No Picture Being Sent" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Woops!" message:@"No Picture Being Sent" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 //        
-//        [alertView show];
+       [alertView show];
+        
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    else if (self.friendsList.count<=0){
+        //alert user they have selected no friends
+        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Woops!" message:@"Remember to choose some friends!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        //
+        //[alertView show];
+        
+        //[alertView dismissWithClickedButtonIndex:0 animated:YES];
     }
     else
     {
         [self saveImageSelectedtoUser:self.memeImage friends:self.friendsList];
         UIViewController *home = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
         [self presentViewController:home animated:YES completion:nil];
-
+        
     }
 }
 
 - (IBAction)cancel:(id)sender {
+    NSLog(@"CANCELED");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -319,8 +330,21 @@
     }
     if([controlText isEqualToString:@"Photo Library"])
     {
+        //Creates imagepicker modally
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
+        imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        //adds it to the form screen
+        imagePickerController.delegate = self;
+        
         [self.searchMemes removeFromSuperview];
         self.source_type = @"Photo_Library";
+        
+        UINavigationBar *bar = imagePickerController.navigationBar;
+        UINavigationItem *top = bar.topItem;
+        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+        [top setLeftBarButtonItem:cancel];
+        
+        [self presentViewController:imagePickerController animated:NO completion:nil];
     }
     if([controlText isEqualToString:@"Facebook"])
     {
@@ -331,6 +355,20 @@
     
 }
 
+//goes back to FormViewController when cancel is hit
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+//Finds the image and sets the image and imageView the returns to the FormViewController
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    
+    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+    self.memeImageView.image = image;
+    self.memeImage = image;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     return YES;
@@ -339,3 +377,28 @@
     self.message_text = sender.text;
 }
 @end
+
+
+//UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:@selector(imagePickerControllerDidCancel:)];
+
+
+//UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.navigationController];
+//[self presentViewController:nav animated:YES completion:nil];
+
+//[bar leftBarButtonItem:cancelNavButton animated:YES];
+
+
+/*if([self.navigationController isKindOfClass:[UIImagePickerController class]]){
+ UINavigationBar *bar = self.navigationController.navigationBar;
+ UINavigationItem *top = bar.topItem;
+ 
+ UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+ [top setLeftBarButtonItem:cancel];
+ 
+ }
+ 
+ UINavigationBar *bar = navigationController.navigationBar;
+ UINavigationItem *top = bar.topItem;
+ 
+ UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+ [top setLeftBarButtonItem:cancel];*/

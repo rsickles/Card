@@ -35,7 +35,7 @@
     {
         // Push the next view controller without animation
         home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
-        [self.view addSubview:home.view];
+            [self.view addSubview:home.view];
     }
     
 }

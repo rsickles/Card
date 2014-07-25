@@ -12,7 +12,7 @@
 #import "HomeViewController.h"
 #import <Parse/Parse.h>
 
-@interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate,FBFriendPickerDelegate>
+@interface FormViewController : UIViewController <UIViewControllerTransitioningDelegate,UISearchBarDelegate,FBFriendPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @property CGFloat boundsx;
 @property CGFloat boundsy;

@@ -28,4 +28,9 @@
 @property (strong, nonatomic) PFObject *firstImage;
 @property (strong,nonatomic) NSString *userId;
 @property NSInteger *active_state;
+@property (nonatomic, retain) NSTimer *refreshTimer;
+
+@property NSInteger *active_state;
+@property (nonatomic, retain) NSTimer *refreshTimer;
+
 @end
