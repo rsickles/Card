@@ -23,6 +23,7 @@ v 1.0
 * Articles from the web and Tweets (Twitter)
 * Events (to add to calendar on local phones, google calendar)
 * Flashes
+* Music (Soundcloud, Spotify, Pandora)
 
 ###Card Front
 * Sender Name
