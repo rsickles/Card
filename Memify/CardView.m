@@ -24,11 +24,10 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 
 - (instancetype)initWithFrame:(CGRect)frame card:(Card *)card options:(MDCSwipeToChooseViewOptions *)options
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:frame options:options];
     if (self) {
         _card = card;
         self.imageView.image = _card.image;
-        NSLog(@"THIS IS THE CARD IMAGE %@",_card);
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight |
         UIViewAutoresizingFlexibleWidth |
         UIViewAutoresizingFlexibleBottomMargin;
@@ -42,7 +41,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 #pragma mark - Internal Methods
 
 - (void)constructInformationView {
-    CGFloat bottomHeight = 60.f;
+    CGFloat bottomHeight = 90.f;
     CGRect bottomFrame = CGRectMake(0,
                                     CGRectGetHeight(self.bounds) - bottomHeight,
                                     CGRectGetWidth(self.bounds),
@@ -68,7 +67,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
                               floorf(CGRectGetWidth(_informationView.frame)/2),
                               CGRectGetHeight(_informationView.frame) - topPadding);
     _nameLabel = [[UILabel alloc] initWithFrame:frame];
-    _nameLabel.text = [NSString stringWithFormat:@"%@",@"Sender Name"];
+    _nameLabel.text = [NSString stringWithFormat:@"From: %@",_card.senderName];
     [_informationView addSubview:_nameLabel];
 }
 
@@ -78,7 +77,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     UIImage *image = [UIImage imageNamed:@"camera"];
     _cameraImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetWidth(_informationView.bounds) - rightPadding
                                                       image:image
-                                                       text:@"asdf"];
+                                                       text:@"camera"];
     [_informationView addSubview:_cameraImageLabelView];
 }
 
@@ -86,7 +85,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     UIImage *image = [UIImage imageNamed:@"book"];
     _interestsImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetMinX(_cameraImageLabelView.frame)
                                                          image:image
-                                                          text:@"asdf"];
+                                                          text:@"book"];
     [_informationView addSubview:_interestsImageLabelView];
 }
 
@@ -94,7 +93,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     UIImage *image = [UIImage imageNamed:@"group"];
     _friendsImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetMinX(_interestsImageLabelView.frame)
                                                        image:image
-                                                        text:@"asdf"];
+                                                        text:@"group"];
     [_informationView addSubview:_friendsImageLabelView];
 }
 

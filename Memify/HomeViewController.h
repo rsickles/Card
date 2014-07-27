@@ -21,11 +21,11 @@
 }
 - (IBAction)friendList:(id)sender;
 - (IBAction) memeSend:(id)sender;
+- (void)retrieveCards;
 @property CGFloat boundsx;
 @property CGFloat boundsy;
 @property (nonatomic,strong) UIColor *mainColor;
 @property (nonatomic,strong) NSString *boldFontName;
-@property (strong, nonatomic) PFObject *firstImage;
 @property (strong,nonatomic) NSString *userId;
 @property (nonatomic, retain) NSTimer *refreshTimer;
 @property (strong,nonatomic) NSNumber *active_state;
@@ -34,4 +34,5 @@
 @property (nonatomic, strong) Card *currentCard;
 @property (nonatomic, strong) CardView *frontCardView;
 @property (nonatomic, strong) CardView *backCardView;
+@property (nonatomic, strong) NSString *senderName;
 @end

@@ -18,8 +18,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
 @interface HomeViewController ()
 @property (nonatomic, strong) NSMutableArray *cards;
+@property (nonatomic, strong) NSMutableArray *usersCards;
 @property (nonatomic, strong) id<ADVAnimationController> animationController;
-
 @end
 
 @implementation HomeViewController
@@ -29,11 +29,16 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.usersCards = [[NSMutableArray alloc]init];
         self.boundsx = [UIScreen mainScreen].bounds.size.width;
         self.boundsy = [UIScreen mainScreen].bounds.size.height;
         self.mainColor = [UIColor colorWithRed:222.0/255 green:59.0/255 blue:47.0/255 alpha:1.0f];
         self.boldFontName = @"Avenir-Black";
-        self.firstImage = nil;
+        self.active_state = 0;
+        self.flipped = 0;
+        self.cards = [[NSMutableArray alloc] init];
+        self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
+        self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshCards) userInfo:nil repeats:YES];
     }
     return self;
 }
@@ -41,23 +46,13 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.active_state = 0;
-    self.flipped = 0;
-    [self createSendButton];
-    self.cards = [[NSMutableArray alloc] init];
-    [self getCardsFromServer];
-    //got cards
+    [self retrieveCards];
     [self createLogOutButton];
     [self createRefreshButton];
     
-    self.view.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1.0f];
-    //make a request for data
-    // Send request to Facebook
     
-
-    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshCards) userInfo:nil repeats:YES];
-
-    
+    [self constructNopeButton];
+    [self constructLikedButton];
 }
 
 
@@ -209,45 +204,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     [self.frontCardView mdc_swipe:MDCSwipeDirectionRight];
 }
 
-
-
--(void)getCardsFromServer{
-    FBRequest *request = [FBRequest requestForMe];
-    // Send request to Facebook
-    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (!error) {
-            // result is a dictionary with the user's Facebook data
-            NSDictionary *userData = (NSDictionary *)result;
-            self.userId = userData[@"id"];
-            PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
-            [query whereKey:@"RecipientId" equalTo:self.userId]; //change whereKey to senderID to see pics sent to self
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                if(error){
-                    self.firstImage = nil;
-                    [self createSendButton];
-                }
-                else{
-                    //need to view first card then delete it after swiped so always grabbing first card to view
-                    if([objects count]>0)
-                    {
-                        self.cards = (NSMutableArray *)objects;
-                        NSLog(@"THIS IS THE OBJECTS ARRAY %@",self.cards);
-                        [self initializeCards];
-                    }
-                    else{
-                        
-                        //there are no images
-                    }
-                }
-            }];
-
-        }
-    }];
-    
-    
-}
-
-
 //swiped actions
 -(void)cardSwiped
 {
@@ -258,44 +214,78 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 }
 
 
-- (void)initializeCards {
-    // It would be trivial to download these from a web service
-    // as needed, but for the purposes of this sample app we'll
-    // simply store them in memory.
-    NSMutableArray *usersCards = [[NSMutableArray alloc]init];
-    //create array of users card stack
-    NSLog(@"%@",self.cards);
-    for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++) {
-        NSString *cardId = [[self.cards objectAtIndex:arrayIndex ]objectForKey:@"CardId"];
-        NSLog(@"%@",cardId);
-        PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
-        [query whereKey:@"objectId" equalTo:cardId]; //change whereKey to senderID to see pics sent to self
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            NSURL *imageFileUrl = [[NSURL alloc]initWithString:[[objects objectAtIndex:0] objectForKey:@"media_reference"]];
-            NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
-            Card *card = [[Card alloc] initWithName:@"SENDER NAME" image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
-            [usersCards addObject:card];
-        }];
+- (void)retrieveCards {
+    FBRequest *request = [FBRequest requestForMe];
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            //get users facebook id
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            self.userId = userData[@"id"];
+            [self getCardStack];
+            }
+    }];
+}
+
+-(void)getCardStack{
+PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
+[query whereKey:@"RecipientId" equalTo:self.userId];
+[query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    if(error || ([objects count] == 0) ){
+        [self createSendButton];
     }
-    self.cards = usersCards;
-    //set up cards
-    // Display the first ChoosePersonView in front. Users can swipe to indicate
-    // whether they like or dislike the person displayed.
-    self.frontCardView = [self popPersonViewWithFrame:[self frontCardViewFrame]];
-    NSLog(@"THIS IS THE FIRST PIC %@",self.frontCardView);
-    [self.view addSubview:self.frontCardView];
+    else{
+            self.cards = (NSMutableArray *)objects;
+            //create array of users card stack
+            for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++) {
+                NSString *cardId = [[self.cards objectAtIndex:arrayIndex ]objectForKey:@"CardId"];
+                [self createCard:(cardId)];
+                NSString *senderId = [[self.cards objectAtIndex:arrayIndex]objectForKey:@"SenderId"];
+                [self getSenderName:senderId];
+            }
+    }
+}];
+}
+
+-(void)getSenderName:(NSString *)senderId {
+    PFQuery *query = [PFQuery queryWithClassName:@"User"];
+    //get auth data hash authData.id
+    [query whereKey:@"facebook_id" equalTo:senderId];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if([objects count]>0)
+        {
+            self.senderName = [objects objectAtIndex:0];
+        }
+        else{
+            self.senderName = @"User Not Found";
+        }
+    }];
+}
+
+-(void)createCard:(NSString *)cardId
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
+    [query whereKey:@"objectId" equalTo:cardId]; //change whereKey to senderID to see pics sent to self
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSURL *imageFileUrl = [[NSURL alloc]initWithString:[[objects objectAtIndex:0] objectForKey:@"media_reference"]];
+        NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+        Card *card = [[Card alloc] initWithName:self.senderName image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
+        [self initializeCardStack:card];
+        
+    }];
+}
+
+-(void)initializeCardStack:(Card *)card
+{
+    [self.usersCards addObject:card];
+    self.cards = self.usersCards;
+    [self createSendButton];
     
-    // Display the second ChoosePersonView in back. This view controller uses
-    // the MDCSwipeToChooseDelegate protocol methods to update the front and
-    // back views after each user swipe.
+    
+    self.frontCardView = [self popPersonViewWithFrame:[self frontCardViewFrame]];
+    [self.view addSubview:self.frontCardView];
     self.backCardView = [self popPersonViewWithFrame:[self backCardViewFrame]];
     [self.view insertSubview:self.backCardView belowSubview:self.frontCardView];
-    
-    // Add buttons to programmatically swipe the view left or right.
-    // See the `nopeFrontCardView` and `likeFrontCardView` methods.
-    [self constructNopeButton];
-    [self constructLikedButton];
-    [self createSendButton];
 }
 
 
@@ -345,7 +335,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     if([self.cards count] > 0)//has any meme cards in inbox
     {
         //display send button below cards
-        NSLog(@"MORE");
         memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy-(self.boundsy/4)+50, 150.0, 50.0);
     }
     else{

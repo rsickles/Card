@@ -20,11 +20,21 @@
 {
     [super viewDidLoad];
     //make login button
+    //setting background image
+    CGRect rect = CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+    UIGraphicsBeginImageContext( rect.size );
+    [[UIImage imageNamed:@"Card-Screen"] drawInRect:rect];
+    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    NSData *imageData = UIImagePNGRepresentation(picture1);
+    UIImage *img=[UIImage imageWithData:imageData];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:img]];
+    //set login button
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [loginButton setBackgroundImage:[UIImage imageNamed:@"SIGN-IN.png"] forState:UIControlStateNormal];
     float originx = ([UIScreen mainScreen].bounds.size.width/2) - 132;
-    float originy = ([UIScreen mainScreen].bounds.size.height) - 100;
+    float originy = ([UIScreen mainScreen].bounds.size.height) - 205;
     loginButton.frame = CGRectMake(originx, originy, 265.0, 66.0);
     [self.view addSubview:loginButton];
     //log in button created and displayed to screen
@@ -69,7 +79,7 @@
                     [user setObject:[NSString stringWithString:first_name]forKey:@"first_name"];
                     [user setObject:[NSString stringWithString:last_name] forKey:@"last_name"];
                     [user setObject:[NSString stringWithString:gender] forKey:@"gender"];
-                    [user saveInBackground];
+                    [user setObject:[NSString stringWithString:userData[@"id"]] forKey:@"facebook_id"];
                     [user saveInBackground];
                     
                 }

@@ -19,7 +19,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        NSLog(@"HJEOLLLOOO");
         [self constructImageView:image];
         [self constructLabel:text];
     }
