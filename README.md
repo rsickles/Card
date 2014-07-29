@@ -5,16 +5,16 @@ v 1.0
 
 ### TODO
 * Code refactored, add useful comments and remove old code
-* Fix Async functionality throughout application (refactored code, loading spinners fixed and active) <Ryan>
-* Refreshing of cards fixed and optimized <Ben>
+* Fix Async functionality throughout application (refactored code, loading spinners fixed and active) (Ryan)
+* Refreshing of cards fixed and optimized (Ben)
 * Terms,privacy, agreement is created and added to bottom of login screen
 * Add flipping card animation, show image on back
-* Add swiping left/right functionality/animation to delete or save card <Ben>
-* Add ability to upload facebook images <Ben>
-* Card deck/stack animation (showing ability to invite friends to app/send card when you have no cards loaded) <Ben>
-* Add ability to get random XKCD comic <Ben>
-* Optimize search on IMGUR for only images with meme tags <Ryan>
-* Ability to take pictures with camera <Ben>
+* Add swiping left/right functionality/animation to delete or save card (Ben)
+* Add ability to upload facebook images (Ben)
+* Card deck/stack animation (showing ability to invite friends to app/send card when you have no cards loaded) (Ben)
+* Add ability to get random XKCD comic (Ben)
+* Optimize search on IMGUR for only images with meme tags (Ryan)
+* Ability to take pictures with camera (Ben)
 * Card, control panel, and card form redesigns implemented
 * When users upload images, send image to server at ryansickles.com and host reference
 * Buy developers account to test app on local device
