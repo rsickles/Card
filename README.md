@@ -15,8 +15,9 @@ v 1.0
 * Add ability to get random XKCD comic (Ben)
 * Optimize search on IMGUR for only images with meme tags (Ryan)
 * Ability to take pictures with camera (Ben)
+* Ability to search google (internet) for images (Ryan)
 * Card, control panel, and card form redesigns implemented
-* When users upload images, send image to server at ryansickles.com and host reference
+* When users upload images, send image to server at ryansickles.com and host reference (Ryan)
 * Buy developers account to test app on local device
 * Write tests for code functionality (in tests file)
 * Promo video
