@@ -4,7 +4,7 @@ v 1.0
 ---------------------
 
 ### TODO
-* Code refactored, add useful comments and remove old code
+* Code refactored, add useful comments and remove old code (Ryan)
 * Fix Async functionality throughout application (refactored code, loading spinners fixed and active) (Ryan)
 * Refreshing of cards fixed and optimized (Ben)
 * Terms,privacy, agreement is created and added to bottom of login screen
