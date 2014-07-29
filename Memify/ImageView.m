@@ -31,8 +31,8 @@
     CGFloat topPadding = 10.f;
     CGRect frame = CGRectMake(floorf((CGRectGetWidth(self.bounds) - image.size.width)/2),
                               topPadding,
-                              image.size.width,
-                              image.size.height);
+                              image.size.width-50,
+                              image.size.height-50);
     self.imageView = [[UIImageView alloc] initWithFrame:frame];
     self.imageView.image = image;
     [self addSubview:self.imageView];

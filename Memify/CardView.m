@@ -67,6 +67,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
                               floorf(CGRectGetWidth(_informationView.frame)/2),
                               CGRectGetHeight(_informationView.frame) - topPadding);
     _nameLabel = [[UILabel alloc] initWithFrame:frame];
+    NSLog(@"This is the senders name %@",_card.senderName);
     _nameLabel.text = [NSString stringWithFormat:@"From: %@",_card.senderName];
     [_informationView addSubview:_nameLabel];
 }
@@ -78,7 +79,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     _cameraImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetWidth(_informationView.bounds) - rightPadding
                                                       image:image
                                                        text:@"camera"];
-    [_informationView addSubview:_cameraImageLabelView];
+    //[_informationView addSubview:_cameraImageLabelView];
 }
 
 - (void)constructInterestsImageLabelView {
@@ -86,7 +87,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     _interestsImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetMinX(_cameraImageLabelView.frame)
                                                          image:image
                                                           text:@"book"];
-    [_informationView addSubview:_interestsImageLabelView];
+    //[_informationView addSubview:_interestsImageLabelView];
 }
 
 - (void)constructFriendsImageLabelView {
@@ -94,7 +95,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     _friendsImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetMinX(_interestsImageLabelView.frame)
                                                        image:image
                                                         text:@"group"];
-    [_informationView addSubview:_friendsImageLabelView];
+    //[_informationView addSubview:_friendsImageLabelView];
 }
 
 - (ImageView *)buildImageLabelViewLeftOf:(CGFloat)x image:(UIImage *)image text:(NSString *)text {

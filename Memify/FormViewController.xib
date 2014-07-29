@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -12,8 +12,8 @@
                 <outlet property="memeImageView" destination="btm-Po-vfy" id="MAW-Uk-VK7"/>
                 <outlet property="message_text" destination="Gsf-zH-gnn" id="yJW-1T-lde"/>
                 <outlet property="searchMemes" destination="KEf-SC-Yqd" id="qGT-Pp-yrd"/>
+                <outlet property="selectImage" destination="TSA-PR-Bf3" id="ZXq-KZ-JjX"/>
                 <outlet property="sendButton" destination="xAw-IU-ztV" id="5sz-2U-cSJ"/>
-                <outlet property="taskBar" destination="YbH-iM-zEJ" id="cBn-yZ-AOb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -69,25 +69,6 @@
                         <action selector="addFriend:" destination="-1" eventType="touchUpInside" id="el0-jg-g0E"/>
                     </connections>
                 </button>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="YbH-iM-zEJ">
-                    <rect key="frame" x="0.0" y="109" width="320" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <segments>
-                        <segment title="Internet"/>
-                        <segment title="Photo Library"/>
-                        <segment title="Facebook"/>
-                    </segments>
-                    <connections>
-                        <action selector="taskBarAction:" destination="-1" eventType="valueChanged" id="bTd-9d-HOj"/>
-                    </connections>
-                </segmentedControl>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Source Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kcZ-aL-WYb">
-                    <rect key="frame" x="112" y="80" width="95" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Message" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="Gsf-zH-gnn">
                     <rect key="frame" x="19" y="408" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -98,6 +79,16 @@
                         <action selector="message:" destination="-1" eventType="editingDidEnd" id="LIE-B2-zlp"/>
                     </connections>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TSA-PR-Bf3">
+                    <rect key="frame" x="51" y="94" width="218" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Select Photo">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="imageSelect:" destination="-1" eventType="touchUpInside" id="oa6-PX-MEW"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

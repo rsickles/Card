@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
-#import "FormViewController.h"
+#import "MediaTypeSelectionViewController.h"
 #import "DropAnimationController.h"
 #import <Parse/Parse.h>
 #import "CardView.h"
@@ -19,7 +19,6 @@
     NSMutableData *_imageData;
     LoginViewController *login;
 }
-- (IBAction)friendList:(id)sender;
 - (IBAction) memeSend:(id)sender;
 - (void)retrieveCards;
 @property CGFloat boundsx;

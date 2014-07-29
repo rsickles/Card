@@ -27,13 +27,11 @@
     return self;
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.message_text = @"Nothing was entered";
     self.source_type = @"Internet";
-    [self.taskBar addTarget:self action:@selector(taskBarAction:) forControlEvents:UIControlEventValueChanged];
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -62,6 +60,20 @@
     self.addFriendButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
     [self.addFriendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.addFriendButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+    //add chose image button
+    NSLog(@"%hhd",[self.source_type isEqualToString:@"Photo Library"]);
+    NSLog(@"%@",self.source_type);
+    if([self.mediaType isEqualToString:@"Photo Library"] || [self.mediaType isEqualToString:@"Facebook"] )
+    {
+        self.selectImage.backgroundColor = self.mainColor;
+        self.selectImage.layer.cornerRadius = 3.0f;
+        self.selectImage.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
+        [self.selectImage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.selectImage setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+    }
+    else{
+        [self.selectImage removeFromSuperview];
+    }
     //end of styling buttons
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
@@ -71,6 +83,10 @@
     self.friendPickerController = nil;
 
     [super viewDidUnload];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [self mediaSourceTypeSelect:self.mediaType];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -181,7 +197,8 @@
 
 - (IBAction)cancel:(id)sender {
     NSLog(@"CANCELED");
-    [self dismissViewControllerAnimated:YES completion:nil];
+    HomeViewController *home = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
+    [self presentViewController:home animated:YES completion:nil];
 }
 
 - (IBAction)addFriend:(id)sender {
@@ -332,10 +349,9 @@
     return resizedImage;
 }
 
-- (IBAction)taskBarAction:(id)sender {
+- (void)mediaSourceTypeSelect:(NSString *)type {
     
-    UISegmentedControl *segmentedControl = sender;
-    NSString *controlText = [segmentedControl titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
+    NSString *controlText = type;
     if([controlText isEqualToString:@"Internet"])
     {
         [self.view addSubview:self.searchMemes];
@@ -344,20 +360,7 @@
     if([controlText isEqualToString:@"Photo Library"])
     {
         //Creates imagepicker modally
-        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
-        imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        //adds it to the form screen
-        imagePickerController.delegate = self;
-        
-        [self.searchMemes removeFromSuperview];
-        self.source_type = @"Photo_Library";
-        
-        UINavigationBar *bar = imagePickerController.navigationBar;
-        UINavigationItem *top = bar.topItem;
-        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
-        [top setLeftBarButtonItem:cancel];
-        
-        [self presentViewController:imagePickerController animated:YES completion:nil];
+    
     }
     if([controlText isEqualToString:@"Facebook"])
     {
@@ -375,7 +378,10 @@
 
 //goes back to FormViewController when cancel is hit
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:NO completion:^{
+            self.source_type = nil;
+    }];
+    
 }
 
 //Finds the image and sets the image and imageView the returns to the FormViewController
@@ -396,5 +402,24 @@
 }
 - (IBAction)message:(UITextField *)sender {
     self.message_text = sender.text;
+}
+- (IBAction)imageSelect:(id)sender {
+    
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
+    imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    //adds it to the form screen
+    imagePickerController.delegate = self;
+    
+    [self.searchMemes removeFromSuperview];
+    self.source_type = @"Photo_Library";
+    
+    UINavigationBar *bar = imagePickerController.navigationBar;
+    UINavigationItem *top = bar.topItem;
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+    [top setLeftBarButtonItem:cancel];
+    
+    [self presentViewController:imagePickerController animated:YES completion:nil];
+    
+
 }
 @end

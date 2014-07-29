@@ -157,7 +157,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 // Create and add the "nope" button.
 - (void)constructNopeButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    UIImage *image = [UIImage imageNamed:@"nope"];
+    UIImage *image = [UIImage imageNamed:@"Delete"];
     button.frame = CGRectMake(ChoosePersonButtonHorizontalPadding,
                               CGRectGetMaxY(self.backCardView.frame) + ChoosePersonButtonVerticalPadding,
                               image.size.width,
@@ -176,7 +176,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 // Create and add the "like" button.
 - (void)constructLikedButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    UIImage *image = [UIImage imageNamed:@"liked"];
+    UIImage *image = [UIImage imageNamed:@"Save"];
     button.frame = CGRectMake(CGRectGetMaxX(self.view.frame) - image.size.width - ChoosePersonButtonHorizontalPadding,
                               CGRectGetMaxY(self.backCardView.frame) + ChoosePersonButtonVerticalPadding,
                               image.size.width,
@@ -257,7 +257,7 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
             self.senderName = [objects objectAtIndex:0];
         }
         else{
-            self.senderName = @"User Not Found";
+            self.senderName = @"N/A";
         }
     }];
 }
@@ -344,18 +344,14 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
     [self.view addSubview:memeButton];
 }
 
-- (IBAction)friendList:(id)sender {
-    NSLog(@"To Friends List!");
-}
-
 
 //transitioning stuff
 - (IBAction) memeSend:(id)sender{
         NSLog(@"Send Meme!");
     self.animationController = [[DropAnimationController alloc] init];
-    UIViewController *form = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:[NSBundle mainBundle]];
-    form.transitioningDelegate  = self;
-    [self presentViewController:form animated:YES completion:nil];
+    UIViewController *mediaSelection = [[MediaTypeSelectionViewController alloc]initWithNibName:@"MediaTypeSelectionViewController" bundle:[NSBundle mainBundle]];
+    mediaSelection.transitioningDelegate  = self;
+    [self presentViewController:mediaSelection animated:YES completion:nil];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
@@ -375,6 +371,7 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 //end of transitioning stuff
 
 - (void)logoutButtonTouchHandler:(id)sender  {
+    login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
     if (!FBSession.activeSession.isOpen) {
         // if the session is closed, then we open it here, and establish a handler for state changes
         [FBSession openActiveSessionWithReadPermissions:nil
@@ -394,16 +391,14 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
                                               [PFUser logOut]; // Log out
                                               // Return to login page
                                               NSLog((@"Logout"));
-                                              login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
-                                              [self.view addSubview:login.view];
+                                              [self presentViewController:login animated:YES completion:nil];
                                           }
                                       }];
 }
     [PFUser logOut]; // Log out
     // Return to login page
     NSLog((@"Logout"));
-    login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
-    [self.view addSubview:login.view];
+    [self presentViewController:login animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
