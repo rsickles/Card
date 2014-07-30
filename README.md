@@ -20,6 +20,7 @@ v 1.0
 * When users upload images, send image to server at ryansickles.com and host reference (Ryan)
 * Buy developers account to test app on local device
 * Write tests for code functionality (in tests file)
+* Save app data to local phone storage when app is killed
 * Promo video
 * App Logo
 * "Forward" Card?
