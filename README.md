@@ -9,12 +9,12 @@ v 1.0
 * Refreshing of cards fixed and optimized (Ben)
 * Terms,privacy, agreement is created and added to bottom of login screen
 * Add flipping card animation, show image on back
-* Add swiping left/right functionality/animation to delete or save card (Ben)
+* ~~Add swiping left/right functionality/animation to delete or save card~~ (Ben)
 * Add ability to upload facebook images (Ben)
 * Card deck/stack animation (showing ability to invite friends to app/send card when you have no cards loaded) (Ben)
 * Add ability to get random XKCD comic (Ben)
 * Optimize search on IMGUR for only images with meme tags (Ryan)
-* Ability to take pictures with camera (Ben)
+* ~~Ability to take pictures with camera~~ (Ben)
 * Ability to search google (internet) for images (Ryan)
 * Card, control panel, and card form redesigns implemented
 * When users upload images, send image to server at ryansickles.com and host reference (Ryan)
@@ -23,6 +23,7 @@ v 1.0
 * Save app data to local phone storage when app is killed
 * Promo video
 * App Logo
+* ~~Function to cascade delete from function table to card table~~ (Ben)
 * "Forward" Card?
 
 ### UX
