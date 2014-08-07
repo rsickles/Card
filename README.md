@@ -25,6 +25,8 @@ v 1.0
 * App Logo
 * ~~Function to cascade delete from function table to card table~~ (Ben)
 * "Forward" Card?
+*  Send to mutiple recepients (ryan)
+*  Using core data to store info and caching images
 
 ### UX
 * Cards designed
