@@ -67,8 +67,54 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (void)view:(UIView *)view wasChosenWithDirection:(MDCSwipeDirection)direction {
     if (direction == MDCSwipeDirectionLeft) {
         NSLog(@"You noped %@.", self.currentCard.senderName);
+        
+        PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
+        [query whereKey:@"RecipientId" equalTo:self.userId];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if(error || ([objects count] == 0) ){
+                [self createSendButton];
+            }
+            else{
+                self.cards = (NSMutableArray *)objects;
+                //create array of users card stack
+                PFObject *usedCard = [self.cards objectAtIndex:0];
+                [usedCard deleteInBackground];
+                NSLog(@"Card Deleted");
+            }
+        }];
+        
+        
+        
+        NSLog(@"Saved Card");
+
+        
+        
     } else {
         NSLog(@"You liked %@.", self.currentCard.senderName);
+        //saves image to saved photos album
+        UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:_imageData], nil, nil, nil);
+        
+        //deletes card from junction table
+    
+        PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
+        [query whereKey:@"RecipientId" equalTo:self.userId];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if(error || ([objects count] == 0) ){
+                [self createSendButton];
+            }
+            else{
+                self.cards = (NSMutableArray *)objects;
+                //create array of users card stack
+                PFObject *usedCard = [self.cards objectAtIndex:0];
+                [usedCard deleteInBackground];
+                NSLog(@"Card Deleted");
+            }
+        }];
+        
+        
+        
+        NSLog(@"Saved Card");
+        
     }
     
     // MDCSwipeToChooseView removes the view from the view hierarchy
@@ -83,6 +129,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{ self.backCardView.alpha = 1.f; } completion:nil];
     }
 }
+
 #pragma mark - Internal Methods
 
 - (void)setFrontCardView:(CardView *)frontCardView {

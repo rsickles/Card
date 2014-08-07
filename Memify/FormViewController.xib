@@ -10,6 +10,7 @@
                 <outlet property="cancelButton" destination="69S-sY-VoG" id="rPx-jw-5r9"/>
                 <outlet property="loading" destination="pFf-NJ-VBk" id="aOo-jK-MAl"/>
                 <outlet property="memeImageView" destination="btm-Po-vfy" id="MAW-Uk-VK7"/>
+                <outlet property="messageField" destination="Gsf-zH-gnn" id="7cH-S2-No0"/>
                 <outlet property="message_text" destination="Gsf-zH-gnn" id="yJW-1T-lde"/>
                 <outlet property="searchMemes" destination="KEf-SC-Yqd" id="qGT-Pp-yrd"/>
                 <outlet property="selectImage" destination="TSA-PR-Bf3" id="ZXq-KZ-JjX"/>
@@ -70,14 +71,15 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Message" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="Gsf-zH-gnn">
-                    <rect key="frame" x="19" y="408" width="280" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <action selector="message:" destination="-1" eventType="editingDidEnd" id="LIE-B2-zlp"/>
-                    </connections>
+                <rect key="frame" x="19" y="408" width="280" height="30"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                <textInputTraits key="textInputTraits"/>
+                 <connections>
+                        <action selector="touchUpInside:" destination="-1" eventType="touchUpInside" id="KB4-de-2Em"/>
+                        <action selector="touchUpOutside:" destination="-1" eventType="touchUpOutside" id="wnh-di-OMf"/>
+                 </connections>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TSA-PR-Bf3">
                     <rect key="frame" x="51" y="94" width="218" height="30"/>
@@ -93,5 +95,10 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Dgy-Rx-qCv">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </scrollView>
     </objects>
 </document>
