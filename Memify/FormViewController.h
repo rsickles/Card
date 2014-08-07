@@ -35,10 +35,10 @@
 -(void)saveImageSelectedtoUser:(UIImage*)image friends:(NSMutableArray *)friends;
 - (IBAction)message:(id)sender;
 @property (strong,nonatomic) NSString *userId;
+@property (strong, nonatomic) NSDictionary *userData;
+//properties being sent to card table
 @property (strong,nonatomic) NSString *media_reference;
+@property (strong, nonatomic) NSString *mediaType;
 @property (strong,nonatomic) NSString *source_type;
 @property (strong, nonatomic) NSString *message_text;
-@property (strong, nonatomic) NSDictionary *userData;
-//media type being passed from media type picker
-@property (strong, nonatomic) NSString *mediaType;
 @end

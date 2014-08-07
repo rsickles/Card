@@ -21,8 +21,6 @@
 }
 - (IBAction) memeSend:(id)sender;
 - (void)retrieveCards;
-@property CGFloat boundsx;
-@property CGFloat boundsy;
 @property (nonatomic,strong) UIColor *mainColor;
 @property (nonatomic,strong) NSString *boldFontName;
 @property (strong,nonatomic) NSString *userId;

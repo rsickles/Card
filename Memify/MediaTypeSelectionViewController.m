@@ -36,6 +36,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    //this is for progromatatically creating buttons (put last one used as first ones on top row)
 //    int y = 20;
 //    for(int i=0; i<[self.mediaTypeArray count]; i++)
 //    {
@@ -60,7 +61,7 @@
     FormViewController *form = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:[NSBundle mainBundle]];
     UIButton *resultButton = (UIButton *)sender;
     NSLog(@"%@",resultButton.currentTitle);
-    form.mediaType = resultButton.currentTitle;
+    form.source_type = resultButton.currentTitle;
     [self presentViewController:form animated:YES completion:nil];
 }
 @end

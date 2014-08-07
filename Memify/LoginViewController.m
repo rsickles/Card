@@ -9,19 +9,40 @@
 #import "LoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Parse/Parse.h>
+#import "GlobalVariables.h"
 
 @interface LoginViewController ()
-
 @end
-
 @implementation LoginViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //make login button
-    //setting background image
-    CGRect rect = CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height);
+    [self setGlobals];
+    [self createBackgroundImage];
+    [self createLoginButton];
+    [PFFacebookUtils initializeFacebook];
+    [self checkIfUserAlreadyLoggedInCache];
+}
+
+-(void)setGlobals
+{
+    screenWidth = [UIScreen mainScreen].bounds.size.width;
+    screenHeight = [UIScreen mainScreen].bounds.size.height;
+}
+
+-(void)checkIfUserAlreadyLoggedInCache
+{
+    if ([PFUser currentUser] && [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]])
+    {
+        home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
+        [self.view addSubview:home.view];
+    }
+}
+
+-(void)createBackgroundImage
+{
+    CGRect rect = CGRectMake(0,0,screenWidth,screenHeight);
     UIGraphicsBeginImageContext( rect.size );
     [[UIImage imageNamed:@"Card-Screen"] drawInRect:rect];
     UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
@@ -29,49 +50,32 @@
     NSData *imageData = UIImagePNGRepresentation(picture1);
     UIImage *img=[UIImage imageWithData:imageData];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:img]];
+}
+
+-(void)createLoginButton
+{
     //set login button
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [loginButton setBackgroundImage:[UIImage imageNamed:@"SIGN-IN.png"] forState:UIControlStateNormal];
-    float originx = ([UIScreen mainScreen].bounds.size.width/2) - 132;
-    float originy = ([UIScreen mainScreen].bounds.size.height) - 205;
+    float originx = (screenWidth/2) - 132;
+    float originy = (screenHeight) - 205;
     loginButton.frame = CGRectMake(originx, originy, 265.0, 66.0);
     [self.view addSubview:loginButton];
-    //log in button created and displayed to screen
-    [PFFacebookUtils initializeFacebook];
-    //check if user is already logged in with cache
-    if ([PFUser currentUser] && // Check if a user is cached
-        [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) // Check if user is linked to Facebook
-    {
-        // Push the next view controller without animation
-        home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
-            [self.view addSubview:home.view];
-    }
-    
 }
 
 - (IBAction)login:(id)sender{
     NSArray *permissionsArray = @[ @"user_about_me",@"public_profile", @"user_friends" ];
-    
     // Login PFUser using Facebook
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
-        //activity indicator is for a spinny wheel when async call loading (class object)
-        //[_activityIndicator stopAnimating]; // Hide loading indicator
         home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
-        if (!user) {
-            if (!error) {
-                NSLog(@"%@", error);
-                NSLog(@"Uh oh. The user cancelled the Facebook login.");
-            } else {
-                NSLog(@"Uh oh. An error occurred: %@", error);
-            }
-        } else if (user.isNew) {
+        if (user.isNew) {
             NSLog(@"User with facebook signed up and logged in!");
             // After logging in with Facebook
             FBRequest *request = [FBRequest requestForMe];
             [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    // result is a dictionary with the user's Facebook data
+                if (!error)
+                {
                     NSDictionary *userData = (NSDictionary *)result;
                     NSString *first_name = userData[@"first_name"];
                     NSString *last_name = userData[@"last_name"];
@@ -81,19 +85,13 @@
                     [user setObject:[NSString stringWithString:gender] forKey:@"gender"];
                     [user setObject:[NSString stringWithString:userData[@"id"]] forKey:@"facebook_id"];
                     [user saveInBackground];
-                    
                 }
             }];
-            
             [self.view addSubview:home.view];
-            
-            
         } else {
             NSLog(@"User with facebook logged in!");
             [self.view addSubview:home.view];
         }
     }];
 }
-
-
 @end

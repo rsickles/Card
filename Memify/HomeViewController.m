@@ -11,6 +11,7 @@
 #import "ADVAnimationController.h"
 #import <Parse/Parse.h>
 #import "Card.h"
+#import "GlobalVariables.h"
 #import <MDCSwipeToChoose/MDCSwipeToChoose.h>
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
@@ -28,10 +29,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
         self.usersCards = [[NSMutableArray alloc]init];
-        self.boundsx = [UIScreen mainScreen].bounds.size.width;
-        self.boundsy = [UIScreen mainScreen].bounds.size.height;
         self.mainColor = [UIColor colorWithRed:222.0/255 green:59.0/255 blue:47.0/255 alpha:1.0f];
         self.boldFontName = @"Avenir-Black";
         self.active_state = 0;
@@ -49,15 +47,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     [self retrieveCards];
     [self createLogOutButton];
     [self createRefreshButton];
-    
-    
     [self constructNopeButton];
     [self constructLikedButton];
 }
 
-
-
-//refreshes the cards on the homepage
 -(void)refreshCards{
     NSLog(@"REFRESHING CARDS");
     [self viewWillAppear:YES];
@@ -66,15 +59,12 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
-// This is called when a user didn't fully swipe left or right.
+
 - (void)viewDidCancelSwipe:(UIView *)view {
     NSLog(@"You couldn't decide on %@.", self.currentCard.senderName);
 }
 
-// This is called then a user swipes the view fully left or right.
 - (void)view:(UIView *)view wasChosenWithDirection:(MDCSwipeDirection)direction {
-    // MDCSwipeToChooseView shows "NOPE" on swipes to the left,
-    // and "LIKED" on swipes to the right.
     if (direction == MDCSwipeDirectionLeft) {
         NSLog(@"You noped %@.", self.currentCard.senderName);
     } else {
@@ -90,20 +80,13 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         // Fade the back card into view.
         self.backCardView.alpha = 0.f;
         [self.view insertSubview:self.backCardView belowSubview:self.frontCardView];
-        [UIView animateWithDuration:0.5
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             self.backCardView.alpha = 1.f;
-                         } completion:nil];
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{ self.backCardView.alpha = 1.f; } completion:nil];
     }
 }
-
 #pragma mark - Internal Methods
 
 - (void)setFrontCardView:(CardView *)frontCardView {
     // Keep track of the person currently being chosen.
-    // Quick and dirty, just for the purposes of this sample app.
     _frontCardView = frontCardView;
     self.currentCard = frontCardView.card;
 }
@@ -121,14 +104,9 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     options.threshold = 160.f;
     options.onPan = ^(MDCPanState *state){
         CGRect frame = [self backCardViewFrame];
-        self.backCardView.frame = CGRectMake(frame.origin.x,
-                                             frame.origin.y - (state.thresholdRatio * 10.f),
-                                             CGRectGetWidth(frame),
-                                             CGRectGetHeight(frame));
+        self.backCardView.frame = CGRectMake(frame.origin.x,frame.origin.y - (state.thresholdRatio * 10.f),CGRectGetWidth(frame),CGRectGetHeight(frame));
     };
-    
-    // Create a personView with the top person in the people array, then pop
-    // that person off the stack.
+    // Create a personView with the top person in the people array, then pop that person off the stack
     CardView *cardView = [[CardView alloc] initWithFrame:frame card:[self.cards objectAtIndex:0] options:options];
     [self.cards removeObjectAtIndex:0];
     return cardView;
@@ -267,11 +245,17 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
     PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
     [query whereKey:@"objectId" equalTo:cardId]; //change whereKey to senderID to see pics sent to self
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        NSURL *imageFileUrl = [[NSURL alloc]initWithString:[[objects objectAtIndex:0] objectForKey:@"media_reference"]];
-        NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
-        Card *card = [[Card alloc] initWithName:self.senderName image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
-        [self initializeCardStack:card];
-        
+        if([objects count] > 0)
+        {
+            
+            NSURL *imageFileUrl = [[NSURL alloc]initWithString:[[objects objectAtIndex:0] objectForKey:@"media_reference"]];
+            NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
+            Card *card = [[Card alloc] initWithName:self.senderName image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
+            [self initializeCardStack:card];
+        }
+        else{
+            [self createSendButton];
+        }
     }];
 }
 
@@ -335,11 +319,11 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
     if([self.cards count] > 0)//has any meme cards in inbox
     {
         //display send button below cards
-        memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy-(self.boundsy/4)+50, 150.0, 50.0);
+        memeButton.frame = CGRectMake(screenWidth/2-75, screenHeight-(screenHeight/4)+50, 150.0, 50.0);
     }
     else{
         //display send button in middle of screen
-        memeButton.frame = CGRectMake(self.boundsx/2-75, self.boundsy/2-25, 150.0, 50.0);
+        memeButton.frame = CGRectMake(screenWidth/2-75, screenHeight/2-25, 150.0, 50.0);
     }
     [self.view addSubview:memeButton];
 }

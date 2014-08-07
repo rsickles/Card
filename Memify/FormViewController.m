@@ -5,6 +5,7 @@
 //  Copyright (c) 2014 sickles.ryan. All rights reserved.
 //
 #import "FormViewController.h"
+#import "GlobalVariables.h"
 
 @interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate>
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
@@ -22,7 +23,7 @@
         self.boundsy = [UIScreen mainScreen].bounds.size.height;
         self.mainColor = [UIColor colorWithRed:222.0/255 green:59.0/255 blue:47.0/255 alpha:1.0f];
         self.boldFontName = @"Avenir-Black";
-
+        self.mediaType = @"Image";
     }
     return self;
 }
@@ -30,8 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.message_text = @"Nothing was entered";
-    self.source_type = @"Internet";
+    self.message_text = @"";
     FBRequest *request = [FBRequest requestForMe];
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -61,9 +61,7 @@
     [self.addFriendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.addFriendButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     //add chose image button
-    NSLog(@"%hhd",[self.source_type isEqualToString:@"Photo Library"]);
-    NSLog(@"%@",self.source_type);
-    if([self.mediaType isEqualToString:@"Photo Library"] || [self.mediaType isEqualToString:@"Facebook"] )
+    if([self.source_type isEqualToString:@"Photo Library"] || [self.source_type isEqualToString:@"Facebook"] )
     {
         self.selectImage.backgroundColor = self.mainColor;
         self.selectImage.layer.cornerRadius = 3.0f;
@@ -86,7 +84,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self mediaSourceTypeSelect:self.mediaType];
+    [self mediaSourceTypeSelect:self.source_type];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -114,17 +112,15 @@
         //parse returned array object
         NSDictionary *images = responseObject;
         NSArray *values = [images allValues];
-        NSInteger number_of_images = [[values objectAtIndex:0] count ];
-        if(number_of_images>0)
+        if([[values objectAtIndex:1] count]>0)
         {
             //get random image
-            int r = arc4random() % number_of_images;
-            //
-            id val = [values objectAtIndex:0];
+            int r = arc4random() % [values count];
+            id val = [values objectAtIndex:1];
             id nextval = [val objectAtIndex:r];
             NSString *link = [nextval objectForKey:@"link"];
             self.media_reference = link;
-            //set url with string
+            //creates picture preview
             NSURL *url = [NSURL URLWithString:link];
             self.memeImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
             self.memeImageView.image = self.memeImage;
@@ -137,6 +133,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"failure");
         [activityView stopAnimating];
+        //erases preview image
         self.memeImageView.image = nil;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Retrieving Media Failed" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
         [alert show];
@@ -279,34 +276,12 @@
 
 -(void)saveImageSelectedtoUser:(UIImage*)image friends:(NSMutableArray *)friends
 {
-    
-    //get your own facebook id
-    
-    NSData *fileData;
-    NSString *fileName;
-    NSString *mediaType;
-    if(self.memeImage != nil)
-    {
-        UIImage *newImage = [self resizeImage:image toWidth:320.0f andHeight:480.0f];
-        fileData = UIImagePNGRepresentation(newImage);
-        fileName = @"image.png";
-        mediaType = @"image";
-    }
-    PFFile *file = [PFFile fileWithName:fileName data:fileData];
-    
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if(error){
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please Try Sending Picture Again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            
-            [alertView show];
-        }
-        else{
+
             //Picture is sent so remove all recipients!
             PFObject *card = [PFObject objectWithClassName:@"Cards"];
             [card setObject:self.media_reference forKey:@"media_reference"];
             NSLog(@"he");
-            [card setObject:mediaType forKey:@"media_type"];
-            NSLog(@"hi");
+            [card setObject:self.mediaType forKey:@"media_type"];
             [card setObject:self.source_type forKey:@"source_type"];
             NSLog(@"ha");
             [card setObject:self.message_text forKey:@"message"];
@@ -335,8 +310,6 @@
                 }
             }];
         }
-    }];
-}
 
 //resize image to needed size
 -(UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height{
@@ -355,7 +328,6 @@
     if([controlText isEqualToString:@"Internet"])
     {
         [self.view addSubview:self.searchMemes];
-        self.source_type = @"Internet";
     }
     if([controlText isEqualToString:@"Photo Library"])
     {
@@ -365,10 +337,7 @@
     if([controlText isEqualToString:@"Facebook"])
     {
         [self.searchMemes removeFromSuperview];
-        self.source_type = @"Facebook";
     }
-    
-    
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -379,9 +348,7 @@
 //goes back to FormViewController when cancel is hit
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [self dismissViewControllerAnimated:NO completion:^{
-            self.source_type = nil;
     }];
-    
 }
 
 //Finds the image and sets the image and imageView the returns to the FormViewController
@@ -411,7 +378,6 @@
     imagePickerController.delegate = self;
     
     [self.searchMemes removeFromSuperview];
-    self.source_type = @"Photo_Library";
     
     UINavigationBar *bar = imagePickerController.navigationBar;
     UINavigationItem *top = bar.topItem;

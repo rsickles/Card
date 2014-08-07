@@ -9,11 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
 @class HomeViewController;
-
 @interface LoginViewController : UIViewController
 {
     HomeViewController *home;
 }
 - (IBAction)login:(id)sender;
-
 @end
