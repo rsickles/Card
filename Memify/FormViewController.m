@@ -7,12 +7,17 @@
 #import "FormViewController.h"
 #import "GlobalVariables.h"
 
-@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate>
+@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate, RTFacebookViewDelegate>
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
 @property (retain,nonatomic) UINavigationController *navigationController;
+@property (retain, nonatomic) UIImagePickerController *fbImagePicker;
 @end
 
-@implementation FormViewController
+@implementation FormViewController{
+    
+    NSData *imageData;
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,6 +47,11 @@
         }
     }];
     self.searchMemes.delegate = self;
+    
+    
+    NSLog(@"MADE THE GODDAMN TEXT FIELD");
+    [self.view addSubview:self.messageField];
+    self.message_text =@"Nothing was entered";
     //set custom buttons
     self.sendButton.backgroundColor = self.mainColor;
     self.sendButton.layer.cornerRadius = 3.0f;
@@ -75,6 +85,28 @@
     //end of styling buttons
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    self.messageField.delegate = self;
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+    if ([[UIScreen mainScreen] bounds].size.height == 568) {
+        [self.view setFrame:CGRectMake(0,-90,320,560)];
+    }
+    else {
+        [self.view setFrame:CGRectMake(0,-90,320,460)];
+    }
+}
+
+-(void)keyboardDidHide:(NSNotification *)notification {
+    if ([[UIScreen mainScreen] bounds].size.height == 568) {
+        [self.view setFrame:CGRectMake(0,20,320,560)];
+    }
+    else {
+        [self.view setFrame:CGRectMake(0,20,320,460)];
+    }
+    
 }
 
 - (void)viewDidUnload {
@@ -112,11 +144,13 @@
         //parse returned array object
         NSDictionary *images = responseObject;
         NSArray *values = [images allValues];
-        if([[values objectAtIndex:1] count]>0)
+        if( [[values objectAtIndex:0] count] > 0)
         {
             //get random image
             int r = arc4random() % [values count];
-            id val = [values objectAtIndex:1];
+            NSLog(@"AAAAAThis is the text you're searching for %@",values);
+            id val = [values objectAtIndex:0];
+            NSLog(@"This is the text you're searching for %@",[values objectAtIndex:r]);
             id nextval = [val objectAtIndex:r];
             NSString *link = [nextval objectForKey:@"link"];
             self.media_reference = link;
@@ -337,12 +371,61 @@
     if([controlText isEqualToString:@"Facebook"])
     {
         [self.searchMemes removeFromSuperview];
+        self.source_type = @"Facebook";
+        
+        RTFacebookAlbumViewController *fbAlbumPicker = [[RTFacebookAlbumViewController alloc]init];
+        fbAlbumPicker.modalPresentationStyle = UIModalPresentationCurrentContext;
+        fbAlbumPicker.delegate = self;
+        
+        
+        
+        
+        [self presentViewController:fbAlbumPicker animated:YES completion:nil];
+        
+        
+        
+        
+    } //last
+    if ([controlText isEqualToString:@"Camera"]) {
+        UIImagePickerController *camera = [[UIImagePickerController alloc]init];
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        [self.searchMemes removeFromSuperview];
+        self.source_type = @"Camera";
+        
+        camera.sourceType = UIImagePickerControllerSourceTypeCamera;
+        camera.delegate = self;
+        [self presentViewController:camera animated:YES completion:nil];
+        }else{
+            NSLog(@"NO CAMERA FOUND");
+        }
     }
 }
+
+
 
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+-(void)fbAlbumPickerDidCancel:(RTFacebookAlbumViewController *)fbAlbumPicker{
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+}
+
+-(void)fbAlbumPicker:(RTFacebookAlbumViewController *)fbPicker didSelectPhoto: (NSDictionary *)info{
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    
+    FacebookPhotoViewController *fbphotopicker = [[FacebookPhotoViewController alloc]init];
+    fbphotopicker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    fbphotopicker.delegate = self;
+    
+    
+    
 }
 
 //goes back to FormViewController when cancel is hit
@@ -353,22 +436,93 @@
 
 //Finds the image and sets the image and imageView the returns to the FormViewController
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+    
+        if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
         
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    }
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    self.memeImageView.image = image;
-    self.memeImage = image;
+            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        }
+        UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+        self.memeImageView.image = image;
+        self.memeImage = image;
+        [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)camera:(UIImagePickerController *)camera didFinishPickingMediaWithInfo:(NSDictionary *)info{
     [self dismissViewControllerAnimated:YES completion:nil];
+    self.memeImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     return YES;
 }
-- (IBAction)message:(UITextField *)sender {
+/*- (IBAction)message:(UITextField *)sender {
+    
+    NSLog(@"MESSAGE");
+    self.messageField.placeholder = @"Enter message here.";
+    [self.view addSubview:self.messageField];
+    [self.messageField endEditing:TRUE];
+ 
     self.message_text = sender.text;
+    [self message:sender];
+    [self.messageField resignFirstResponder];
+}*/
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+    textField.delegate = self;
+    self.activeField = textField;
+    
+}
+
+
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    
+    self.message_text = textField.text;
+    self.activeField  = nil;
+    
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    
+    NSDictionary* info = [aNotification userInfo];
+    
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    CGRect bkgndRect = self.activeField .superview.frame;
+    
+    bkgndRect.size.height += kbSize.height;
+    
+    [self.activeField .superview setFrame:bkgndRect];
+    
+    [self.scrollView setContentOffset:CGPointMake(0.0, self.activeField.frame.origin.y-kbSize.height) animated:YES];
+    
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+/*
+-(void) textFieldDidBeginEditing:(UITextField *)sender{
+    NSLog(@"MESSAGE START");
+    sender.frame = CGRectMake(sender.frame.origin.x, (sender.frame.origin.y - 100.0), sender.frame.size.width, sender.frame.size.height);
+}
+
+-(void) textFieldDidEndEditing:(UITextField *)sender {
+    NSLog(@"MESSAGE END");
+    sender.frame = CGRectMake(sender.frame.origin.x, (sender.frame.origin.y + 100.0), sender.frame.size.width, sender.frame.size.height);
+    
+}*/
+
+
+
+- (IBAction)touchUpInside:(id)sender {
+}
+
+- (IBAction)touchUpOutside:(id)sender {
 }
 - (IBAction)imageSelect:(id)sender {
     
@@ -389,3 +543,33 @@
 
 }
 @end
+
+/*
+
+ if(!FBSession.activeSession.isOpen){
+[FBSession openActiveSessionWithReadPermissions:@[@"user_photos"] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error){
+    if(error){
+        //alert window
+    }else if(session.isOpen){
+        
+    }
+    
+}];
+
+
+return;
+
+}
+
+
+
+
+
+if (self.fbImagePicker == nil) {
+    // Create friend picker, and get data loaded into it.
+    self.fbImagePicker = [[UIImagePickerController alloc] init];
+    self.fbImagePicker.title = @"Choose an Image";
+    self.fbImagePicker.delegate = self;
+}
+
+*/

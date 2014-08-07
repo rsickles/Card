@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180E6FEC1993BC5F00AD33AD /* GlobalVariables.m in Sources */ = {isa = PBXBuildFile; fileRef = 180E6FEB1993BC5F00AD33AD /* GlobalVariables.m */; };
+		1816AA3B198BE54900044285 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1816AA3A198BE54900044285 /* Social.framework */; };
 		18CBF71719829463009D74E1 /* SIGN-IN.png in Resources */ = {isa = PBXBuildFile; fileRef = 18CBF71619829463009D74E1 /* SIGN-IN.png */; };
 		3D4775BD64DF4FC0A0D4C472 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 556548139E5B461C89026F99 /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
-		55BA037E196ED00800ED5E6E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55BA037D196ED00800ED5E6E /* FacebookSDK.framework */; };
 		927A4E0719665F8100444506 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0619665F8100444506 /* Foundation.framework */; };
 		927A4E0919665F8100444506 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0819665F8100444506 /* CoreGraphics.framework */; };
 		927A4E0B19665F8100444506 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927A4E0A19665F8100444506 /* UIKit.framework */; };
@@ -39,7 +40,6 @@
 		92B9EBAA1971AC680037E036 /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9EBA81971AC680037E036 /* FormViewController.m */; };
 		92B9EBAB1971AC680037E036 /* FormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92B9EBA91971AC680037E036 /* FormViewController.xib */; };
 		92B9EBB01971B81F0037E036 /* DropAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9EBAF1971B81F0037E036 /* DropAnimationController.m */; };
-		92BD4D19197F3F3F0047010E /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BD4D18197F3F3F0047010E /* Social.framework */; };
 		92BD4D1C198010200047010E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D1B198010200047010E /* Card.m */; };
 		92BD4D29198011FD0047010E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D28198011FD0047010E /* ImageView.m */; };
 		92BD4D2F198012F50047010E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D2E198012F50047010E /* CardView.m */; };
@@ -59,9 +59,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		180E6FEA1993BC5F00AD33AD /* GlobalVariables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVariables.h; sourceTree = "<group>"; };
+		180E6FEB1993BC5F00AD33AD /* GlobalVariables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalVariables.m; sourceTree = "<group>"; };
+		1816AA3A198BE54900044285 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		18CBF71619829463009D74E1 /* SIGN-IN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIGN-IN.png"; path = "Images.xcassets/SIGN-IN.imageset/SIGN-IN.png"; sourceTree = "<group>"; };
 		556548139E5B461C89026F99 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		55BA037D196ED00800ED5E6E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		8899F26A01154FD79A0780E3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		927A4E0319665F8100444506 /* Memify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		927A4E0619665F8100444506 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -101,7 +103,6 @@
 		92B9EBAD1971B66E0037E036 /* ADVAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADVAnimationController.h; path = ../ADVAnimationController.h; sourceTree = "<group>"; };
 		92B9EBAE1971B81F0037E036 /* DropAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropAnimationController.h; sourceTree = "<group>"; };
 		92B9EBAF1971B81F0037E036 /* DropAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropAnimationController.m; sourceTree = "<group>"; };
-		92BD4D18197F3F3F0047010E /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		92BD4D1A198010200047010E /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
 		92BD4D1B198010200047010E /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
 		92BD4D27198011FD0047010E /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
@@ -120,7 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92BD4D19197F3F3F0047010E /* Social.framework in Frameworks */,
+				1816AA3B198BE54900044285 /* Social.framework in Frameworks */,
 				927A4E591966668400444506 /* SystemConfiguration.framework in Frameworks */,
 				927A4E571966667D00444506 /* StoreKit.framework in Frameworks */,
 				927A4E551966667400444506 /* Security.framework in Frameworks */,
@@ -134,7 +135,6 @@
 				927A4E491966663700444506 /* AudioToolbox.framework in Frameworks */,
 				927A4E0B19665F8100444506 /* UIKit.framework in Frameworks */,
 				927A4E0719665F8100444506 /* Foundation.framework in Frameworks */,
-				55BA037E196ED00800ED5E6E /* FacebookSDK.framework in Frameworks */,
 				3D4775BD64DF4FC0A0D4C472 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,8 +175,7 @@
 		927A4E0519665F8100444506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				92BD4D18197F3F3F0047010E /* Social.framework */,
-				55BA037D196ED00800ED5E6E /* FacebookSDK.framework */,
+				1816AA3A198BE54900044285 /* Social.framework */,
 				927A4E5A1966673600444506 /* Parse.framework */,
 				927A4E581966668400444506 /* SystemConfiguration.framework */,
 				927A4E561966667D00444506 /* StoreKit.framework */,
@@ -202,6 +201,8 @@
 				927A4E361966600500444506 /* HomeViewController.m */,
 				92BD4D351986DC700047010E /* MediaTypeSelectionViewController.m */,
 				92B9EBA81971AC680037E036 /* FormViewController.m */,
+				180E6FEA1993BC5F00AD33AD /* GlobalVariables.h */,
+				180E6FEB1993BC5F00AD33AD /* GlobalVariables.m */,
 				927A4E3B1966603E00444506 /* LoginViewController.m */,
 				92BD4D341986DC700047010E /* MediaTypeSelectionViewController.h */,
 				92B9EBA71971AC680037E036 /* FormViewController.h */,
@@ -442,6 +443,7 @@
 				92BD4D371986DC700047010E /* MediaTypeSelectionViewController.m in Sources */,
 				927A4E1319665F8100444506 /* main.m in Sources */,
 				927A4E1719665F8100444506 /* RSAppDelegate.m in Sources */,
+				180E6FEC1993BC5F00AD33AD /* GlobalVariables.m in Sources */,
 				92B9EBAA1971AC680037E036 /* FormViewController.m in Sources */,
 				92BD4D1C198010200047010E /* Card.m in Sources */,
 				92BD4D2F198012F50047010E /* CardView.m in Sources */,
