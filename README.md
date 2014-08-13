@@ -5,28 +5,33 @@ v 1.0
 
 ### TODO
 * Code refactored, add useful comments and remove old code (Ryan)
+* Take photo (gifs), video or upload from album (Ryan)
+* Send media to all friends
+* log in as page admin?
 * Fix Async functionality throughout application (refactored code, loading spinners fixed and active) (Ryan)
 * Refreshing of cards fixed and optimized (Ben)
 * Terms,privacy, agreement is created and added to bottom of login screen
 * Add flipping card animation, show image on back
 * ~~Add swiping left/right functionality/animation to delete or save card~~ (Ben)
-* Add ability to upload facebook images (Ben)
 * Card deck/stack animation (showing ability to invite friends to app/send card when you have no cards loaded) (Ben)
-* Add ability to get random XKCD comic (Ben)
-* Optimize search on IMGUR for only images with meme tags (Ryan)
 * ~~Ability to take pictures with camera~~ (Ben)
-* Ability to search google (internet) for images (Ryan)
-* Card, control panel, and card form redesigns implemented
 * When users upload images, send image to server at ryansickles.com and host reference (Ryan)
 * Buy developers account to test app on local device
 * Write tests for code functionality (in tests file)
 * Save app data to local phone storage when app is killed
-* Promo video
 * App Logo
 * ~~Function to cascade delete from function table to card table~~ (Ben)
-* "Forward" Card?
 *  Send to mutiple recepients (ryan)
 *  Using core data to store info and caching images
+*  Website for app to get subscribers
+
+###Feature Creep
+* Add ability to get random XKCD comic (Ben)
+* Ability to search google (internet) for images (Ryan)
+* Promo video
+* Add ability to upload facebook images (Ben)
+* "Forward" Card?
+* Optimize search on IMGUR for only images with meme tags (Ryan)
 
 ### UX
 * Cards designed
