@@ -24,6 +24,18 @@ v 1.0
 *  Send to mutiple recepients (ryan)
 *  Using core data to store info and caching images
 *  Website for app to get subscribers
+*  In app tuturial about swiping cards
+
+### Business Deadlines
+* 8/14-15 Card Rough Draft Business Plan/Manifesto
+
+* 8/17-18  Final Draft (Core value defined)
+
+* 8/22 Social Media Rough Draft (Facebook page, Twitter, LinkedIn)
+
+* 8/22 Copyright Strategy Developed & beginning implementation
+
+* 8/24 Company Structuring and Recommendation 
 
 ###Feature Creep
 * Add ability to get random XKCD comic (Ben)
