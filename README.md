@@ -15,7 +15,7 @@ v 1.0
 * ~~Add swiping left/right functionality/animation to delete or save card~~ (Ben)
 * Card deck/stack animation (showing ability to invite friends to app/send card when you have no cards loaded) (Ben)
 * ~~Ability to take pictures with camera~~ (Ben)
-* When users upload images, send image to server at ryansickles.com and host reference (Ryan)
+* When users upload images, send image to parse and use cloud code to do operations (Ryan/Ben)
 * Buy developers account to test app on local device
 * Write tests for code functionality (in tests file)
 * Save app data to local phone storage when app is killed
@@ -32,6 +32,7 @@ v 1.0
 * Add ability to upload facebook images (Ben)
 * "Forward" Card?
 * Optimize search on IMGUR for only images with meme tags (Ryan)
+* Recommended people to follow (using facebooks likes analytics)
 
 ### UX
 * Cards designed
