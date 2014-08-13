@@ -25,6 +25,7 @@ v 1.0
 *  Using core data to store info and caching images
 *  Website for app to get subscribers
 *  In app tuturial about swiping cards
+*  Customize friend picker (search, select all)
 
 ### Business Deadlines
 * 8/14-15 Card Rough Draft Business Plan/Manifesto
