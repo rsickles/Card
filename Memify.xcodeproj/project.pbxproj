@@ -43,8 +43,6 @@
 		92BD4D1C198010200047010E /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D1B198010200047010E /* Card.m */; };
 		92BD4D29198011FD0047010E /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D28198011FD0047010E /* ImageView.m */; };
 		92BD4D2F198012F50047010E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D2E198012F50047010E /* CardView.m */; };
-		92BD4D371986DC700047010E /* MediaTypeSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D351986DC700047010E /* MediaTypeSelectionViewController.m */; };
-		92BD4D381986DC700047010E /* MediaTypeSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92BD4D361986DC700047010E /* MediaTypeSelectionViewController.xib */; };
 		92BD4D3C1986DE200047010E /* MediaTypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BD4D3B1986DE200047010E /* MediaTypeButton.m */; };
 /* End PBXBuildFile section */
 
@@ -109,9 +107,6 @@
 		92BD4D28198011FD0047010E /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		92BD4D2D198012F50047010E /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
 		92BD4D2E198012F50047010E /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
-		92BD4D341986DC700047010E /* MediaTypeSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaTypeSelectionViewController.h; sourceTree = "<group>"; };
-		92BD4D351986DC700047010E /* MediaTypeSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaTypeSelectionViewController.m; sourceTree = "<group>"; };
-		92BD4D361986DC700047010E /* MediaTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaTypeSelectionViewController.xib; sourceTree = "<group>"; };
 		92BD4D3A1986DE200047010E /* MediaTypeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaTypeButton.h; sourceTree = "<group>"; };
 		92BD4D3B1986DE200047010E /* MediaTypeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaTypeButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -199,16 +194,13 @@
 			isa = PBXGroup;
 			children = (
 				927A4E361966600500444506 /* HomeViewController.m */,
-				92BD4D351986DC700047010E /* MediaTypeSelectionViewController.m */,
 				92B9EBA81971AC680037E036 /* FormViewController.m */,
 				180E6FEA1993BC5F00AD33AD /* GlobalVariables.h */,
 				180E6FEB1993BC5F00AD33AD /* GlobalVariables.m */,
 				927A4E3B1966603E00444506 /* LoginViewController.m */,
-				92BD4D341986DC700047010E /* MediaTypeSelectionViewController.h */,
 				92B9EBA71971AC680037E036 /* FormViewController.h */,
 				927A4E351966600500444506 /* HomeViewController.h */,
 				927A4E3A1966603E00444506 /* LoginViewController.h */,
-				92BD4D361986DC700047010E /* MediaTypeSelectionViewController.xib */,
 				92B9EBA91971AC680037E036 /* FormViewController.xib */,
 				927A4E3C1966603E00444506 /* LoginViewController.xib */,
 				927A4E371966600500444506 /* HomeViewController.xib */,
@@ -380,7 +372,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				927A4E3E1966603E00444506 /* LoginViewController.xib in Resources */,
-				92BD4D381986DC700047010E /* MediaTypeSelectionViewController.xib in Resources */,
 				18CBF71719829463009D74E1 /* SIGN-IN.png in Resources */,
 				927A4E1119665F8100444506 /* InfoPlist.strings in Resources */,
 				927A4E1919665F8100444506 /* Images.xcassets in Resources */,
@@ -440,7 +431,6 @@
 				927A4E3D1966603E00444506 /* LoginViewController.m in Sources */,
 				92B9EBB01971B81F0037E036 /* DropAnimationController.m in Sources */,
 				92BD4D3C1986DE200047010E /* MediaTypeButton.m in Sources */,
-				92BD4D371986DC700047010E /* MediaTypeSelectionViewController.m in Sources */,
 				927A4E1319665F8100444506 /* main.m in Sources */,
 				927A4E1719665F8100444506 /* RSAppDelegate.m in Sources */,
 				180E6FEC1993BC5F00AD33AD /* GlobalVariables.m in Sources */,

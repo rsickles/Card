@@ -45,8 +45,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 {
     [super viewDidLoad];
     [self retrieveCards];
-    [self createLogOutButton];
-    [self createRefreshButton];
     [self constructNopeButton];
     [self constructLikedButton];
 }
@@ -72,7 +70,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [query whereKey:@"RecipientId" equalTo:self.userId];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if(error || ([objects count] == 0) ){
-                [self createSendButton];
             }
             else{
                 self.cards = (NSMutableArray *)objects;
@@ -100,7 +97,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [query whereKey:@"RecipientId" equalTo:self.userId];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if(error || ([objects count] == 0) ){
-                [self createSendButton];
             }
             else{
                 self.cards = (NSMutableArray *)objects;
@@ -257,7 +253,6 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 [query whereKey:@"RecipientId" equalTo:self.userId];
 [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
     if(error || ([objects count] == 0) ){
-        [self createSendButton];
     }
     else{
             self.cards = (NSMutableArray *)objects;
@@ -301,7 +296,6 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
             [self initializeCardStack:card];
         }
         else{
-            [self createSendButton];
         }
     }];
 }
@@ -310,7 +304,6 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 {
     [self.usersCards addObject:card];
     self.cards = self.usersCards;
-    [self createSendButton];
     
     
     self.frontCardView = [self popPersonViewWithFrame:[self frontCardViewFrame]];
@@ -336,54 +329,25 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 }
 
 
--(void)createRefreshButton{
-    
-    //create the refresh button which refreshes the cards when pressed
-    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [refresh addTarget:self action:@selector(refreshCards)forControlEvents:UIControlEventTouchUpInside];
-    [refresh setTitle:@"Shuffle" forState:UIControlStateNormal];
-    refresh.backgroundColor = self.mainColor;
-    refresh.layer.cornerRadius = 3.0f;
-    refresh.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
-    [refresh setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [refresh setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
-    refresh.frame = CGRectMake(225, 75, 75.0, 35.0);
-    [self.view addSubview:refresh];
-
-}
-
--(void)createSendButton
-{
-    //create initial button
-    UIButton *memeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [memeButton addTarget:self action:@selector(memeSend:) forControlEvents:UIControlEventTouchUpInside];
-    [memeButton setTitle:@"Send Card" forState:UIControlStateNormal];
-    memeButton.backgroundColor = self.mainColor;
-    memeButton.layer.cornerRadius = 3.0f;
-    memeButton.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
-    [memeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [memeButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
-    if([self.cards count] > 0)//has any meme cards in inbox
-    {
-        //display send button below cards
-        memeButton.frame = CGRectMake(screenWidth/2-75, screenHeight-(screenHeight/4)+50, 150.0, 50.0);
-    }
-    else{
-        //display send button in middle of screen
-        memeButton.frame = CGRectMake(screenWidth/2-75, screenHeight/2-25, 150.0, 50.0);
-    }
-    [self.view addSubview:memeButton];
-}
+//-(void)createRefreshButton{
+//    
+//    //create the refresh button which refreshes the cards when pressed
+//    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [refresh addTarget:self action:@selector(refreshCards)forControlEvents:UIControlEventTouchUpInside];
+//    [refresh setTitle:@"Shuffle" forState:UIControlStateNormal];
+//    refresh.backgroundColor = self.mainColor;
+//    refresh.layer.cornerRadius = 3.0f;
+//    refresh.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
+//    [refresh setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [refresh setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
+//    refresh.frame = CGRectMake(225, 75, 75.0, 35.0);
+//    [self.view addSubview:refresh];
+//
+//}
 
 
-//transitioning stuff
-- (IBAction) memeSend:(id)sender{
-        NSLog(@"Send Meme!");
-    self.animationController = [[DropAnimationController alloc] init];
-    UIViewController *mediaSelection = [[MediaTypeSelectionViewController alloc]initWithNibName:@"MediaTypeSelectionViewController" bundle:[NSBundle mainBundle]];
-    mediaSelection.transitioningDelegate  = self;
-    [self presentViewController:mediaSelection animated:YES completion:nil];
-}
+
+
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
                                                                   presentingController:(UIViewController *)presenting
@@ -401,7 +365,66 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 }
 //end of transitioning stuff
 
-- (void)logoutButtonTouchHandler:(id)sender  {
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)upload:(id)sender {
+    
+    UIImagePickerController *imagePickerController =
+    [[UIImagePickerController alloc] init];
+    
+    imagePickerController.delegate = self;
+    
+    imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage, (NSString *) kUTTypeMovie];
+    imagePickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    imagePickerController.allowsEditing = YES;
+    UINavigationBar *bar = imagePickerController.navigationBar;
+    UINavigationItem *top = bar.topItem;
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
+    [top setLeftBarButtonItem:cancel];
+
+    [self presentViewController:imagePickerController animated:YES completion:nil];
+}
+
+
+-(void)imagePickerControllerDidCancel:
+(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+//Finds the image and sets the image and imageView the returns to the FormViewController
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    UIImage *image = nil;
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
+    {
+        // Media is an image
+        image = [info valueForKey:UIImagePickerControllerOriginalImage];
+    }
+    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
+    {
+        // Media is a video
+    }
+    self.selectedImage = image;
+    [self dismissViewControllerAnimated:YES completion:^{
+        FormViewController *form = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:[NSBundle mainBundle]];
+        form.imageSelected = self.selectedImage;
+        [self presentViewController:form animated:YES completion:nil];
+    }];
+
+}
+
+
+- (IBAction)logout:(id)sender {
     login = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:[NSBundle mainBundle]];
     if (!FBSession.activeSession.isOpen) {
         // if the session is closed, then we open it here, and establish a handler for state changes
@@ -425,17 +448,27 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
                                               [self presentViewController:login animated:YES completion:nil];
                                           }
                                       }];
-}
+    }
     [PFUser logOut]; // Log out
     // Return to login page
     NSLog((@"Logout"));
     [self presentViewController:login animated:YES completion:nil];
+
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)capture:(id)sender {
+    //open camera/video taker
+    UIImagePickerController *camera = [[UIImagePickerController alloc]init];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        
+        camera.sourceType = UIImagePickerControllerSourceTypeCamera;
+        camera.delegate = self;
+        [self presentViewController:camera animated:YES completion:nil];
+    }
+    else
+    {
+        NSLog(@"NO CAMERA FOUND");
+    }
 }
-
 @end

@@ -12,8 +12,6 @@
                 <outlet property="memeImageView" destination="btm-Po-vfy" id="MAW-Uk-VK7"/>
                 <outlet property="messageField" destination="Gsf-zH-gnn" id="7cH-S2-No0"/>
                 <outlet property="message_text" destination="Gsf-zH-gnn" id="yJW-1T-lde"/>
-                <outlet property="searchMemes" destination="KEf-SC-Yqd" id="qGT-Pp-yrd"/>
-                <outlet property="selectImage" destination="TSA-PR-Bf3" id="ZXq-KZ-JjX"/>
                 <outlet property="sendButton" destination="xAw-IU-ztV" id="5sz-2U-cSJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -47,15 +45,6 @@
                     <rect key="frame" x="-1" y="181" width="320" height="219"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <searchBar contentMode="redraw" text="" placeholder="Search Memes" id="KEf-SC-Yqd">
-                    <rect key="frame" x="0.0" y="137" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <scopeButtonTitles>
-                        <string>Title</string>
-                        <string>Title</string>
-                    </scopeButtonTitles>
-                </searchBar>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="pFf-NJ-VBk">
                     <rect key="frame" x="150" y="280" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -71,26 +60,16 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Message" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="Gsf-zH-gnn">
-                <rect key="frame" x="19" y="408" width="280" height="30"/>
-                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                <textInputTraits key="textInputTraits"/>
-                 <connections>
+                    <rect key="frame" x="19" y="408" width="280" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
                         <action selector="touchUpInside:" destination="-1" eventType="touchUpInside" id="KB4-de-2Em"/>
                         <action selector="touchUpOutside:" destination="-1" eventType="touchUpOutside" id="wnh-di-OMf"/>
-                 </connections>
-                </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TSA-PR-Bf3">
-                    <rect key="frame" x="51" y="94" width="218" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Select Photo">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="imageSelect:" destination="-1" eventType="touchUpInside" id="oa6-PX-MEW"/>
                     </connections>
-                </button>
+                </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

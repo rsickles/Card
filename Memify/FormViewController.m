@@ -6,11 +6,13 @@
 //
 #import "FormViewController.h"
 #import "GlobalVariables.h"
+#import "GRRequestsManager.h"
 
-@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate, RTFacebookViewDelegate>
+@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate, GRRequestsManagerDelegate>
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
 @property (retain,nonatomic) UINavigationController *navigationController;
 @property (retain, nonatomic) UIImagePickerController *fbImagePicker;
+@property (nonatomic, strong) GRRequestsManager *requestsManager;
 @end
 
 @implementation FormViewController{
@@ -46,12 +48,13 @@
             self.userId = userData[@"id"];
         }
     }];
-    self.searchMemes.delegate = self;
-    
-    
-    NSLog(@"MADE THE GODDAMN TEXT FIELD");
     [self.view addSubview:self.messageField];
     self.message_text =@"Nothing was entered";
+    if(self.memeImage == nil)
+    {
+        self.memeImage = self.imageSelected;
+        [self.memeImageView setImage:self.memeImage];
+    }
     //set custom buttons
     self.sendButton.backgroundColor = self.mainColor;
     self.sendButton.layer.cornerRadius = 3.0f;
@@ -71,17 +74,6 @@
     [self.addFriendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.addFriendButton setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
     //add chose image button
-    if([self.source_type isEqualToString:@"Photo Library"] || [self.source_type isEqualToString:@"Facebook"] )
-    {
-        self.selectImage.backgroundColor = self.mainColor;
-        self.selectImage.layer.cornerRadius = 3.0f;
-        self.selectImage.titleLabel.font = [UIFont fontWithName:self.boldFontName size:20.0f];
-        [self.selectImage setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.selectImage setTitleColor:[UIColor colorWithWhite:1.0f alpha:0.5f] forState:UIControlStateHighlighted];
-    }
-    else{
-        [self.selectImage removeFromSuperview];
-    }
     //end of styling buttons
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
@@ -117,86 +109,14 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [self mediaSourceTypeSelect:self.source_type];
+    if(self.memeImage == nil)
+    {
+        self.memeImage = self.imageSelected;
+        [self.memeImageView setImage:self.memeImage];
+    }
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [self.searchMemes resignFirstResponder];
-    self.memeImageView.image = nil;
-    [self.view endEditing:TRUE]; //This will dismiss the keyboard
-    //start spinning wheel and searching for meme
-    UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    activityView.center=self.view.center;
-    activityView.color = [UIColor redColor];
-    [activityView startAnimating];
-    //get image query
-    NSMutableString *imageQuery = [[[searchBar.text mutableCopy] stringByReplacingOccurrencesOfString:@" " withString:@""]mutableCopy];
-    NSMutableString *query = [@"https://api.imgur.com/3/gallery/search/?q=" mutableCopy];
-    //construct query string
-    [query appendString:imageQuery];
-    //end of query string
-    [self.view addSubview:activityView];
-    AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
-    [operationManager.requestSerializer setValue:@"Client-ID 5df88b59be0ed8d" forHTTPHeaderField:@"Authorization"];
-    NSLog(@"This is the text you're searching for %@",query);
-    [operationManager GET:query parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //parse returned array object
-        NSDictionary *images = responseObject;
-        NSArray *values = [images allValues];
-        if( [[values objectAtIndex:0] count] > 0)
-        {
-            //get random image
-            int r = arc4random() % [values count];
-            NSLog(@"AAAAAThis is the text you're searching for %@",values);
-            id val = [values objectAtIndex:0];
-            NSLog(@"This is the text you're searching for %@",[values objectAtIndex:r]);
-            id nextval = [val objectAtIndex:r];
-            NSString *link = [nextval objectForKey:@"link"];
-            self.media_reference = link;
-            //creates picture preview
-            NSURL *url = [NSURL URLWithString:link];
-            self.memeImage = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
-            self.memeImageView.image = self.memeImage;
-            [activityView stopAnimating];
-        }
-        else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Such Picture Exists On IMGUR :(" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-            [alert show];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"failure");
-        [activityView stopAnimating];
-        //erases preview image
-        self.memeImageView.image = nil;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Retrieving Media Failed" message:@"Try Again" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        [alert show];
-    }];
 
-}
-- (void) dismissKeyboard
-{
-    // add self
-    [self.searchMemes resignFirstResponder];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-        NSLog(@"SearchingMemes");
-    //clear view
-    self.memeImageView.image = nil;
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-        NSLog(@"SearchingMemes");
-}
 
 
 - (IBAction)sendMeme:(id)sender {
@@ -211,14 +131,16 @@
     }
     else if (self.friendsList.count<=0){
         //alert user they have selected no friends
-        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Woops!" message:@"Remember to choose some friends!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        //
-        //[alertView show];
-        
-        //[alertView dismissWithClickedButtonIndex:0 animated:YES];
     }
     else
     {
+        self.requestsManager = [[GRRequestsManager alloc] initWithHostname:@"ryansickles.com"
+                                                                      user:@"rsickles9"
+                                                                  password:@"Ch@tham1"];
+        self.requestsManager.delegate = self;
+        NSString *imageDirectory = [[NSBundle mainBundle] resourcePath];
+        [self.requestsManager addRequestForUploadFileAtLocalPath:@"" toRemotePath:@"/card/users"];
+        [self.requestsManager startProcessingRequests];
         [self saveImageSelectedtoUser:self.memeImage friends:self.friendsList];
         UIViewController *home = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
         [self presentViewController:home animated:YES completion:nil];
@@ -266,9 +188,6 @@
 
     [self.friendPickerController loadData];
     [self.friendPickerController clearSelection];
-    //wrapped in a navigation controller so modal view is not blocked by status bar
-    //UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.friendPickerController];
-    //[nav setNavigationBarHidden:NO animated:YES];
     [self presentViewController:self.friendPickerController animated:YES completion:nil];
 
 }
@@ -361,7 +280,7 @@
     NSString *controlText = type;
     if([controlText isEqualToString:@"Internet"])
     {
-        [self.view addSubview:self.searchMemes];
+        
     }
     if([controlText isEqualToString:@"Photo Library"])
     {
@@ -370,17 +289,7 @@
     }
     if([controlText isEqualToString:@"Facebook"])
     {
-        [self.searchMemes removeFromSuperview];
         self.source_type = @"Facebook";
-        
-        RTFacebookAlbumViewController *fbAlbumPicker = [[RTFacebookAlbumViewController alloc]init];
-        fbAlbumPicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-        fbAlbumPicker.delegate = self;
-        
-        
-        
-        
-        [self presentViewController:fbAlbumPicker animated:YES completion:nil];
         
         
         
@@ -389,7 +298,6 @@
     if ([controlText isEqualToString:@"Camera"]) {
         UIImagePickerController *camera = [[UIImagePickerController alloc]init];
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        [self.searchMemes removeFromSuperview];
         self.source_type = @"Camera";
         
         camera.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -408,44 +316,7 @@
     return YES;
 }
 
--(void)fbAlbumPickerDidCancel:(RTFacebookAlbumViewController *)fbAlbumPicker{
-    [self dismissViewControllerAnimated:YES completion:nil];
 
-}
-
--(void)fbAlbumPicker:(RTFacebookAlbumViewController *)fbPicker didSelectPhoto: (NSDictionary *)info{
-    
-    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-        
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    }
-    
-    FacebookPhotoViewController *fbphotopicker = [[FacebookPhotoViewController alloc]init];
-    fbphotopicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    fbphotopicker.delegate = self;
-    
-    
-    
-}
-
-//goes back to FormViewController when cancel is hit
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self dismissViewControllerAnimated:NO completion:^{
-    }];
-}
-
-//Finds the image and sets the image and imageView the returns to the FormViewController
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    
-        if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-        
-            [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        }
-        UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-        self.memeImageView.image = image;
-        self.memeImage = image;
-        [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 -(void)camera:(UIImagePickerController *)camera didFinishPickingMediaWithInfo:(NSDictionary *)info{
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -495,7 +366,7 @@
     
     bkgndRect.size.height += kbSize.height;
     
-    [self.activeField .superview setFrame:bkgndRect];
+    [self.activeField.superview setFrame:bkgndRect];
     
     [self.scrollView setContentOffset:CGPointMake(0.0, self.activeField.frame.origin.y-kbSize.height) animated:YES];
     
@@ -524,52 +395,4 @@
 
 - (IBAction)touchUpOutside:(id)sender {
 }
-- (IBAction)imageSelect:(id)sender {
-    
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
-    imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    //adds it to the form screen
-    imagePickerController.delegate = self;
-    
-    [self.searchMemes removeFromSuperview];
-    
-    UINavigationBar *bar = imagePickerController.navigationBar;
-    UINavigationItem *top = bar.topItem;
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
-    [top setLeftBarButtonItem:cancel];
-    
-    [self presentViewController:imagePickerController animated:YES completion:nil];
-    
-
-}
 @end
-
-/*
-
- if(!FBSession.activeSession.isOpen){
-[FBSession openActiveSessionWithReadPermissions:@[@"user_photos"] allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error){
-    if(error){
-        //alert window
-    }else if(session.isOpen){
-        
-    }
-    
-}];
-
-
-return;
-
-}
-
-
-
-
-
-if (self.fbImagePicker == nil) {
-    // Create friend picker, and get data loaded into it.
-    self.fbImagePicker = [[UIImagePickerController alloc] init];
-    self.fbImagePicker.title = @"Choose an Image";
-    self.fbImagePicker.delegate = self;
-}
-
-*/
