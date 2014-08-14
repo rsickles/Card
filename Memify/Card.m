@@ -12,12 +12,16 @@
 
 #pragma mark - Object Lifecycle
 
-- (instancetype)initWithName:(NSString *)senderName image:(UIImage *)image image:(UIImage *)senderProPic{
+- (instancetype)initWithName:senderName image:senderProPic image:mediaData message:message timeSent:timeSent mediaType:mediaType
+{
     self = [super init];
     if (self) {
         _senderName = senderName;
-        _image = image;
         _senderProPic = senderProPic;
+        _mediaData = mediaData;
+        _message = message;
+        _timeSent = timeSent;
+        _mediaType = mediaType;
     }
     return self;
 }
