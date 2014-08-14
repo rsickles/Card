@@ -6,13 +6,11 @@
 //
 #import "FormViewController.h"
 #import "GlobalVariables.h"
-#import "GRRequestsManager.h"
 
-@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate, GRRequestsManagerDelegate>
+@interface FormViewController () <FBFriendPickerDelegate, UINavigationControllerDelegate>
 @property (retain, nonatomic) FBFriendPickerViewController *friendPickerController;
 @property (retain,nonatomic) UINavigationController *navigationController;
 @property (retain, nonatomic) UIImagePickerController *fbImagePicker;
-@property (nonatomic, strong) GRRequestsManager *requestsManager;
 @end
 
 @implementation FormViewController{
@@ -134,13 +132,6 @@
     }
     else
     {
-        self.requestsManager = [[GRRequestsManager alloc] initWithHostname:@"ryansickles.com"
-                                                                      user:@"rsickles9"
-                                                                  password:@"Ch@tham1"];
-        self.requestsManager.delegate = self;
-        NSString *imageDirectory = [[NSBundle mainBundle] resourcePath];
-        [self.requestsManager addRequestForUploadFileAtLocalPath:@"" toRemotePath:@"/card/users"];
-        [self.requestsManager startProcessingRequests];
         [self saveImageSelectedtoUser:self.memeImage friends:self.friendsList];
         UIViewController *home = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
         [self presentViewController:home animated:YES completion:nil];
@@ -232,10 +223,7 @@
 
             //Picture is sent so remove all recipients!
             PFObject *card = [PFObject objectWithClassName:@"Cards"];
-            [card setObject:self.media_reference forKey:@"media_reference"];
-            NSLog(@"he");
             [card setObject:self.mediaType forKey:@"media_type"];
-            [card setObject:self.source_type forKey:@"source_type"];
             NSLog(@"ha");
             [card setObject:self.message_text forKey:@"message"];
             NSLog(@"hiii");
@@ -255,11 +243,25 @@
                         for (int arrayIndex=0; arrayIndex<[self.friendsList count]; arrayIndex++) {
                             [junctionTable setObject:self.userData[@"id"] forKey:@"SenderId"];
                             [junctionTable setObject:[self.friendsList objectAtIndex:arrayIndex ] forKey:@"RecipientId"];
+                            NSLog(@"RECIEPIENT ID %@",[self.friendsList objectAtIndex:arrayIndex ]);
+                            NSLog(@"SENDER ID %@",self.userData[@"id"]);
                             [junctionTable setObject:card.objectId forKey:@"CardId"];
                             [junctionTable saveEventually];
                         }
 
                     }];
+                    //upload to image table
+                    UIGraphicsBeginImageContext(CGSizeMake(640, 960));
+                    [self.imageSelected drawInRect: CGRectMake(0, 0, 640, 960)];
+                    UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    NSData *imageData = UIImageJPEGRepresentation(self.imageSelected, 0.05f);
+                    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:imageData];
+                    //
+                    PFObject *cardsTable = [PFObject objectWithClassName:@"personal_images"];
+                    [cardsTable setObject:card.objectId forKey:@"CardId"];
+                    [cardsTable setObject:imageFile forKey:@"imageFile"];
+                    [cardsTable saveInBackground];
                 }
             }];
         }

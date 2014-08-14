@@ -23,14 +23,12 @@ PODS:
   - Bolts (1.1.1)
   - Facebook-iOS-SDK (3.17.0):
     - Bolts
-  - GoldRaccoon (1.0.2)
   - MDCSwipeToChoose (0.2.1)
   - RTFacebookAlbum (1.1):
     - Facebook-iOS-SDK
 
 DEPENDENCIES:
   - AFNetworking
-  - GoldRaccoon (~> 1.0)
   - MDCSwipeToChoose
   - RTFacebookAlbum
 
@@ -38,7 +36,6 @@ SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   Bolts: 0ca796081c3e7c139bd86d6903c27f1b83036a5d
   Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
-  GoldRaccoon: d113e556626b0887b1210ee3838e549dc40a4dbc
   MDCSwipeToChoose: 54f7b1675eff182cdc46c582360c7fca4c766a67
   RTFacebookAlbum: ef73f7494b4012570819712460bb608cd0a93efe
 

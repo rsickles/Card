@@ -10,9 +10,12 @@
 
 @interface Card : NSObject
 
-@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *senderProPic;
 @property (nonatomic, copy) NSString *senderName;
+@property (nonatomic, copy) NSData *mediaData;
+@property (nonatomic, copy) NSString *message;
+@property (nonatomic, copy) NSString *timeSent;
+@property (nonatomic, copy) NSData *mediaType;
 
-- (instancetype)initWithName:(NSString *)senderName image:(UIImage *)image image:(UIImage *)senderProPic;
+- (instancetype)initWithName:senderName image:senderProPic image:mediaData message:message timeSent:timeSent mediaType:mediaType;
 @end

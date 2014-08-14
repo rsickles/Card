@@ -27,7 +27,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     self = [super initWithFrame:frame options:options];
     if (self) {
         _card = card;
-        self.imageView.image = _card.image;
+        self.imageView.image = _card.mediaData;
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight |
         UIViewAutoresizingFlexibleWidth |
         UIViewAutoresizingFlexibleBottomMargin;

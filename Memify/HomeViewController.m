@@ -13,6 +13,8 @@
 #import "Card.h"
 #import "GlobalVariables.h"
 #import <MDCSwipeToChoose/MDCSwipeToChoose.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
 static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
@@ -44,9 +46,20 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self retrieveCards];
     [self constructNopeButton];
     [self constructLikedButton];
+    FBRequest *request = [FBRequest requestForMe];
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            //get users facebook id
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            self.userId = userData[@"id"];
+            [self getAllCardsSentToUser];
+            self.deck = [[NSMutableArray alloc]init];
+        }
+    }];
+
 }
 
 -(void)refreshCards{
@@ -235,76 +248,122 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 }
 
 
-- (void)retrieveCards {
-    FBRequest *request = [FBRequest requestForMe];
-    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (!error) {
-            //get users facebook id
-            // result is a dictionary with the user's Facebook data
-            NSDictionary *userData = (NSDictionary *)result;
-            self.userId = userData[@"id"];
-            [self getCardStack];
-            }
-    }];
-}
-
--(void)getCardStack{
+-(void)getAllCardsSentToUser{
 PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 [query whereKey:@"RecipientId" equalTo:self.userId];
 [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
     if(error || ([objects count] == 0) ){
     }
     else{
+            //gets all cards for user to download
             self.cards = (NSMutableArray *)objects;
             //create array of users card stack
             for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++) {
-                NSString *cardId = [[self.cards objectAtIndex:arrayIndex ]objectForKey:@"CardId"];
-                [self createCard:(cardId)];
-                NSString *senderId = [[self.cards objectAtIndex:arrayIndex]objectForKey:@"SenderId"];
-                [self getSenderName:senderId];
+                //creates new hash set for card data and adds time sent
+                self.cardData = [[NSMutableDictionary alloc] init];
+                //add time sent to Card Data
+                [self.cardData setObject:[[self.cards objectAtIndex:arrayIndex]createdAt] forKey:@"timeSent"];
+                //adds cardID to Card Data
+                [self.cardData setObject:[[self.cards objectAtIndex:arrayIndex]objectForKey:@"CardId"] forKey:@"CardId"];
+                //adds senderID to Card Data
+                [self.cardData setObject:[[self.cards objectAtIndex:arrayIndex]objectForKey:@"SenderId"] forKey:@"SenderId"];
+                //adds to deck
+                [self.deck addObject:self.cardData];
             }
+        //now gets info about card and user that sent the card
+        [self getSenderInfo:(self.deck)];
     }
 }];
+    
 }
 
--(void)getSenderName:(NSString *)senderId {
+-(void)getSenderInfo:(NSArray *)deck{
     PFQuery *query = [PFQuery queryWithClassName:@"User"];
     //get auth data hash authData.id
-    [query whereKey:@"facebook_id" equalTo:senderId];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if([objects count]>0)
-        {
-            self.senderName = [objects objectAtIndex:0];
-        }
-        else{
-            self.senderName = @"N/A";
-        }
-    }];
+    for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++)
+    {
+        NSString *senderId = [[deck objectAtIndex:arrayIndex] objectForKey:@"SenderId"];
+        [query whereKey:@"facebook_id" equalTo:senderId];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            NSMutableString *full_name = [[objects objectAtIndex:0]objectForKey:@"first_name"];
+            NSMutableString *last_name = [[objects objectAtIndex:0]objectForKey:@"last_name"];
+            [full_name appendString:last_name];
+            //add senders name to cardData
+            [[deck objectAtIndex:arrayIndex]setObject:full_name forKey:@"senderName"];
+            //add senders propic to arrayIndex
+            //construct query string
+            NSMutableString *imageQuery = [[senderId mutableCopy]mutableCopy];
+            NSMutableString *query = [@"https://graph.facebook.com/" mutableCopy];
+            [query appendString:imageQuery];
+            [query appendString:@"/picture"];
+            //get pro pic
+            NSURL *url = [NSURL URLWithString:query];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *proPic = [[UIImage alloc] initWithData:data];
+            [[deck objectAtIndex:arrayIndex]setObject:proPic forKey:@"senderProPic"];
+        }];
+    }
+    [self getCardInfo:(deck)];
 }
 
--(void)createCard:(NSString *)cardId
+-(void)getCardInfo:(NSArray *)deck
 {
     PFQuery *query = [PFQuery queryWithClassName:@"Cards"];
-    [query whereKey:@"objectId" equalTo:cardId]; //change whereKey to senderID to see pics sent to self
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if([objects count] > 0)
-        {
-            
-            NSURL *imageFileUrl = [[NSURL alloc]initWithString:[[objects objectAtIndex:0] objectForKey:@"media_reference"]];
-            NSData *imageData = [NSData dataWithContentsOfURL:imageFileUrl];
-            Card *card = [[Card alloc] initWithName:self.senderName image:[UIImage imageWithData:imageData] image:[UIImage imageWithData:imageData]];
-            [self initializeCardStack:card];
-        }
-        else{
-        }
-    }];
+    for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++)
+    {
+        NSString *cardId = [[deck objectAtIndex:arrayIndex] objectForKey:@"CardId"];
+        [query whereKey:@"objectId" equalTo:cardId]; //change whereKey to senderID to see pics sent to self
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if([objects count] > 0)
+            {
+                NSString *media_type = [[objects objectAtIndex:0]objectForKey:@"media_type"];
+                //set card media type (photo/video)
+                [[deck objectAtIndex:arrayIndex]setObject:media_type forKey:@"mediaType"];
+                NSString *message = [[objects objectAtIndex:0]objectForKey:@"message"];
+                //set card message
+                [[deck objectAtIndex:arrayIndex]setObject:message forKey:@"message"];
+                if([media_type isEqualToString:@"Image"])
+                {
+                    //its an image file
+                    PFQuery *query = [PFQuery queryWithClassName:@"personal_images"];
+                    [query whereKey:@"CardId" equalTo:cardId];
+                    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                        PFFile *image = [[objects objectAtIndex:0]objectForKey:@"imageFile"];
+                        //set card message
+                        [[deck objectAtIndex:arrayIndex]setObject:image forKey:@"imageData"];
+                    }];
+                }
+                else{
+                    //its a video file
+                }
+            }
+        }];
+
+    }
+    [self createCardStack:deck];
 }
 
--(void)initializeCardStack:(Card *)card
+-(void)createCardStack:(NSArray *)deck
 {
-    [self.usersCards addObject:card];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy"];
+    for (int arrayIndex=0; arrayIndex<[self.cards count]; arrayIndex++)
+    {
+        //formats date into string
+        NSString *stringFromDate = [formatter stringFromDate:[[deck objectAtIndex:arrayIndex] objectForKey:@"timeSent"]];
+        
+        NSString *timeSent = stringFromDate;
+        NSString *senderName = [[deck objectAtIndex:arrayIndex] objectForKey:@"senderName"];
+        UIImage *senderProPic = [[deck objectAtIndex:arrayIndex] objectForKey:@"senderProPic"];
+        NSString *message = [[deck objectAtIndex:arrayIndex] objectForKey:@"message"];
+        NSString *mediaData = [[deck objectAtIndex:arrayIndex] objectForKey:@"imageData"];
+        NSString *mediaType = [[deck objectAtIndex:arrayIndex] objectForKey:@"mediaType"];
+        Card *card = [[Card alloc] initWithName:senderName image:senderProPic image:mediaData message:message timeSent:timeSent mediaType:mediaType];
+        NSLog(@"%@",card);
+        //add cards to the stack
+        [self.usersCards addObject:card];
+    }
     self.cards = self.usersCards;
-    
     
     self.frontCardView = [self popPersonViewWithFrame:[self frontCardViewFrame]];
     [self.view addSubview:self.frontCardView];
@@ -372,21 +431,32 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
 }
 
 - (IBAction)upload:(id)sender {
+    [self startMediaBrowserFromViewController:self usingDelegate:self];
+}
+
+-(BOOL)startMediaBrowserFromViewController:(UIViewController*)controller usingDelegate:(id )delegate {
+    if (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum] == NO)
+        || (delegate == nil)
+        || (controller == nil)) {
+        return NO;
+    }
     
-    UIImagePickerController *imagePickerController =
-    [[UIImagePickerController alloc] init];
     
-    imagePickerController.delegate = self;
+    
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    
     
     imagePickerController.mediaTypes = @[(NSString *) kUTTypeImage, (NSString *) kUTTypeMovie];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    imagePickerController.allowsEditing = YES;
+    imagePickerController.allowsEditing = NO;
+    imagePickerController.delegate = delegate;
     UINavigationBar *bar = imagePickerController.navigationBar;
     UINavigationItem *top = bar.topItem;
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(imagePickerControllerDidCancel:)];
     [top setLeftBarButtonItem:cancel];
-
+    
     [self presentViewController:imagePickerController animated:YES completion:nil];
+    return YES;
 }
 
 
@@ -412,7 +482,11 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
     }
     else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
     {
-        // Media is a video
+     //media is a movie
+        NSURL *movieURL = (NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
+        MPMoviePlayerController *movieplayer =[[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+        [[movieplayer view] setFrame: [self.view bounds]];
+        [self.view addSubview: [movieplayer view]];
     }
     self.selectedImage = image;
     [self dismissViewControllerAnimated:YES completion:^{
@@ -421,6 +495,15 @@ PFQuery *query = [PFQuery queryWithClassName:@"Junction"];
         [self presentViewController:form animated:YES completion:nil];
     }];
 
+}
+
+
+
+// When the movie is done, release the controller.
+-(void)myMovieFinishedCallback:(NSNotification*)aNotification {
+    [self dismissMoviePlayerViewControllerAnimated];
+    MPMoviePlayerController* theMovie = [aNotification object];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:theMovie];
 }
 
 

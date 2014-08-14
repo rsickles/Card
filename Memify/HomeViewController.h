@@ -14,7 +14,7 @@
 #import "CardView.h"
 @class LoginViewController;
 
-@interface HomeViewController : UIViewController <NSURLConnectionDelegate,UIViewControllerTransitioningDelegate,MDCSwipeToChooseDelegate,UIImagePickerControllerDelegate>
+@interface HomeViewController : UIViewController <NSURLConnectionDelegate,UIViewControllerTransitioningDelegate,MDCSwipeToChooseDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     NSMutableData *_imageData;
     LoginViewController *login;
@@ -26,6 +26,9 @@
 @property (nonatomic, retain) NSTimer *refreshTimer;
 @property (strong,nonatomic) NSNumber *active_state;
 @property (strong,nonatomic) NSNumber *flipped;
+//holds all card data
+@property (nonatomic, strong) NSMutableDictionary *cardData;
+@property (nonatomic, strong) NSMutableArray *deck;
 //card properties
 @property (nonatomic, strong) Card *currentCard;
 @property (nonatomic, strong) CardView *frontCardView;
@@ -35,4 +38,5 @@
 - (IBAction)upload:(id)sender;
 - (IBAction)logout:(id)sender;
 - (IBAction)capture:(id)sender;
+-(BOOL)startMediaBrowserFromViewController:(UIViewController*)controller usingDelegate:(id )delegate;
 @end
